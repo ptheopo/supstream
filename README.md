@@ -9,6 +9,8 @@ To better understand, look at the _samples_ directory
 
 TODO list : https://trello.com/b/gAa0tKvO/supstream
 
+![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/screenshot.png)
+
 # Install
 
 ## Compilation
