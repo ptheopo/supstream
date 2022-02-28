@@ -130,6 +130,70 @@ gcc -shared `pkg-config --libs --cflags gstreamer-1.0` plugin/template.c -o plug
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:plugin
 ```
 
+# ZeroMQ API
+
+This textual documentation describes how _supstream_ externally talk with IPC ZeroMQ
+
+- codes :
+    - 0 success
+    - 1 failure
+
+The default ZMQ uri for IPC/TCP sharing is _ipc:///tmp/supstream.pipe_, you can update your own ZMQ path with _zmq_path_ property.
+
+## Requests
+
+Mini pygame client available in https://gitlab.com/ouzb64ty/supstream-gateway
+
+### Play
+
+Update state to PLAYING for a specific pipeline or rather all
+
+```json
+{
+    command: "play",
+    pipelines: ["matroska-video_0"]
+}
+```
+
+### Pause
+
+Update state to PAUSED for a specific pipeline or rather all
+
+```json
+{
+    command: "pause",
+    pipelines: ["matroska-video_0"]
+}
+```
+
+### Version
+
+```json
+{
+    command: "version"
+}
+```
+
+### Exit
+
+This request exit a supstream process
+
+```json
+{
+    command: "exit"
+}
+```
+
+### Show
+
+Used to get general pipelines configuration, saved in cache
+
+```json
+{
+    command: "show"
+}
+```
+
 # Autor
 
 tpoac <t.poac@cyim.com>
