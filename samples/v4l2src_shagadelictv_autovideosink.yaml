@@ -1,0 +1,29 @@
+# This configuration apply effect on webcam from V4l2 device
+# Before starting, type `sudo modprobe v4l2loopback` for /dev/videoN opening
+
+pipelines:
+
+    v4l2src_shagadelictv_autovideosink:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+            src:
+                element: v4l2src
+                properties:
+                    name: cam_src
+                    queue-size: 10
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: shagadelictv
+            shagadelictv:
+                element: shagadelictv
+                element_link: videoconvert2
+            videoconvert2:
+                element: videoconvert
+                element_link: sink
+            sink:
+                element: autovideosink
+

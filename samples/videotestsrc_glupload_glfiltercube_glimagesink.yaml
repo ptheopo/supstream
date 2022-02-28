@@ -1,0 +1,27 @@
+#gst-launch-1.0 -v videotestsrc pattern=ball ! glupload ! glfiltercube ! glimagesink
+
+pipelines:
+
+    videotestsrc_glupload_glfiltercube_glimagesink:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+
+            videotestsrc:
+                element: videotestsrc
+                properties:
+                    pattern: ball
+                element_link: glupload
+
+            glupload:
+                element: glupload
+                element_link: glfiltercube
+
+            glfiltercube:
+                element: glfiltercube
+                element_link: glimagesink
+
+            glimagesink:
+                element: glimagesink

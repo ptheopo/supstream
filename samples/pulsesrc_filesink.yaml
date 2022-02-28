@@ -1,0 +1,23 @@
+# This basic configuration only record micro and save in record.ogg file
+
+pipelines:
+
+    pulsesrc_filesink:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+            pulsesrc:
+                element: pulsesrc
+                element_link: vorbisenc
+            vorbisenc:
+                element: vorbisenc
+                element_link: oggmux
+            oggmux:
+                element: oggmux
+                element_link: filesink
+            filesink:
+                element: filesink
+                properties:
+                    location: record.ogg

@@ -1,0 +1,147 @@
+# This configuration show a video from demux MKV
+
+supstream:
+
+    working_dir: /app/pipelines/matroska_video_0
+    #stdout_logfile: matroska_video_0_stdout_log.txt
+    #stderr_logfile: matroska_video_0_stderr_log.txt
+    zmq_path: ipc:///tmp/matroska_video_0.pipe
+    bin_to_dotfile_enabled: true
+
+pipelines:
+    
+    matroska-video_0:
+
+        init_state: play
+        directory: matroska_video_0
+        type_exec: sync
+
+        #priority: 1
+        start_secs: 1
+        auto_restart: true
+        start_datetime: 2022-13-23T08:42:42-05:00
+
+        elements:
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to:
+                            name: vp8dec
+                            pad: sink
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+    matroska-video_0_2:
+
+        init_state: play
+        directory: matroska_video_0_2
+        type_exec: thread
+
+        #priority: 1
+        start_secs: 1
+        auto_restart: true
+        start_datetime: 2022-13-23T08:42:42-05:00
+
+        elements:
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to:
+                            name: vp8dec
+                            pad: sink
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+    matroska-video_0_3:
+
+        init_state: play
+        directory: matroska_video_0_2
+        type_exec: thread
+
+        #priority: 1
+        start_secs: 1
+        auto_restart: true
+        start_datetime: 2022-13-23T08:42:42-05:00
+
+        elements:
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to:
+                            name: vp8dec
+                            pad: sink
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+    matroska-video_0_4:
+
+        init_state: play
+        directory: matroska_video_0_2
+        type_exec: sync
+
+        #priority: 1
+        start_secs: 1
+        auto_restart: true
+        start_datetime: 2022-13-23T08:42:42-05:00
+
+        elements:
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to:
+                            name: vp8dec
+                            pad: sink
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink

@@ -1,0 +1,1302 @@
+# This configuration use queue for audio and video "sinking"
+# souphttpsrc location=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm ! matroskademux name=d ! queue ! vp8dec ! videoconvert ! autovideosink d. ! queue ! vorbisdec ! audioconvert ! audioresample ! autoaudiosink
+
+pipelines:
+
+    matroska-video_0:
+
+        init_init_state: play
+        type_exec: thread
+
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_2:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_3:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_4:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_5:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_6:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_7:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_8:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_9:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_10:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_11:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_12:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_13:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_14:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_15:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_16:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_17:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_18:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_19:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_20:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_21:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_22:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_23:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink
+
+    matroska-video_0_24:
+        init_state: play
+        type_exec: thread
+        elements:
+
+            # Demux part
+            souphttpsrc:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: matroskademux
+            matroskademux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to: 
+                            name: queue_video
+                            pad: sink
+                    pad_audio:
+                        from: audio_0
+                        to: 
+                            name: queue_audio
+                            pad: sink
+
+            # Video Thread
+            queue_video:
+                element: queue
+                element_link: vp8dec
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: autovideosink
+            autovideosink:
+                element: autovideosink
+
+            # Audio Thread
+            queue_audio:
+                element: queue
+                element_link: vorbisdec
+            vorbisdec:
+                element: vorbisdec
+                element_link: audioconvert
+            audioconvert:
+                element: audioconvert
+                element_link: audioresample
+            audioresample:
+                element: audioresample
+                element_link: autoaudiosink
+            autoaudiosink:
+                element: autoaudiosink

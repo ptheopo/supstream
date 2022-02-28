@@ -1,0 +1,45 @@
+# This configuration share videotestsrc on dash protocol,
+# stream is saved in mpd file at /tmp
+# gst-launch-1.0 -m dashsink name=dashsink mpd-root-path=/tmp target-duration=60 dynamic=false period-duration=60000 muxer=ts  videotestsrc ! video/x-raw,framerate=30/1,width=320,height=240 ! videoconvert ! queue ! x264enc bitrate=400 ! dashsink.video_0
+
+pipelines:
+
+  v4l2_dashsrc:
+
+    init_state: play
+    type_exec: thread
+
+    elements:
+
+      dashsink:
+        element: dashsink
+        properties:
+          mpd-root-path: /tmp
+          target-duration: 60
+          dynamic: false
+          period-duration: 60000
+          muxer: ts
+
+      # add caps test
+      v4l2src:
+        element: videotestsrc
+        element_link: videoconvert
+      
+      videoconvert:
+        element: videoconvert
+        element_link: queue
+      
+      queue:
+        element: queue
+        element_link: x264enc
+
+      x264enc:
+        element: x264enc
+        properties:
+          bitrate: 400
+        pad_link:
+          pad_video:
+            from: src
+            to:
+                name: dashsink
+                pad: video_0

@@ -1,0 +1,46 @@
+pipelines:
+
+    videotestsrc_tee_queue_autovideosink:
+
+        elements:
+
+            # Source
+            videotestsrc:
+                element: videotestsrc
+                element_link: tee
+
+            tee:
+                element: tee
+                pad_link:
+                    videoconvert_1:
+                        from: src_0
+                        to:
+                            name: queue1
+                            pad: sink
+                    videoconvert_2:
+                        from: src_1
+                        to:
+                            name: queue2
+                            pad: sink
+
+            queue1:
+                element: queue
+                element_link: videoconvert1
+
+            videoconvert1:
+                element: videoconvert
+                element_link: autovideosink1
+
+            autovideosink1:
+                element: autovideosink
+
+            queue2:
+                element: queue
+                element_link: videoconvert2
+
+            videoconvert2:
+                element: videoconvert
+                element_link: autovideosink2
+
+            autovideosink2:
+                element: autovideosink

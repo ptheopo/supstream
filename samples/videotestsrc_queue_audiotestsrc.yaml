@@ -1,0 +1,48 @@
+# This configuration launch videotestsrc and audiotestsrc from queue
+# gst-launch-1.0 videotestsrc ! queue ! autovideosink audiotestsrc ! queue ! autoaudiosink
+
+pipelines:
+
+    videotestsrc_queue_audiotestsrc:
+        
+        init_state: play
+        type_exec: thread
+
+        elements:
+
+            # Video queue
+            videotestsrc:
+                element: videotestsrc
+                pad_link:
+
+                    pad_video:
+                        from: src
+                        to: 
+                            name: queue1
+                            pad: sink
+
+            queue1:
+                element: queue
+                element_link: autovideosink
+
+            autovideosink:
+                element: autovideosink
+
+            # Audio queue
+            audiotestsrc:
+                element: audiotestsrc
+                pad_link:
+
+                    pad_audio:
+                        from: src
+                        to: 
+                            name: queue2
+                            pad: sink
+
+
+            queue2:
+                element: queue
+                element_link: autoaudiosink
+
+            autoaudiosink:
+                element: autoaudiosink

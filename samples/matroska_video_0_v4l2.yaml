@@ -1,0 +1,34 @@
+# This configuration transfert only demux video from MKV video on virtual device V4l2
+# Before starting, type `sudo modprobe v4l2loopback` for /dev/videoN opening
+
+pipelines:
+
+    matroska_video_0_v4l2:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+            src:
+                element: souphttpsrc
+                properties:
+                    location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
+                element_link: demux
+            demux:
+                element: matroskademux
+                pad_link:
+                    pad_video:
+                        from: video_0
+                        to:
+                            name: vp8dec
+                            pad: sink
+            vp8dec:
+                element: vp8dec
+                element_link: videoconvert
+            videoconvert:
+                element: videoconvert
+                element_link: sink
+            sink:
+                element: v4l2sink
+                properties:
+                    device: /dev/video2
