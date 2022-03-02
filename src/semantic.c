@@ -431,6 +431,7 @@ static void                     semantic_apply_config(
     char                        *_working_dir = AST_GET_VALUE (node, "working_dir");
     char                        *_stdout_logfile = AST_GET_VALUE (node, "stdout_logfile");
     char                        *_stderr_logfile = AST_GET_VALUE (node, "stderr_logfile");
+    char                        *_zmq_disabled = AST_GET_VALUE (node, "zmq_disabled");
     char                        *_zmq_path = AST_GET_VALUE (node, "zmq_path");
     char                        *_bin_to_dotfile_enabled = AST_GET_VALUE (
                                 node,
@@ -474,6 +475,10 @@ static void                     semantic_apply_config(
 
         }
 
+    } if (_zmq_disabled != NULL) {
+
+        (*config)->zmq_disabled = strtogboolean(_zmq_disabled);
+
     } if (_zmq_path != NULL) {
 
         free((*config)->zmq_path);
@@ -482,11 +487,7 @@ static void                     semantic_apply_config(
 
     } if (_bin_to_dotfile_enabled != NULL) {
 
-        if (strtogboolean(_bin_to_dotfile_enabled) == TRUE)
-            (*config)->bin_to_dotfile_enabled = TRUE;
-        else
-            (*config)->bin_to_dotfile_enabled = FALSE;
-
+        (*config)->bin_to_dotfile_enabled = strtogboolean(_bin_to_dotfile_enabled);
         g_print(DIRECTORY_DOTFILE_O);
 
     } if (_env != NULL) {

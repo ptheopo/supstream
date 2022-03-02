@@ -9,6 +9,7 @@ typedef struct      config_s {
     char            *working_dir;
     char            *stdout_logfile;
     char            *stderr_logfile;
+    gboolean        zmq_disabled;
     char            *zmq_path;
     gboolean        bin_to_dotfile_enabled;
     char            **env;

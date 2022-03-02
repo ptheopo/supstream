@@ -5,6 +5,7 @@ supstream:
     working_dir: /app/pipelines/matroska_video_0
     #stdout_logfile: matroska_video_0_stdout_log.txt
     #stderr_logfile: matroska_video_0_stderr_log.txt
+    #zmq_disabled: true
     zmq_path: ipc:///tmp/matroska_video_0.pipe
     bin_to_dotfile_enabled: true
 

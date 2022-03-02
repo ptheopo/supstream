@@ -18,6 +18,7 @@ config_t                *config_default_new(void) {
     config->stdout_logfile          = NULL;
     config->stderr_logfile          = NULL;
     config->bin_to_dotfile_enabled  = FALSE;
+    config->zmq_disabled            = FALSE;
     config->zmq_path                = g_strdup(ZMQ_PATH);
     config->env                     = NULL;
     return (config);
@@ -56,10 +57,14 @@ void                    config_show(config_t *config) {
         g_print("stdout_logfile: %s\n", config->stdout_logfile);
     if (config->stderr_logfile != NULL)
         g_print("stderr_logfile: %s\n", config->stderr_logfile);
+    if (config->zmq_disabled == TRUE)
+        g_print("zmq_disabled: False\n");
+    else
+        g_print("zmq_disabled: True\n");
     g_print("zmq_path: %s\n", config->zmq_path);
     if (config->bin_to_dotfile_enabled == TRUE)
         g_print("bin_to_dotfile_dir: True\n");
-    else if (config->bin_to_dotfile_enabled == FALSE)
+    else
         g_print("bin_to_dotfile_dir: False\n");
 }
 

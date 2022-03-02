@@ -9,9 +9,9 @@ int             default_bus(GstBus *bus, GstPipeline *pipeline) {
         g_error ("An error occurred! Re-run with the GST_DEBUG=*:WARN environment "
                 "variable set for more details.");
     }
+    gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
     gst_message_unref (msg);
     gst_object_unref (bus);
-    gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
     gst_object_unref (pipeline);
     return (0);
 }
