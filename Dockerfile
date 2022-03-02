@@ -161,8 +161,6 @@ RUN git clone https://gitlab.com/ouzb64ty/gstreamer-plugin.git gstreamer-plugin 
 
 # Supstream
 RUN git clone https://gitlab.com/ouzb64ty/supstream.git supstream
-RUN cd supstream \
-    && make
 
 # Supstream-gateway
 RUN git clone https://gitlab.com/ouzb64ty/supstream-gateway.git
@@ -177,12 +175,12 @@ RUN mkdir -p pipelines
 # For main branch
 RUN cd supstream \
     && git fetch origin main \
-    && git checkout main \
-    && git pull \
-    && make
+    && git checkout main
 
 # Starter
 CMD cd supstream \
+    && git pull \
+    && make \
     && figlet "Supstream Docker Dev" \
     && echo "> Convert your pipeline to PNG graph: dot -Tpng <pipeline.dot> > <output.png>" \
     && echo "(Dot files automatically saved in /app/pipelines directory)" \
