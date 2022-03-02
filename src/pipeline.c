@@ -297,8 +297,6 @@ void                exec_pipeline(supstream_t *supstream) {
 
     /* Join GATEWAY / THREAD / SYNC */
 
-    pthread_join(thread_gateway_id, NULL);
-
     tmp_join = tmp_join->left;
 
     while (tmp_join) {
@@ -308,12 +306,9 @@ void                exec_pipeline(supstream_t *supstream) {
                 && tmp_join->pthread_id != 0) {
             pthread_join(tmp_join->pthread_id, NULL);
         }
-        if (tmp_join->right == NULL)
-            pthread_join(thread_sync_id, NULL);
         tmp_join = tmp_join->right;
 
     }
-    
 
     pthread_join(thread_sync_id, NULL);
     pthread_join(thread_gateway_id, NULL);
