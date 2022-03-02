@@ -223,13 +223,17 @@ void                exec_pipeline(supstream_t *supstream) {
         execdata->bus_fn = NULL;
     }
 
-    /* Start gateway for supstream-gateway */
+    /* GATEWAY, for zmq_disabled = False */
 
-    gatewaydata->root = root;
-    gatewaydata->config = supstream->config;
-    ret = pthread_create(&thread_gateway_id, NULL, gateway, gatewaydata);
-    if (ret != 0)
-        return ;
+    if (execdata->config->zmq_disabled == FALSE) {
+        config_show(execdata->config);
+        gatewaydata->root = root;
+        gatewaydata->config = supstream->config;
+        ret = pthread_create(&thread_gateway_id, NULL, gateway, gatewaydata);
+        if (ret != 0)
+            return ;
+        pthread_join(thread_gateway_id, NULL);
+    }
 
     /* THREAD type_exec */
 
@@ -248,9 +252,8 @@ void                exec_pipeline(supstream_t *supstream) {
         g_printerr(PIPELINE_ERROR_RUN_THREAD_O,
                 GST_ELEMENT_NAME (execdata->pipeline));
     }
-    pthread_join(thread_sync_id, NULL);
 
-    /* pthread join */
+    /* Join GATEWAY / THREAD / SYNC */
 
     while (tmp_join) {
 
