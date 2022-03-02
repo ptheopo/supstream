@@ -20,7 +20,7 @@ static void         *exec_bus(void *_execdata) {
     GstBus          *bus = NULL;
 
     bus = gst_element_get_bus((GstElement *)execdata->pipeline);
-    bus_core(bus, execdata->pipeline);
+    bus_core(bus, execdata->pipeline, execdata->config_pipeline);
 
     return (NULL);
 }
@@ -111,7 +111,10 @@ static void         exec_pipeline_exec_type(
 
             sdata = (semantic_data_t *)(*root)->sdata;
             pipeline = (GstPipeline *)sdata->gstpipeline;
+
             execdata->pipeline = pipeline;
+            execdata->config_pipeline = (*root)->config_pipeline;
+
             exec_initial_state(pipeline, (*root)->config_pipeline);
             exec_pipeline_run(root, execdata);
 
@@ -159,7 +162,10 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
 
             sdata = (semantic_data_t *)(*root)->sdata;
             pipeline = (GstPipeline *)sdata->gstpipeline;
+
             execdata->pipeline = pipeline;
+            execdata->config_pipeline = (*root)->config_pipeline;
+
             exec_initial_state(pipeline, (*root)->config_pipeline);
             exec_pipeline_run(root, execdata);
 
@@ -198,7 +204,10 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
 
             sdata = (semantic_data_t *)(*root)->sdata;
             pipeline = (GstPipeline *)sdata->gstpipeline;
+
             execdata->pipeline = pipeline;
+            execdata->config_pipeline = (*root)->config_pipeline;
+
             exec_initial_state(pipeline, (*root)->config_pipeline);
             exec_pipeline_run(root, execdata);
 
@@ -227,9 +236,10 @@ void                exec_pipeline(supstream_t *supstream) {
 
     int             ret;
 
-    /* Init */
+    /* Init (pipeline_config set for each pipeline) */
 
     execdata->config = supstream->config;
+    execdata->config_pipeline = NULL;
 
     /* GATEWAY, for zmq_disabled = False */
 

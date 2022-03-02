@@ -6,6 +6,7 @@ pipelines:
 
         init_state: play
         type_exec: sync
+        auto_restart: true
 
         elements:
             souphttpsrc:

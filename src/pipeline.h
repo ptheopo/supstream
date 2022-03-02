@@ -16,6 +16,7 @@
 typedef struct  execdata_s {
     GstPipeline *pipeline;
     config_t    *config;
+    config_pipeline_t    *config_pipeline;
 }               execdata_t;
 
 typedef struct  privdata_sync_s {
