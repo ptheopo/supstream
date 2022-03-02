@@ -82,56 +82,6 @@ pipelines:
 ```
 This configuration allows you to easily display a WEBM video from an MKV demuxer
 
-# Plugin
-
-**The formalization of the plugins is not yet very clear because for the moment there is only the bus_fn function**
-
-For using your own C functions with Supstream,
-you can call _plugin_ property in your YAML cofiguration.
-
-Useful to write your own Gstreamer bus manager, there is a sample at _samples/matroska_video_0_ld.yaml_
-
-```yaml
-pipelines:
-    plugin: template.so
-    bus_fn: bus # bus management function in template.so
-```
-
-## Example
-
-Useful to write your own Gstreamer bus manager, there is a sample in _samples/matroska_video_0_ld.yaml_ and example plugin in plugin/template.so
-
-```c
-/* Example of bus manager in C, called by Supstream after pipelines initialization */
-
-#include <gst/gst.h>
-
-int				bus(GstBus *bus, GstPipeline *pipeline) {
-
-    GstMessage	*msg = NULL;
-
-    g_print("Initialize from plugin !\n");
-    msg = gst_bus_timed_pop_filtered (bus, GST_CLOCK_TIME_NONE, GST_MESSAGE_EOS);
-    if (GST_MESSAGE_TYPE (msg) == GST_MESSAGE_ERROR) {
-        g_error ("An error occurred! Re-run with the GST_DEBUG=*:WARN environment "
-                "variable set for more details.");
-    }
-    gst_message_unref (msg);
-    gst_object_unref (bus);
-    gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
-    gst_object_unref (pipeline);
-    return (0);
-}
-```
-
-## Compilation
-
-You must export your plugin directory in _LD_LIBRARY_PATH_ and compile your template :
-```bash
-gcc -shared `pkg-config --libs --cflags gstreamer-1.0` plugin/template.c -o plugin/template.so
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:plugin
-```
-
 # ZeroMQ API
 
 This textual documentation describes how _supstream_ externally talk with IPC ZeroMQ

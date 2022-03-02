@@ -18,31 +18,9 @@ static void         *exec_bus(void *_execdata) {
 
     execdata_t      *execdata = (execdata_t *)_execdata;
     GstBus          *bus = NULL;
-    int             *bus_ld;
-    int             (*bus_ld_fn)(GstBus *, GstPipeline *) = NULL;
 
     bus = gst_element_get_bus((GstElement *)execdata->pipeline);
-
-    /* Use default bus function */
-
-    if (execdata->bus_fn == NULL) {
-        default_bus(bus, execdata->pipeline);
-        return (NULL);
-    }
-
-    /* Use bus plugin function */
-
-    if (!(bus_ld = dlopen(execdata->plugin, RTLD_LAZY))) {
-        printf ("Supstream: unfound plugin: %s\n", dlerror ());
-        exit (EXIT_FAILURE);
-    }
-    if (!(bus_ld_fn = dlsym (bus_ld, execdata->bus_fn))) {
-        printf ("Supstream: unfound bus function: %s\n", dlerror ());
-        dlclose (bus_ld);
-        exit (EXIT_FAILURE);
-    }
-    bus_ld_fn (bus, execdata->pipeline);
-    dlclose (bus_ld);
+    bus_core(bus, execdata->pipeline);
 
     return (NULL);
 }
@@ -243,29 +221,15 @@ void                exec_pipeline(supstream_t *supstream) {
     ast_node_t      *tmp_join = ast_iblock_get(*root, deepblock);
     pthread_t       thread_gateway_id;
     pthread_t       thread_sync_id;
-    ast_node_t      *pipelines = ast_iblock_get(*root, deepblock);
     execdata_t      *execdata = (execdata_t *)malloc(sizeof(execdata_t));
     gatewaydata_t   *gatewaydata =(gatewaydata_t *)malloc(sizeof(gatewaydata_t));
-    ast_node_t      *plugin_node = ast_iscalar_get_by_key(pipelines, "plugin");
-    ast_node_t      *bus_fn_node = ast_iscalar_get_by_key(pipelines, "bus_fn");
     privdata_sync_t *privdata_sync = (privdata_sync_t *)malloc(sizeof(privdata_sync_t));
 
     int             ret;
 
-    /* Init plugin & bus_fn privdata struct correctly */
+    /* Init */
 
     execdata->config = supstream->config;
-
-    if (plugin_node != NULL
-            && bus_fn_node != NULL
-            && plugin_node->right
-            && bus_fn_node->right) {
-        execdata->plugin = plugin_node->right->str;
-        execdata->bus_fn = bus_fn_node->right->str;
-    } else {
-        execdata->plugin = NULL;
-        execdata->bus_fn = NULL;
-    }
 
     /* GATEWAY, for zmq_disabled = False */
 
