@@ -158,6 +158,9 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
     GstPipeline     *pipeline = NULL;
     int             ret = -1;
     ast_node_t      *root_ptr = *root;
+    int             i = 1;
+
+    /* Priority */
 
     *root = ast_iblock_get(*root, deepblock);
     *root = (*root)->left;
@@ -165,6 +168,46 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
     while (*root) {
 
         if (ast_node_is_iblock(*root)
+                && (*root)->config_pipeline->priority == i
+                && fn((*root)->config_pipeline->type_exec) == TRUE) {
+
+            /* Pipeline config init */
+
+            ret = chdir((*root)->config_pipeline->directory);
+            if (ret == -1)
+                return (NULL);
+
+            /* Pipeline init */
+
+            sdata = (semantic_data_t *)(*root)->sdata;
+            pipeline = (GstPipeline *)sdata->gstpipeline;
+            execdata->pipeline = pipeline;
+            exec_initial_state(pipeline, (*root)->config_pipeline);
+            exec_pipeline_run(root, execdata);
+
+            i++;
+
+            *root = root_ptr;
+            *root = ast_iblock_get(*root, deepblock);
+            *root = (*root)->left;
+
+        } else {
+
+            *root = (*root)->right;
+
+        }
+    }
+
+    /* Others */
+
+    *root = root_ptr;
+    *root = ast_iblock_get(*root, deepblock);
+    *root = (*root)->left;
+
+    while (*root) {
+
+        if (ast_node_is_iblock(*root)
+                && (*root)->config_pipeline->priority == CONFIG_PIPELINE_UNDEFINED_PRIORITY
                 && fn((*root)->config_pipeline->type_exec) == TRUE) {
             
             /* Pipeline config init */
@@ -185,6 +228,7 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
         *root = (*root)->right;
     }
 
+
     *root = root_ptr;
 
     ast_deepblock_free(deepblock);
@@ -196,7 +240,7 @@ void                exec_pipeline(supstream_t *supstream) {
 
     list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
     ast_tree_t      **root = supstream->root;
-    ast_node_t      *tmp_join = ast_iblock_get(*root, deepblock)->left;
+    ast_node_t      *tmp_join = ast_iblock_get(*root, deepblock);
     pthread_t       thread_gateway_id;
     pthread_t       thread_sync_id;
     ast_node_t      *pipelines = ast_iblock_get(*root, deepblock);
@@ -248,9 +292,10 @@ void                exec_pipeline(supstream_t *supstream) {
         g_printerr(PIPELINE_ERROR_RUN_THREAD_O,
                 GST_ELEMENT_NAME (execdata->pipeline));
     }
-    pthread_join(thread_sync_id, NULL);
 
     /* pthread join */
+
+    tmp_join = tmp_join->left;
 
     while (tmp_join) {
 
@@ -262,6 +307,9 @@ void                exec_pipeline(supstream_t *supstream) {
         tmp_join = tmp_join->right;
 
     }
+
+    pthread_join(thread_sync_id, NULL);
+    pthread_join(thread_gateway_id, NULL);
 
     ast_deepblock_free(deepblock);
 

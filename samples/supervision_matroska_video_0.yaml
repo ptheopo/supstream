@@ -16,7 +16,7 @@ pipelines:
         directory: matroska_video_0
         type_exec: sync
 
-        #priority: 1
+        priority: 2
         start_secs: 1
         auto_restart: true
         start_datetime: 2022-13-23T08:42:42-05:00
@@ -50,7 +50,6 @@ pipelines:
         directory: matroska_video_0_2
         type_exec: thread
 
-        #priority: 1
         start_secs: 1
         auto_restart: true
         start_datetime: 2022-13-23T08:42:42-05:00
@@ -84,7 +83,6 @@ pipelines:
         directory: matroska_video_0_2
         type_exec: thread
 
-        #priority: 1
         start_secs: 1
         auto_restart: true
         start_datetime: 2022-13-23T08:42:42-05:00
@@ -118,7 +116,7 @@ pipelines:
         directory: matroska_video_0_2
         type_exec: sync
 
-        #priority: 1
+        priority: 1
         start_secs: 1
         auto_restart: true
         start_datetime: 2022-13-23T08:42:42-05:00
