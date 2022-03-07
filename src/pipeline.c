@@ -227,6 +227,7 @@ void                exec_pipeline(supstream_t *supstream) {
 
     list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
     ast_tree_t      **root = supstream->root;
+    ast_tree_t      *root_ptr = *root;
     ast_node_t      *tmp_join = ast_iblock_get(*root, deepblock);
     pthread_t       thread_gateway_id;
     pthread_t       thread_sync_id;
@@ -244,7 +245,7 @@ void                exec_pipeline(supstream_t *supstream) {
     /* GATEWAY, for zmq_disabled = False */
 
     if (execdata->config->zmq_disabled == FALSE) {
-        gatewaydata->root = root;
+        gatewaydata->root = &root_ptr;
         gatewaydata->config = supstream->config;
         ret = pthread_create(&thread_gateway_id, NULL, gateway, gatewaydata);
         if (ret != 0)
