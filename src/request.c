@@ -19,7 +19,7 @@ static int          request_pipelines_manage(
     /* Verify formats */
     if (target_pipelines == NULL) {
 
-        /* Pause all pipelines */
+        /* All pipelines */
 
         if (node == NULL) {
 
@@ -38,7 +38,7 @@ static int          request_pipelines_manage(
 
     } else {
 
-        /* Pause multiple or only one pipeline */
+        /* Multiple or only one pipeline */
 
         if (!cJSON_IsArray(target_pipelines)) {
 
