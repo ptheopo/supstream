@@ -82,6 +82,36 @@ ast_node_t      *ast_iscalar_get_by_key(
     return (NULL);
 }
 
+ast_node_t      **aast_iscalar_get_by_key(
+                ast_node_t **node,
+                char *key) {
+
+    ast_node_t  *node_ptr = *node;
+    ast_node_t  **node_tmp = NULL;
+
+    if (node == NULL
+        || *node == NULL
+        || (*node)->left == NULL)
+        return (NULL);
+
+    *node = (*node)->left;
+
+    while (*node) {
+
+        if ((*node)->identifier == iLINE
+            && strcmp((*node)->left->left->str, key) == 0) {
+            node_tmp = &((*node)->left);
+            *node = node_ptr;
+            return (node_tmp);
+        }
+
+        *node = (*node)->right;
+        
+    }
+    *node = node_ptr;
+    return (NULL);
+}
+
 static void     ast_deepblock_free_del(void *content, size_t size) {
 
     (void)size;

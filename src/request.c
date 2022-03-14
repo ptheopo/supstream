@@ -96,10 +96,10 @@ char                *request_unlink_elements(
     list_t          *deepblock_pipeline = NULL;
     list_t          *deepblock_src = NULL;
     list_t          *deepblock_sink = NULL;
-    ast_node_t      *node = ast_iblock_get(*root, deepblock)->left;
-    ast_node_t      *src_element = NULL;
-    ast_node_t      *sink_element = NULL;
-    ast_node_t      *node_pipeline = NULL;
+    ast_node_t      **node = &((*aast_iblock_get(root, deepblock))->left);
+    ast_node_t      **src_element = NULL;
+    ast_node_t      **sink_element = NULL;
+    ast_node_t      **node_pipeline = NULL;
     cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
     cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "src");
     cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "sink");
@@ -123,8 +123,8 @@ char                *request_unlink_elements(
     } else {
 
         deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
-        node_pipeline = ast_iblock_get(node, deepblock_pipeline);
-        if (node_pipeline == NULL) {
+        node_pipeline = aast_iblock_get(node, deepblock_pipeline);
+        if (node_pipeline == NULL || *node_pipeline == NULL) {
 
             /* Warning, unknown pipeline */
             g_printerr("[ERROR] Unlink element\n");
@@ -139,13 +139,37 @@ char                *request_unlink_elements(
             deepblock_src = ast_deepblock_create(1, src->valuestring);
             deepblock_sink = ast_deepblock_create(1, sink->valuestring);
 
-            src_element = ast_iblock_get(node_pipeline, deepblock_src);
-            sink_element = ast_iblock_get(node_pipeline, deepblock_sink);
+            src_element = aast_iblock_get(node_pipeline, deepblock_src);
+            sink_element = aast_iblock_get(node_pipeline, deepblock_sink);
 
             gst_element_unlink(
-                    src_element->sdata->gstelement,
-                    sink_element->sdata->gstelement);
+                    (*src_element)->sdata->gstelement,
+                    (*sink_element)->sdata->gstelement);
 
+            /* Update root btree */
+            ast_node_t **block = src_element;
+            ast_node_t **prev = NULL;
+            ast_node_t *tmp_right = NULL;
+
+            *src_element = (*src_element)->left;
+            while (*src_element) {
+                if (ast_node_is_iline(*src_element) == TRUE
+                        && strcmp((*src_element)->left->str, "element_link") == 0) {
+                    if (prev == NULL) {
+                        tmp_right = (*src_element)->right;
+                        free(*src_element); /* Need a total free..... */
+                        (*block)->left = tmp_right;
+                    } else {
+                        tmp_right = (*src_element)->right;
+                        free(*src_element); /* Need a total free..... */
+                        (*prev)->right = tmp_right;
+                    }
+                }
+                *prev = *src_element;
+                *src_element = (*src_element)->right;
+            }
+
+            /* Free useless deepblocks */
             ast_deepblock_free(deepblock_src);
             ast_deepblock_free(deepblock_sink);
 
@@ -179,10 +203,11 @@ char                *request_link_elements(
     list_t          *deepblock_pipeline = NULL;
     list_t          *deepblock_src = NULL;
     list_t          *deepblock_sink = NULL;
-    ast_node_t      *node = ast_iblock_get(*root, deepblock)->left;
-    ast_node_t      *src_element = NULL;
-    ast_node_t      *sink_element = NULL;
-    ast_node_t      *node_pipeline = NULL;
+    ast_node_t      **node = &((*aast_iblock_get(root, deepblock))->left);
+    ast_node_t      **src_element = NULL;
+    ast_node_t      **sink_element = NULL;
+    ast_node_t      **node_pipeline = NULL;
+    ast_node_t      **element_link = NULL;
     cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
     cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "src");
     cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "sink");
@@ -206,7 +231,7 @@ char                *request_link_elements(
     } else {
 
         deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
-        node_pipeline = ast_iblock_get(node, deepblock_pipeline);
+        node_pipeline = aast_iblock_get(node, deepblock_pipeline);
         if (node_pipeline == NULL) {
 
             /* Warning, unknown pipeline */
@@ -222,13 +247,36 @@ char                *request_link_elements(
             deepblock_src = ast_deepblock_create(1, src->valuestring);
             deepblock_sink = ast_deepblock_create(1, sink->valuestring);
 
-            src_element = ast_iblock_get(node_pipeline, deepblock_src);
-            sink_element = ast_iblock_get(node_pipeline, deepblock_sink);
+            src_element = aast_iblock_get(node_pipeline, deepblock_src);
+            sink_element = aast_iblock_get(node_pipeline, deepblock_sink);
 
             gst_element_link(
-                    src_element->sdata->gstelement,
-                    sink_element->sdata->gstelement);
+                    (*src_element)->sdata->gstelement,
+                    (*sink_element)->sdata->gstelement);
 
+            /* Update root btree */
+            element_link = aast_iscalar_get_by_key(src_element, "element_link");
+            if (element_link == NULL) {
+
+                ast_node_t *key = ast_node_new("element_link", iKEY);
+                ast_node_t *value = ast_node_new(sink->valuestring, iVALUE);
+                ast_node_t *iscalar = ast_iscalar_new(key, value);
+                ast_node_t *iline = ast_iline_new(iscalar);
+
+                *src_element = (*src_element)->left;
+                while ((*src_element)->right)
+                    *src_element = (*src_element)->right;
+                (*src_element)->right = iline;
+
+            } else {
+
+                // /!\ Need to modify linking list in the future
+                free((*element_link)->right);
+                (*element_link)->right->str = strdup(sink->valuestring);
+
+            }
+
+            /* Free deepblocks */
             ast_deepblock_free(deepblock_src);
             ast_deepblock_free(deepblock_sink);
 

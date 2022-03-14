@@ -115,6 +115,9 @@ ast_node_t                      *ast_iline_new(ast_node_t *scalar);
 ast_node_t                      *ast_iscalar_get_by_key(
                                 ast_node_t *node,
                                 char *key);
+ast_node_t                      **aast_iscalar_get_by_key(
+                                ast_node_t **node,
+                                char *key);
 char                            *ast_iscalar_value(ast_node_t *scalar_node);
 ast_node_t                      *ast_iscalar_new(ast_node_t *key, ast_node_t *value);
 
