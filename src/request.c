@@ -135,8 +135,8 @@ char                *request_unlink_elements(
             deepblock_src = ast_deepblock_create(1, src->valuestring);
             deepblock_sink = ast_deepblock_create(1, sink->valuestring);
 
-            src_element = ast_iblock_get(node_pipeline->left, deepblock_src);
-            sink_element = ast_iblock_get(node_pipeline->left, deepblock_sink);
+            src_element = ast_iblock_get(node_pipeline, deepblock_src);
+            sink_element = ast_iblock_get(node_pipeline, deepblock_sink);
 
             gst_element_unlink(
                     src_element->sdata->gstelement,
@@ -149,7 +149,7 @@ char                *request_unlink_elements(
             code_json = cJSON_CreateNumber(0);
             cJSON_AddItemToObject(response_json, "code", code_json);
 
-            g_print("[SUCCESS] Unlink element");
+            g_print("[SUCCESS] Unlink element\n");
 
         }
     }
@@ -218,8 +218,8 @@ char                *request_link_elements(
             deepblock_src = ast_deepblock_create(1, src->valuestring);
             deepblock_sink = ast_deepblock_create(1, sink->valuestring);
 
-            src_element = ast_iblock_get(node_pipeline->left, deepblock_src);
-            sink_element = ast_iblock_get(node_pipeline->left, deepblock_sink);
+            src_element = ast_iblock_get(node_pipeline, deepblock_src);
+            sink_element = ast_iblock_get(node_pipeline, deepblock_sink);
 
             gst_element_link(
                     src_element->sdata->gstelement,
@@ -232,7 +232,7 @@ char                *request_link_elements(
             code_json = cJSON_CreateNumber(0);
             cJSON_AddItemToObject(response_json, "code", code_json);
 
-            g_print("[SUCCESS] Link element");
+            g_print("[SUCCESS] Link element\n");
 
         }
     }

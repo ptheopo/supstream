@@ -1,6 +1,6 @@
 # tool macros
 CC := gcc
-CCFLAGS := -Wall -Wextra
+CCFLAGS := -Wall -Wextra -g
 CPPFLAGS := `pkg-config --libs --cflags glib-2.0` \
 	`pkg-config --libs --cflags gstreamer-1.0` \
 	`pkg-config --libs --cflags yaml-0.1` \
