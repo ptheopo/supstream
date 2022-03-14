@@ -101,8 +101,8 @@ char                *request_unlink_elements(
     ast_node_t      *sink_element = NULL;
     ast_node_t      *node_pipeline = NULL;
     cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
-    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
-    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "src");
+    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "sink");
     cJSON           *result_json = cJSON_CreateObject();
     cJSON           *response_json = cJSON_CreateObject();
     cJSON           *code_json = NULL;
@@ -184,8 +184,8 @@ char                *request_link_elements(
     ast_node_t      *sink_element = NULL;
     ast_node_t      *node_pipeline = NULL;
     cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
-    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
-    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "src");
+    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "sink");
     cJSON           *result_json = cJSON_CreateObject();
     cJSON           *response_json = cJSON_CreateObject();
     cJSON           *code_json = NULL;
@@ -466,6 +466,44 @@ char                *request_ready(
             root,
             REQUEST_READY_SUCCESS_O,
             &request_ready_fn);
+    /* Insert request */
+    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
+    /* Prepare response */
+    code_json = cJSON_CreateNumber(ret);
+    cJSON_AddItemToObject(response_json, "code", code_json);
+    /* Insert response */
+    cJSON_AddItemToObject(result_json, "response", response_json);
+    result_str = cJSON_Print(result_json);
+    return (result_str);
+}
+
+static int          request_null_fn(GstPipeline *pipeline) {
+
+    GstStateChangeReturn state_ret;
+
+    state_ret = gst_element_set_state(
+            GST_ELEMENT (pipeline),
+            GST_STATE_NULL);
+    if (state_ret == GST_STATE_CHANGE_FAILURE)
+        return (1);
+    return (0);
+}
+
+char                *request_null(
+        const cJSON *request_json,
+        ast_tree_t **root) {
+
+    cJSON           *result_json = cJSON_CreateObject();
+    cJSON           *response_json = cJSON_CreateObject();
+    cJSON           *code_json = NULL;
+    char            *result_str = NULL;
+    int             ret = 1;
+
+    ret = request_pipelines_manage(
+            request_json,
+            root,
+            REQUEST_NULL_SUCCESS_O,
+            &request_null_fn);
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
     /* Prepare response */

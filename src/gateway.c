@@ -15,6 +15,7 @@ request_t                           g_requests[NB_REQUEST] = {
     { "play",                       request_play },
     { "pause",                      request_pause },
     { "ready",                      request_ready },
+    { "null",                       request_null },
     { "exit",                       request_exit },
 
 };

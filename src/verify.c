@@ -78,3 +78,23 @@ gboolean     state_is_pause(gchar *str) {
         return (TRUE);
     return (FALSE);
 }
+
+gboolean     state_is_ready(gchar *str) {
+
+    if (str
+            && (strcmp(str, "ready") == 0
+                || strcmp(str, "Ready") == 0
+                || strcmp(str, "READY") == 0))
+        return (TRUE);
+    return (FALSE);
+}
+
+gboolean     state_is_null(gchar *str) {
+
+    if (str
+            && (strcmp(str, "null") == 0
+                || strcmp(str, "Null") == 0
+                || strcmp(str, "NULL") == 0))
+        return (TRUE);
+    return (FALSE);
+}

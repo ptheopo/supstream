@@ -30,6 +30,6 @@ pipelines:
                 element_link: videoconvert
             videoconvert:
                 element: videoconvert
-                element_link: autovideosink
+                #element_link: autovideosink
             autovideosink:
                 element: autovideosink

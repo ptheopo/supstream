@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 # define REQUEST_H
 
-# define NB_REQUEST 12
+# define NB_REQUEST 13
 
 # include <cjson/cJSON.h>
 # include <stdio.h>
@@ -213,7 +213,22 @@ char            *request_ready(
                 const cJSON *request_json,
                 ast_tree_t **root);
 
+/*
+ * Null
+ * ====
+ *
+ * Update state to NULL for a specific pipeline or rather all
+ *
+ * {
+ *   command: "null"
+ *   pipelines: ["matroska-video_0"]
+ * }
+ *
+ */
 
+char            *request_null(
+                const cJSON *request_json,
+                ast_tree_t **root);
 
 /*
  * Restart
