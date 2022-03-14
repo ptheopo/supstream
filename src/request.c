@@ -1,10 +1,10 @@
 #include "request.h"
 
 static int          request_pipelines_manage(
-                    const cJSON *request_json,
-                    ast_tree_t **root,
-                    const char *log_str,
-                    int (*fn)(GstPipeline *)) {
+        const cJSON *request_json,
+        ast_tree_t **root,
+        const char *log_str,
+        int (*fn)(GstPipeline *)) {
 
     list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
     list_t          *deepblock_pipeline = NULL;
@@ -84,9 +84,175 @@ static int          request_pipelines_manage(
     return (ret);
 }
 
+char                *request_unlink_elements(
+        const cJSON *request_json,
+        ast_tree_t **root) {
+
+    list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
+    list_t          *deepblock_pipeline = NULL;
+    list_t          *deepblock_src = NULL;
+    list_t          *deepblock_sink = NULL;
+    ast_node_t      *node = ast_iblock_get(*root, deepblock)->left;
+    ast_node_t      *src_element = NULL;
+    ast_node_t      *sink_element = NULL;
+    ast_node_t      *node_pipeline = NULL;
+    cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *result_json = cJSON_CreateObject();
+    cJSON           *response_json = cJSON_CreateObject();
+    cJSON           *code_json = NULL;
+    char            *result_str = NULL;
+
+    /* Verify formats */
+    if ((target_pipeline == NULL || src == NULL || sink == NULL)
+            || (!cJSON_IsString(target_pipeline)
+                || !cJSON_IsString(src)
+                || !cJSON_IsString(sink))) {
+
+        /* Insert code ret */
+        code_json = cJSON_CreateNumber(1);
+        cJSON_AddItemToObject(response_json, "code", code_json);
+
+        g_printerr(REQUEST_BAD_FORMAT_O);
+
+    } else {
+
+        deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
+        node_pipeline = ast_iblock_get(node, deepblock_pipeline);
+        if (node_pipeline == NULL) {
+
+            /* Warning, unknown pipeline */
+            g_printerr("[ERROR] Unlink element\n");
+
+            /* Insert code ret */
+            code_json = cJSON_CreateNumber(1);
+            cJSON_AddItemToObject(response_json, "code", code_json);
+
+        } else {
+
+            /* Pipeline exist */
+            deepblock_src = ast_deepblock_create(1, src->valuestring);
+            deepblock_sink = ast_deepblock_create(1, sink->valuestring);
+
+            src_element = ast_iblock_get(node_pipeline->left, deepblock_src);
+            sink_element = ast_iblock_get(node_pipeline->left, deepblock_sink);
+
+            gst_element_unlink(
+                    src_element->sdata->gstelement,
+                    sink_element->sdata->gstelement);
+
+            ast_deepblock_free(deepblock_src);
+            ast_deepblock_free(deepblock_sink);
+
+            /* Insert code ret */
+            code_json = cJSON_CreateNumber(0);
+            cJSON_AddItemToObject(response_json, "code", code_json);
+
+            g_print("[SUCCESS] Unlink element");
+
+        }
+    }
+
+    ast_deepblock_free(deepblock_pipeline);
+    ast_deepblock_free(deepblock);
+
+    /* Insert request */
+    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
+    /* Insert response */
+    cJSON_AddItemToObject(result_json, "response", response_json);
+    result_str = cJSON_Print(result_json);
+
+    return (result_str);
+
+}
+
+char                *request_link_elements(
+        const cJSON *request_json,
+        ast_tree_t **root) {
+
+    list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
+    list_t          *deepblock_pipeline = NULL;
+    list_t          *deepblock_src = NULL;
+    list_t          *deepblock_sink = NULL;
+    ast_node_t      *node = ast_iblock_get(*root, deepblock)->left;
+    ast_node_t      *src_element = NULL;
+    ast_node_t      *sink_element = NULL;
+    ast_node_t      *node_pipeline = NULL;
+    cJSON           *target_pipeline = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *src = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *sink = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
+    cJSON           *result_json = cJSON_CreateObject();
+    cJSON           *response_json = cJSON_CreateObject();
+    cJSON           *code_json = NULL;
+    char            *result_str = NULL;
+
+    /* Verify formats */
+    if ((target_pipeline == NULL || src == NULL || sink == NULL)
+            || (!cJSON_IsString(target_pipeline)
+                || !cJSON_IsString(src)
+                || !cJSON_IsString(sink))) {
+
+        /* Insert code ret */
+        code_json = cJSON_CreateNumber(1);
+        cJSON_AddItemToObject(response_json, "code", code_json);
+
+        g_printerr(REQUEST_BAD_FORMAT_O);
+
+    } else {
+
+        deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
+        node_pipeline = ast_iblock_get(node, deepblock_pipeline);
+        if (node_pipeline == NULL) {
+
+            /* Warning, unknown pipeline */
+            g_printerr("[ERROR] Link element\n");
+
+            /* Insert code ret */
+            code_json = cJSON_CreateNumber(1);
+            cJSON_AddItemToObject(response_json, "code", code_json);
+
+        } else {
+
+            /* Pipeline exist */
+            deepblock_src = ast_deepblock_create(1, src->valuestring);
+            deepblock_sink = ast_deepblock_create(1, sink->valuestring);
+
+            src_element = ast_iblock_get(node_pipeline->left, deepblock_src);
+            sink_element = ast_iblock_get(node_pipeline->left, deepblock_sink);
+
+            gst_element_link(
+                    src_element->sdata->gstelement,
+                    sink_element->sdata->gstelement);
+
+            ast_deepblock_free(deepblock_src);
+            ast_deepblock_free(deepblock_sink);
+
+            /* Insert code ret */
+            code_json = cJSON_CreateNumber(0);
+            cJSON_AddItemToObject(response_json, "code", code_json);
+
+            g_print("[SUCCESS] Link element");
+
+        }
+    }
+
+    ast_deepblock_free(deepblock_pipeline);
+    ast_deepblock_free(deepblock);
+
+    /* Insert request */
+    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
+    /* Insert response */
+    cJSON_AddItemToObject(result_json, "response", response_json);
+    result_str = cJSON_Print(result_json);
+
+    return (result_str);
+
+}
+
 char                *request_show(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
 
     list_t          *deepblock = ast_deepblock_create(1, "document");
@@ -104,29 +270,9 @@ char                *request_show(
     return (result_str);
 }
 
-char                *request_unlink_elements(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
-
-    (void)request_json;
-    (void)root;
-    g_print("Unlink elements");
-    return (NULL);
-}
-
-char                *request_link_elements(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
-
-    (void)request_json;
-    (void)root;
-    g_print("Link elements");
-    return (NULL);
-}
-
 char                *request_create_element(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     (void)request_json;
     (void)root;
@@ -135,8 +281,8 @@ char                *request_create_element(
 }
 
 char                *request_remove_element(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     (void)request_json;
     (void)root;
@@ -145,24 +291,24 @@ char                *request_remove_element(
 }
 
 /*char                *request_set_properties(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+  const cJSON *request_json,
+  ast_tree_t **root) {
 
-    char            *property = NULL;
-    cJSON           *property_json = cJSON_GetObjectItemCaseSensitive(request_json, "property");
-    cJSON           *property_json = cJSON_GetObjectItemCaseSensitive(request_json, "property");
+  char            *property = NULL;
+  cJSON           *property_json = cJSON_GetObjectItemCaseSensitive(request_json, "property");
+  cJSON           *property_json = cJSON_GetObjectItemCaseSensitive(request_json, "property");
 
-    (void)request_json;
-    (void)root;
+  (void)request_json;
+  (void)root;
 
-    g_print(REQUEST_SET_PROP_SUCCESS_O, );
-    g_object_set(G_OBJECT (element), property, type.guint64, NULL);
-    return (NULL);
-}*/
+  g_print(REQUEST_SET_PROP_SUCCESS_O, );
+  g_object_set(G_OBJECT (element), property, type.guint64, NULL);
+  return (NULL);
+  }*/
 
 char                *request_set_properties(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     (void)request_json;
     (void)root;
@@ -171,8 +317,8 @@ char                *request_set_properties(
 }
 
 char                *request_set_caps(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     (void)request_json;
     (void)root;
@@ -181,8 +327,8 @@ char                *request_set_caps(
 }
 
 char                *request_version(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     cJSON           *result_json = cJSON_CreateObject();
     cJSON           *response_json = cJSON_CreateObject();
@@ -206,16 +352,16 @@ static int          request_pause_fn(GstPipeline *pipeline) {
     GstStateChangeReturn state_ret;
 
     state_ret = gst_element_set_state(
-        GST_ELEMENT (pipeline),
-        GST_STATE_PAUSED);
+            GST_ELEMENT (pipeline),
+            GST_STATE_PAUSED);
     if (state_ret == GST_STATE_CHANGE_FAILURE)
         return (1);
     return (0);
 }
 
 char                *request_pause(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     cJSON           *result_json = cJSON_CreateObject();
     cJSON           *response_json = cJSON_CreateObject();
@@ -224,10 +370,10 @@ char                *request_pause(
     int             ret = 1;
 
     ret = request_pipelines_manage(
-        request_json,
-        root,
-        REQUEST_PAUSE_SUCCESS_O,
-        &request_pause_fn);
+            request_json,
+            root,
+            REQUEST_PAUSE_SUCCESS_O,
+            &request_pause_fn);
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
     /* Prepare response */
@@ -244,16 +390,16 @@ static int          request_play_fn(GstPipeline *pipeline) {
     GstStateChangeReturn state_ret;
 
     state_ret = gst_element_set_state(
-        GST_ELEMENT (pipeline),
-        GST_STATE_PLAYING);
+            GST_ELEMENT (pipeline),
+            GST_STATE_PLAYING);
     if (state_ret == GST_STATE_CHANGE_FAILURE)
         return (1);
     return (0);
 }
 
 char                *request_play(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     cJSON           *result_json = cJSON_CreateObject();
     cJSON           *response_json = cJSON_CreateObject();
@@ -262,10 +408,10 @@ char                *request_play(
     int             ret = 1;
 
     ret = request_pipelines_manage(
-        request_json,
-        root,
-        REQUEST_PLAY_SUCCESS_O,
-        &request_play_fn);
+            request_json,
+            root,
+            REQUEST_PLAY_SUCCESS_O,
+            &request_play_fn);
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
     /* Prepare response */
@@ -278,8 +424,8 @@ char                *request_play(
 }
 
 char                *request_exit(
-                    const cJSON *request_json,
-                    ast_tree_t **root) {
+        const cJSON *request_json,
+        ast_tree_t **root) {
 
     (void)request_json;
     (void)root;

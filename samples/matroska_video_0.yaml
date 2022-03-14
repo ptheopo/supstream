@@ -1,10 +1,13 @@
 # This configuration show a video from demux MKV
 
+supstream:
+    zmq_path: "tcp://0.0.0.0:5557"
+
 pipelines:
 
     matroska_video_0:
 
-        init_state: play
+        init_state: pause
         type_exec: sync
         auto_restart: true
 
@@ -27,6 +30,6 @@ pipelines:
                 element_link: videoconvert
             videoconvert:
                 element: videoconvert
-                element_link: autovideosink
+                #element_link: autovideosink
             autovideosink:
                 element: autovideosink
