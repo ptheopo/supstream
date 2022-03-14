@@ -14,6 +14,7 @@ request_t                           g_requests[NB_REQUEST] = {
     { "version",                    request_version },
     { "play",                       request_play },
     { "pause",                      request_pause },
+    { "ready",                      request_ready },
     { "exit",                       request_exit },
 
 };

@@ -48,6 +48,7 @@
 # define    REQUEST_BAD_FORMAT_O                        "\033[1;31mERROR\033[0m\t\tBad type in JSON request\033[0m\n"
 # define    REQUEST_PAUSE_SUCCESS_O                     "\033[1;32mREQUEST\033[0m\t\tUpdate to PAUSE state pipelines :\033[0m\n"
 # define    REQUEST_PLAY_SUCCESS_O                      "\033[1;32mREQUEST\033[0m\t\tUpdate to PLAY state pipelines :\033[0m\n"
+# define    REQUEST_READY_SUCCESS_O                     "\033[1;32mREQUEST\033[0m\t\tUpdate to READY state pipelines :\033[0m\n"
 
 # define    REQUEST_UNLINK_SUCCESS_O                    "\033[1;32mREQUEST\033[0m\t\tUnlink element %s on %s\n[0m\n"
 # define    REQUEST_LINK_SUCCESS_O                      "\033[1;32mREQUEST\033[0m\t\tLink element %s on %s\n[0m\n"

@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 # define REQUEST_H
 
-# define NB_REQUEST 11
+# define NB_REQUEST 12
 
 # include <cjson/cJSON.h>
 # include <stdio.h>
@@ -195,6 +195,25 @@ char            *request_pause(
 char            *request_play(
                 const cJSON *request_json,
                 ast_tree_t **root);
+
+/*
+ * Ready
+ * =====
+ *
+ * Update state to READY for a specific pipeline or rather all
+ *
+ * {
+ *   command: "ready"
+ *   pipelines: ["matroska-video_0"]
+ * }
+ *
+ */
+
+char            *request_ready(
+                const cJSON *request_json,
+                ast_tree_t **root);
+
+
 
 /*
  * Restart

@@ -9,7 +9,7 @@ static void         exec_initial_state(
     else if (state_is_pause(config_pipeline->init_state) == TRUE)
         gst_element_set_state ((GstElement *)pipeline, GST_STATE_PAUSED);
     else
-        gst_element_set_state ((GstElement *)pipeline, GST_STATE_PLAYING);
+        gst_element_set_state ((GstElement *)pipeline, GST_STATE_READY);
 }
 
 /* Type of running (await/thread) */
