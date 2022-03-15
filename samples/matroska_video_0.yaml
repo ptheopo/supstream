@@ -7,7 +7,7 @@ pipelines:
 
     matroska_video_0:
 
-        init_state: ready
+        init_state: play
         type_exec: sync
         auto_restart: true
 
@@ -30,6 +30,6 @@ pipelines:
                 element_link: videoconvert
             videoconvert:
                 element: videoconvert
-                #element_link: autovideosink
+                element_link: autovideosink
             autovideosink:
                 element: autovideosink

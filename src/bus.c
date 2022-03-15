@@ -22,12 +22,22 @@ int             bus_core(
         case GST_MESSAGE_EOS:
 
             gst_message_unref (msg);
-            gst_object_unref (bus);
-            gst_object_unref (pipeline);
-            gst_element_set_state(GST_ELEMENT (pipeline), GST_STATE_NULL);
 
-            if (config_pipeline->auto_restart == TRUE)
-                bus_core(bus, pipeline, config_pipeline);
+            if (config_pipeline->auto_restart == TRUE) {
+
+                while (42) {
+                    gst_element_set_state(GST_ELEMENT (pipeline), GST_STATE_NULL);
+                    gst_element_set_state(GST_ELEMENT (pipeline), GST_STATE_READY);
+                    gst_element_set_state(GST_ELEMENT (pipeline), GST_STATE_PLAYING);
+                }
+
+            } else {
+
+                gst_element_set_state(GST_ELEMENT (pipeline), GST_STATE_NULL);
+                gst_object_unref (bus);
+                gst_object_unref (pipeline);
+
+            }
 
             break ;
 
