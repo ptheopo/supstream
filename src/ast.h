@@ -28,8 +28,14 @@
     (ast_iblock_is(node, block) == TRUE)
 # define AST_IS_IBLOCK(node) \
     (ast_node_is_iblock(node) == TRUE)
-# define AST_RCHILD(x) \
-    (x && x->right)
+# define AST_RCHILD(node) \
+    (node \
+     && node->right)
+# define AST_KEY_IS(node, key) \
+    (node \
+     && node->left \
+     && node->left->left \
+     && strcmp(node->left->left->str, key) == 0)
 
 /*
  * AST root is a YAML "document"
@@ -83,6 +89,9 @@ void                            ast_node_free(ast_node_t *node);
 gboolean                        ast_node_is_iblock(ast_node_t *node);
 gboolean                        ast_node_is_iscalar(ast_node_t *node);
 gboolean                        ast_node_is_iline(ast_node_t *node);
+void                            ast_node_remove_by_key(
+                                ast_node_t **node,
+                                char *str);
 cJSON                           *ast_node_tojson(
                                 ast_node_t *node,
                                 list_t *blockdeep);

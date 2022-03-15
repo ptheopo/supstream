@@ -254,6 +254,7 @@ void            ast_node_print(ast_node_t *node) {
 
 void            ast_node_free(ast_node_t *node) {
 
+    /* /!\ Warning with free memory from parsing */
     if (node->str != NULL)
         free(node->str);
     if (node->sdata != NULL)
@@ -446,4 +447,34 @@ char            *ast_iscalar_value(ast_node_t *scalar_node) {
             && scalar_node->right->str)
         return (scalar_node->right->str);
     return (NULL);
+}
+
+/* Considering node variable is the parent block */
+
+void                            ast_node_remove_by_key(
+                                ast_node_t **node,
+                                char *str) {
+
+    ast_node_t *prev = NULL;
+    ast_node_t *tmp = *node;
+    ast_node_t *parent_block = *node;
+    ast_node_t *tmp_right = NULL;
+
+    tmp = tmp->left;
+    while (tmp) {
+        if (ast_node_is_iline(tmp) == TRUE
+                && AST_KEY_IS (tmp, str)) {
+            if (prev == NULL) {
+                tmp_right = tmp->right;
+                ast_node_free(tmp);
+                parent_block->left = tmp_right;
+            } else {
+                tmp_right = tmp->right;
+                ast_node_free(tmp);
+                prev->right = tmp_right;
+            }
+        }
+        prev = tmp;
+        tmp = tmp->right;
+    }
 }

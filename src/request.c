@@ -147,27 +147,7 @@ char                *request_unlink_elements(
                     (*sink_element)->sdata->gstelement);
 
             /* Update root btree */
-            ast_node_t **block = src_element;
-            ast_node_t **prev = NULL;
-            ast_node_t *tmp_right = NULL;
-
-            *src_element = (*src_element)->left;
-            while (*src_element) {
-                if (ast_node_is_iline(*src_element) == TRUE
-                        && strcmp((*src_element)->left->str, "element_link") == 0) {
-                    if (prev == NULL) {
-                        tmp_right = (*src_element)->right;
-                        free(*src_element); /* Need a total free..... */
-                        (*block)->left = tmp_right;
-                    } else {
-                        tmp_right = (*src_element)->right;
-                        free(*src_element); /* Need a total free..... */
-                        (*prev)->right = tmp_right;
-                    }
-                }
-                *prev = *src_element;
-                *src_element = (*src_element)->right;
-            }
+            ast_node_remove_by_key(src_element, "element_link");
 
             /* Free useless deepblocks */
             ast_deepblock_free(deepblock_src);
@@ -258,15 +238,12 @@ char                *request_link_elements(
             element_link = aast_iscalar_get_by_key(src_element, "element_link");
             if (element_link == NULL) {
 
-                ast_node_t *key = ast_node_new("element_link", iKEY);
-                ast_node_t *value = ast_node_new(sink->valuestring, iVALUE);
+                ast_node_t *key = ast_node_new(g_strdup("element_link"), iKEY);
+                ast_node_t *value = ast_node_new(g_strdup(sink->valuestring), iVALUE);
                 ast_node_t *iscalar = ast_iscalar_new(key, value);
                 ast_node_t *iline = ast_iline_new(iscalar);
 
-                *src_element = (*src_element)->left;
-                while ((*src_element)->right)
-                    *src_element = (*src_element)->right;
-                (*src_element)->right = iline;
+                ast_ilb_add(src_element, iline, deepblock_src);
 
             } else {
 
