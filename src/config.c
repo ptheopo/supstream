@@ -38,7 +38,7 @@ config_pipeline_t       *config_pipeline_default_new(void) {
         return (NULL);
 
     /* Default configuration */
-    config_pipeline->init_state     = NULL;
+    config_pipeline->init_state     = g_strdup("null");
     config_pipeline->directory      = g_strdup(cwd);
     config_pipeline->type_exec      = g_strdup("sync");
     config_pipeline->priority       = CONFIG_PIPELINE_UNDEFINED_PRIORITY;

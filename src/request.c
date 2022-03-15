@@ -13,6 +13,7 @@ static int          request_pipelines_manage(
     ast_node_t      **node = &((*aast_iblock_get(root, deepblock))->left);
     ast_node_t      **node_pipeline = &((*aast_iblock_get(root, deepblock))->left);
     cJSON           *target_pipelines = cJSON_GetObjectItemCaseSensitive(request_json, "pipelines");
+    ast_node_t      *node_ptr = *node;
     cJSON           *target_pipeline = NULL;
     int             ret = 1;
     /* Only for bypassing -Wformat-security */
@@ -30,13 +31,13 @@ static int          request_pipelines_manage(
 
         }
 
-        /* Success */
         printf_bypass_fmt_sec(log_str);
         while (*node != NULL) {
             g_print(REQUEST_GUESS_SUCCESS_O, (*node)->str);
             ret = fn(node);
             *node = (*node)->right;
         }
+        *node = node_ptr;
 
     } else {
 
@@ -247,7 +248,7 @@ char                *request_link_elements(
             } else {
 
                 // /!\ Need to modify linking list in the future
-                free((*element_link)->right);
+                free((*element_link)->right->str);
                 (*element_link)->right->str = strdup(sink->valuestring);
 
             }
@@ -399,7 +400,7 @@ static int          request_pause_fn(ast_node_t **pipeline) {
 
     if (state == NULL || *state == NULL) {
 
-        key = ast_node_new(g_strdup("element_link"), iKEY);
+        key = ast_node_new(g_strdup("init_state"), iKEY);
         value = ast_node_new(g_strdup("pause"), iVALUE);
         iscalar = ast_iscalar_new(key, value);
         iline = ast_iline_new(iscalar);
@@ -413,8 +414,8 @@ static int          request_pause_fn(ast_node_t **pipeline) {
                 GST_STATE_PAUSED);
         if (state_ret == GST_STATE_CHANGE_FAILURE)
             return (1);
-        free((*state)->left->right);
-        (*state)->left->right->str = g_strdup("pause");
+        free((*state)->right->str);
+        (*state)->right->str = g_strdup("pause");
 
     }
     return (0);
@@ -458,7 +459,7 @@ static int          request_play_fn(ast_node_t **pipeline) {
 
     if (state == NULL || *state == NULL) {
 
-        key = ast_node_new(g_strdup("element_link"), iKEY);
+        key = ast_node_new(g_strdup("init_state"), iKEY);
         value = ast_node_new(g_strdup("play"), iVALUE);
         iscalar = ast_iscalar_new(key, value);
         iline = ast_iline_new(iscalar);
@@ -472,10 +473,11 @@ static int          request_play_fn(ast_node_t **pipeline) {
                 GST_STATE_PLAYING);
         if (state_ret == GST_STATE_CHANGE_FAILURE)
             return (1);
-        free((*state)->left->right);
-        (*state)->left->right->str = g_strdup("pause");
+        free((*state)->right->str);
+        (*state)->right->str = g_strdup("play");
 
     }
+
     return (0);
 }
 
@@ -517,7 +519,7 @@ static int          request_ready_fn(ast_node_t **pipeline) {
 
     if (state == NULL || *state == NULL) {
 
-        key = ast_node_new(g_strdup("element_link"), iKEY);
+        key = ast_node_new(g_strdup("init_state"), iKEY);
         value = ast_node_new(g_strdup("ready"), iVALUE);
         iscalar = ast_iscalar_new(key, value);
         iline = ast_iline_new(iscalar);
@@ -531,8 +533,8 @@ static int          request_ready_fn(ast_node_t **pipeline) {
                 GST_STATE_READY);
         if (state_ret == GST_STATE_CHANGE_FAILURE)
             return (1);
-        free((*state)->left->right);
-        (*state)->left->right->str = g_strdup("pause");
+        free((*state)->right->str);
+        (*state)->right->str = g_strdup("ready");
 
     }
 
@@ -577,7 +579,7 @@ static int          request_null_fn(ast_node_t **pipeline) {
 
     if (state == NULL || *state == NULL) {
 
-        key = ast_node_new(g_strdup("element_link"), iKEY);
+        key = ast_node_new(g_strdup("init_state"), iKEY);
         value = ast_node_new(g_strdup("null"), iVALUE);
         iscalar = ast_iscalar_new(key, value);
         iline = ast_iline_new(iscalar);
@@ -591,8 +593,8 @@ static int          request_null_fn(ast_node_t **pipeline) {
                 GST_STATE_NULL);
         if (state_ret == GST_STATE_CHANGE_FAILURE)
             return (1);
-        free((*state)->left->right);
-        (*state)->left->right->str = g_strdup("pause");
+        free((*state)->right->str);
+        (*state)->right->str = g_strdup("null");
 
     }
     return (0);

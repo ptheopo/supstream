@@ -4,9 +4,6 @@ static void         exec_initial_state(
                     GstPipeline *pipeline,
                     config_pipeline_t *config_pipeline) {
 
-    if (config_pipeline->init_state == NULL)
-        gst_element_set_state ((GstElement *)pipeline, GST_STATE_NULL);
-
     if (state_is_play(config_pipeline->init_state) == TRUE)
         gst_element_set_state ((GstElement *)pipeline, GST_STATE_PLAYING);
     else if (state_is_pause(config_pipeline->init_state) == TRUE)
