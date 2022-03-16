@@ -1,11 +1,11 @@
 # Infos
 
-cmake_minimum_required (VERSION 3.18)
+cmake_minimum_required (VERSION 3.16)
 project (supstream)
 
 # Flags
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -lcjson" CACHE STRING "Set C Compiler Flags" FORCE)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra" CACHE STRING "Set C Compiler Flags" FORCE)
 
 # Libraries
 
@@ -25,29 +25,17 @@ include_directories(${UUID_INCLUDE_DIRS})
 include_directories(${LIBZMQ_INCLUDE_DIRS})
 include_directories(${PTHREAD_INCLUDE_DIRS})
 
-link_libraries(${GLIB_LD_FLAGS})
-link_libraries(${GST_LD_FLAGS})
-link_libraries(${YAML_LD_FLAGS})
-link_libraries(${UUID_LD_FLAGS})
-link_libraries(${LIBZMQ_LD_FLAGS})
-link_libraries(${PTHREAD_LD_FLAGS})
+link_libraries(${GLIB_LIBRARIES})
+link_libraries(${GST_LIBRARIES})
+link_libraries(${YAML_LIBRARIES})
+link_libraries(${UUID_LIBRARIES})
+link_libraries(${LIBZMQ_LIBRARIES})
+link_libraries(${PTHREAD_LIBRARIES})
+link_libraries(-lcjson)
 
 # Sources
 
-set(SOURCES
-    src/ast.c
-    src/config.c
-    src/debug.c
-    src/fifo.c
-    src/gateway.c
-    src/linked.c
-    src/list.c
-    src/main.c
-    src/pipeline.c
-    src/request.c
-    src/semantic.c
-    src/verify.c
-)
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 

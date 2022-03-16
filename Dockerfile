@@ -180,7 +180,11 @@ RUN cd supstream \
 # Starter
 CMD cd supstream \
     && git pull \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
     && make \
+    && cd .. \
     && figlet "Supstream Docker Dev" \
     && echo "> Convert your pipeline to PNG graph: dot -Tpng <pipeline.dot> > <output.png>" \
     && echo "(Dot files automatically saved in /app/pipelines directory)" \
