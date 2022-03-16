@@ -33,9 +33,11 @@ link_libraries(-lcjson)
 
 # Sources
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
-
 include_directories(${PROJECT_SOURCE_DIR}/include)
+
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
+file(GLOB SOURCES_REQUEST ${PROJECT_SOURCE_DIR}/src/request/*.c)
+set(SOURCES ${SOURCES} ${SOURCES_REQUEST})
 
 set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/bin/)
 
