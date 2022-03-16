@@ -9,6 +9,15 @@
 # include "ast.h"
 # include "def.h"
 
+# define STATE_IS_NULL(s) \
+    (strcmp(s, "null") == 0)
+# define STATE_IS_READY(s) \
+    (strcmp(s, "ready") == 0)
+# define STATE_IS_PAUSE(s) \
+    (strcmp(s, "pause") == 0)
+# define STATE_IS_PLAY(s) \
+    (strcmp(s, "play") == 0)
+
 /*
  * All requests are launched from supstream-gateway using Redis pub/sub in JSON
  */

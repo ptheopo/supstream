@@ -3,8 +3,9 @@
 static int                  request_pipelines_manage(
                             const cJSON *request_json,
                             ast_tree_t  **root,
+                            char *state_str,
                             const char  *log_str,
-                            int         (*fn)(ast_node_t **)) {
+                            int         (*fn)(ast_node_t **, char *state_str)) {
 
     list_t                  *deepblock = ast_deepblock_create(2, "document", "pipelines");
     list_t                  *deepblock_pipeline = NULL;
@@ -33,7 +34,7 @@ static int                  request_pipelines_manage(
         printf_bypass_fmt_sec(log_str);
         while (*node != NULL) {
             g_print(REQUEST_GUESS_SUCCESS_O, (*node)->str);
-            ret = fn(node);
+            ret = fn(node, state_str);
             *node = (*node)->right;
         }
         *node = node_ptr;
@@ -73,7 +74,7 @@ static int                  request_pipelines_manage(
             } else {
 
                 /* Pipeline exist */
-                ret = fn(node_pipeline);
+                ret = fn(node_pipeline, state_str);
                 g_print(REQUEST_GUESS_SUCCESS_O, target_pipeline->valuestring);
 
             }
@@ -85,7 +86,7 @@ static int                  request_pipelines_manage(
     return (ret);
 }
 
-static int                  request_pause_fn(ast_node_t **pipeline) {
+static int                  request_fn(ast_node_t **pipeline, char *state_str) {
 
     GstStateChangeReturn    state_ret;
     list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
@@ -95,27 +96,47 @@ static int                  request_pause_fn(ast_node_t **pipeline) {
     ast_node_t              *iscalar = NULL;
     ast_node_t              *iline = NULL;
 
+    if (state_str == NULL)
+        return (1);
+
+    if (STATE_IS_READY(state_str)) {
+        state_ret = gst_element_set_state(
+                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
+                GST_STATE_READY);
+    } else if (STATE_IS_PAUSE(state_str)) {
+        state_ret = gst_element_set_state(
+                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
+                GST_STATE_PAUSED);
+    } else if (STATE_IS_PLAY(state_str)) {
+        state_ret = gst_element_set_state(
+                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
+                GST_STATE_PLAYING);
+    } else if (STATE_IS_NULL(state_str)) {
+        state_ret = gst_element_set_state(
+                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
+                GST_STATE_NULL);
+    }
+
+    if (state_ret == GST_STATE_CHANGE_FAILURE)
+        return (1);
+
     if (state == NULL || *state == NULL) {
 
         key = ast_node_new(g_strdup("init_state"), iKEY);
-        value = ast_node_new(g_strdup("pause"), iVALUE);
+        value = ast_node_new(g_strdup(state_str), iVALUE);
         iscalar = ast_iscalar_new(key, value);
         iline = ast_iline_new(iscalar);
-
         ast_ilb_add(pipeline, iline, deepblock);
 
     } else {
 
-        state_ret = gst_element_set_state(
-                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
-                GST_STATE_PAUSED);
-        if (state_ret == GST_STATE_CHANGE_FAILURE)
-            return (1);
         free((*state)->right->str);
-        (*state)->right->str = g_strdup("pause");
+        (*state)->right->str = g_strdup(state_str);
 
     }
+
     return (0);
+
 }
 
 char                        *request_pause(
@@ -131,8 +152,9 @@ char                        *request_pause(
     ret = request_pipelines_manage(
             request_json,
             root,
+            "pause",
             REQUEST_PAUSE_SUCCESS_O,
-            &request_pause_fn);
+            &request_fn);
 
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
@@ -146,40 +168,6 @@ char                        *request_pause(
     result_str = cJSON_Print(result_json);
 
     return (result_str);
-}
-
-static int                  request_play_fn(ast_node_t **pipeline) {
-
-    GstStateChangeReturn    state_ret;
-    list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
-    ast_node_t              **state = aast_iscalar_get_by_key(pipeline, "init_state");
-    ast_node_t              *key = NULL;
-    ast_node_t              *value = NULL;
-    ast_node_t              *iscalar = NULL;
-    ast_node_t              *iline = NULL;
-
-    if (state == NULL || *state == NULL) {
-
-        key = ast_node_new(g_strdup("init_state"), iKEY);
-        value = ast_node_new(g_strdup("play"), iVALUE);
-        iscalar = ast_iscalar_new(key, value);
-        iline = ast_iline_new(iscalar);
-
-        ast_ilb_add(pipeline, iline, deepblock);
-
-    } else {
-
-        state_ret = gst_element_set_state(
-                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
-                GST_STATE_PLAYING);
-        if (state_ret == GST_STATE_CHANGE_FAILURE)
-            return (1);
-        free((*state)->right->str);
-        (*state)->right->str = g_strdup("play");
-
-    }
-
-    return (0);
 }
 
 char                        *request_play(
@@ -195,8 +183,9 @@ char                        *request_play(
     ret = request_pipelines_manage(
             request_json,
             root,
+            "play",
             REQUEST_PLAY_SUCCESS_O,
-            &request_play_fn);
+            &request_fn);
 
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
@@ -210,40 +199,6 @@ char                        *request_play(
     result_str = cJSON_Print(result_json);
 
     return (result_str);
-}
-
-static int                  request_ready_fn(ast_node_t **pipeline) {
-
-    GstStateChangeReturn    state_ret;
-    list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
-    ast_node_t              **state = aast_iscalar_get_by_key(pipeline, "init_state");
-    ast_node_t              *key = NULL;
-    ast_node_t              *value = NULL;
-    ast_node_t              *iscalar = NULL;
-    ast_node_t              *iline = NULL;
-
-    if (state == NULL || *state == NULL) {
-
-        key = ast_node_new(g_strdup("init_state"), iKEY);
-        value = ast_node_new(g_strdup("ready"), iVALUE);
-        iscalar = ast_iscalar_new(key, value);
-        iline = ast_iline_new(iscalar);
-
-        ast_ilb_add(pipeline, iline, deepblock);
-
-    } else {
-
-        state_ret = gst_element_set_state(
-                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
-                GST_STATE_READY);
-        if (state_ret == GST_STATE_CHANGE_FAILURE)
-            return (1);
-        free((*state)->right->str);
-        (*state)->right->str = g_strdup("ready");
-
-    }
-
-    return (0);
 }
 
 char                        *request_ready(
@@ -259,8 +214,9 @@ char                        *request_ready(
     ret = request_pipelines_manage(
             request_json,
             root,
+            "ready",
             REQUEST_READY_SUCCESS_O,
-            &request_ready_fn);
+            &request_fn);
 
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
@@ -276,40 +232,6 @@ char                        *request_ready(
     return (result_str);
 }
 
-static int                  request_null_fn(ast_node_t **pipeline) {
-
-    GstStateChangeReturn    state_ret;
-    list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
-    ast_node_t              **state = aast_iscalar_get_by_key(pipeline, "init_state");
-    ast_node_t              *key = NULL;
-    ast_node_t              *value = NULL;
-    ast_node_t              *iscalar = NULL;
-    ast_node_t              *iline = NULL;
-
-    if (state == NULL || *state == NULL) {
-
-        key = ast_node_new(g_strdup("init_state"), iKEY);
-        value = ast_node_new(g_strdup("null"), iVALUE);
-        iscalar = ast_iscalar_new(key, value);
-        iline = ast_iline_new(iscalar);
-
-        ast_ilb_add(pipeline, iline, deepblock);
-
-    } else {
-
-        state_ret = gst_element_set_state(
-                GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
-                GST_STATE_NULL);
-        if (state_ret == GST_STATE_CHANGE_FAILURE)
-            return (1);
-
-        free((*state)->right->str);
-        (*state)->right->str = g_strdup("null");
-
-    }
-    return (0);
-}
-
 char                        *request_null(
                             const cJSON *request_json,
                             ast_tree_t **root) {
@@ -323,8 +245,9 @@ char                        *request_null(
     ret = request_pipelines_manage(
             request_json,
             root,
+            "null",
             REQUEST_NULL_SUCCESS_O,
-            &request_null_fn);
+            &request_fn);
 
     /* Insert request */
     cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
