@@ -37,6 +37,8 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/bin/)
+
 add_compile_options(-Wall -Wextra)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
