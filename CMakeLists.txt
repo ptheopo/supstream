@@ -5,7 +5,7 @@ project (supstream)
 
 # Flags
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra" CACHE STRING "Set C Compiler Flags" FORCE)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "Set C Compiler Flags" FORCE)
 
 # Libraries
 
@@ -16,21 +16,19 @@ pkg_search_module(GST REQUIRED gstreamer-1.0)
 pkg_search_module(YAML REQUIRED yaml-0.1)
 pkg_search_module(UUID REQUIRED uuid)
 pkg_search_module(LIBZMQ REQUIRED libzmq)
-pkg_search_module(PTHREAD REQUIRED pthread-stubs)
 
 include_directories(${GLIB_INCLUDE_DIRS})
 include_directories(${GST_INCLUDE_DIRS})
 include_directories(${YAML_INCLUDE_DIRS})
 include_directories(${UUID_INCLUDE_DIRS})
 include_directories(${LIBZMQ_INCLUDE_DIRS})
-include_directories(${PTHREAD_INCLUDE_DIRS})
 
 link_libraries(${GLIB_LIBRARIES})
 link_libraries(${GST_LIBRARIES})
 link_libraries(${YAML_LIBRARIES})
 link_libraries(${UUID_LIBRARIES})
 link_libraries(${LIBZMQ_LIBRARIES})
-link_libraries(${PTHREAD_LIBRARIES})
+link_libraries(-lpthread)
 link_libraries(-lcjson)
 
 # Sources
@@ -38,5 +36,7 @@ link_libraries(-lcjson)
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+
+add_compile_options(-Wall -Wextra)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
