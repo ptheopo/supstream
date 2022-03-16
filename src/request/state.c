@@ -1,6 +1,6 @@
 #include "request.h"
 
-static int                  request_pipelines_manage(
+static int                  request_state_manage(
                             const cJSON *request_json,
                             ast_tree_t  **root,
                             char *state_str,
@@ -86,7 +86,7 @@ static int                  request_pipelines_manage(
     return (ret);
 }
 
-static int                  request_fn(ast_node_t **pipeline, char *state_str) {
+static int                  request_state_fn(ast_node_t **pipeline, char *state_str) {
 
     GstStateChangeReturn    state_ret;
     list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
@@ -99,6 +99,7 @@ static int                  request_fn(ast_node_t **pipeline, char *state_str) {
     if (state_str == NULL)
         return (1);
 
+    /* Use binary flags with switch */
     if (STATE_IS_READY(state_str)) {
         state_ret = gst_element_set_state(
                 GST_ELEMENT ((*pipeline)->sdata->gstpipeline),
@@ -139,126 +140,86 @@ static int                  request_fn(ast_node_t **pipeline, char *state_str) {
 
 }
 
-char                        *request_pause(
-                            const cJSON *request_json,
-                            ast_tree_t **root) {
+char                        *request_state_json_str(const cJSON *request_json, int ret) {
 
     cJSON                   *result_json = cJSON_CreateObject();
     cJSON                   *response_json = cJSON_CreateObject();
     cJSON                   *code_json = NULL;
     char                    *result_str = NULL;
-    int                     ret = 1;
 
-    ret = request_pipelines_manage(
+    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
+    code_json = cJSON_CreateNumber(ret);
+    cJSON_AddItemToObject(response_json, "code", code_json);
+    cJSON_AddItemToObject(result_json, "response", response_json);
+    result_str = cJSON_Print(result_json);
+    return (result_str);
+
+}
+
+char                        *request_pause(
+                            const cJSON *request_json,
+                            ast_tree_t **root) {
+
+    int                     ret = 1;
+    char                    *result_json_str = NULL;
+
+    ret = request_state_manage(
             request_json,
             root,
             "pause",
             REQUEST_PAUSE_SUCCESS_O,
-            &request_fn);
-
-    /* Insert request */
-    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
-
-    /* Prepare response */
-    code_json = cJSON_CreateNumber(ret);
-    cJSON_AddItemToObject(response_json, "code", code_json);
-
-    /* Insert response */
-    cJSON_AddItemToObject(result_json, "response", response_json);
-    result_str = cJSON_Print(result_json);
-
-    return (result_str);
+            &request_state_fn);
+    result_json_str = request_state_json_str(request_json, ret);
+    return (result_json_str);
 }
 
 char                        *request_play(
                             const cJSON *request_json,
                             ast_tree_t **root) {
 
-    cJSON                   *result_json = cJSON_CreateObject();
-    cJSON                   *response_json = cJSON_CreateObject();
-    cJSON                   *code_json = NULL;
-    char                    *result_str = NULL;
     int                     ret = 1;
+    char                    *result_json_str = NULL;
 
-    ret = request_pipelines_manage(
+    ret = request_state_manage(
             request_json,
             root,
             "play",
             REQUEST_PLAY_SUCCESS_O,
-            &request_fn);
-
-    /* Insert request */
-    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
-
-    /* Prepare response */
-    code_json = cJSON_CreateNumber(ret);
-    cJSON_AddItemToObject(response_json, "code", code_json);
-
-    /* Insert response */
-    cJSON_AddItemToObject(result_json, "response", response_json);
-    result_str = cJSON_Print(result_json);
-
-    return (result_str);
+            &request_state_fn);
+    result_json_str = request_state_json_str(request_json, ret);
+    return (result_json_str);
 }
 
 char                        *request_ready(
                             const cJSON *request_json,
                             ast_tree_t **root) {
 
-    cJSON                   *result_json = cJSON_CreateObject();
-    cJSON                   *response_json = cJSON_CreateObject();
-    cJSON                   *code_json = NULL;
-    char                    *result_str = NULL;
     int                     ret = 1;
+    char                    *result_json_str = NULL;
 
-    ret = request_pipelines_manage(
+    ret = request_state_manage(
             request_json,
             root,
             "ready",
             REQUEST_READY_SUCCESS_O,
-            &request_fn);
-
-    /* Insert request */
-    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
-
-    /* Prepare response */
-    code_json = cJSON_CreateNumber(ret);
-    cJSON_AddItemToObject(response_json, "code", code_json);
-
-    /* Insert response */
-    cJSON_AddItemToObject(result_json, "response", response_json);
-    result_str = cJSON_Print(result_json);
-
-    return (result_str);
+            &request_state_fn);
+    result_json_str = request_state_json_str(request_json, ret);
+    return (result_json_str);
 }
 
 char                        *request_null(
                             const cJSON *request_json,
                             ast_tree_t **root) {
 
-    cJSON                   *result_json = cJSON_CreateObject();
-    cJSON                   *response_json = cJSON_CreateObject();
-    cJSON                   *code_json = NULL;
-    char                    *result_str = NULL;
     int                     ret = 1;
+    char                    *result_json_str = NULL;
 
-    ret = request_pipelines_manage(
+    ret = request_state_manage(
             request_json,
             root,
             "null",
             REQUEST_NULL_SUCCESS_O,
-            &request_fn);
-
-    /* Insert request */
-    cJSON_AddItemToObject(result_json, "request", (cJSON *)request_json);
-
-    /* Prepare response */
-    code_json = cJSON_CreateNumber(ret);
-    cJSON_AddItemToObject(response_json, "code", code_json);
-
-    /* Insert response */
-    cJSON_AddItemToObject(result_json, "response", response_json);
-    result_str = cJSON_Print(result_json);
-
-    return (result_str);
+            &request_state_fn);
+    result_json_str = request_state_json_str(request_json, ret);
+    return (result_json_str);
 }
