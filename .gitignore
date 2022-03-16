@@ -61,3 +61,6 @@ plugin/*.so
 # Valgrind
 core*
 vgcore*
+
+# CMake
+build/
