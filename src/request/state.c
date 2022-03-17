@@ -1,92 +1,6 @@
 #include "request.h"
 
-static int                  request_state_manage(
-                            const cJSON *request_json,
-                            ast_tree_t  **root,
-                            char *state_str,
-                            const char  *log_str,
-                            int         (*fn)(ast_node_t **, char *state_str)) {
-
-    list_t                  *deepblock = ast_deepblock_create(2, "document", "pipelines");
-    list_t                  *deepblock_pipeline = NULL;
-    ast_node_t              **node = &((*aast_iblock_get(root, deepblock))->left);
-    ast_node_t              **node_pipeline = &((*aast_iblock_get(root, deepblock))->left);
-    cJSON                   *target_pipelines = cJSON_GetObjectItemCaseSensitive(request_json, "pipelines");
-    ast_node_t              *node_ptr = *node;
-    cJSON                   *target_pipeline = NULL;
-    int                     ret = 1;
-    /* Only for bypassing -Wformat-security */
-    int                     (*printf_bypass_fmt_sec)(const char * restrict,  ...) = printf;
-
-    /* Verify formats */
-
-    if (target_pipelines == NULL) {
-
-        /* All pipelines */
-
-        if (node == NULL || *node == NULL) {
-
-            /* No pipelines launched */
-            return (ret);
-
-        }
-
-        printf_bypass_fmt_sec(log_str);
-        while (*node != NULL) {
-            g_print(REQUEST_GUESS_SUCCESS_O, (*node)->str);
-            ret = fn(node, state_str);
-            *node = (*node)->right;
-        }
-        *node = node_ptr;
-
-    } else {
-
-        /* Multiple or only one pipeline */
-
-        if (!cJSON_IsArray(target_pipelines)) {
-
-            /* Not an array */
-            g_printerr(REQUEST_BAD_FORMAT_O);
-            return (ret);
-
-        }
-
-        if (cJSON_GetArraySize(target_pipelines) == 0) {
-
-            /* Empty pipelines array */
-            g_printerr(REQUEST_BAD_FORMAT_O);
-            return (ret);
-
-        }
-
-        /* Success */
-        printf_bypass_fmt_sec(log_str);
-        cJSON_ArrayForEach(target_pipeline, target_pipelines) {
-            deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
-            node_pipeline = aast_iblock_get(node, deepblock_pipeline);
-            if (node_pipeline == NULL || *node_pipeline == NULL) {
-
-                /* Warning, unknown pipeline */
-                g_printerr(REQUEST_GUESS_WARNING_O,
-                        target_pipeline->valuestring,
-                        "unknown pipeline");
-
-            } else {
-
-                /* Pipeline exist */
-                ret = fn(node_pipeline, state_str);
-                g_print(REQUEST_GUESS_SUCCESS_O, target_pipeline->valuestring);
-
-            }
-            ast_deepblock_free(deepblock_pipeline);
-        }
-
-    }
-    ast_deepblock_free(deepblock);
-    return (ret);
-}
-
-static int                  request_state_fn(ast_node_t **pipeline, char *state_str) {
+int                         state_update(ast_node_t **pipeline, char *state_str) {
 
     GstStateChangeReturn    state_ret;
     list_t                  *deepblock = ast_deepblock_create(1, (*pipeline)->str);
@@ -140,6 +54,91 @@ static int                  request_state_fn(ast_node_t **pipeline, char *state_
 
 }
 
+static int                  request_state_manage(
+                            const cJSON *request_json,
+                            ast_tree_t  **root,
+                            char *state_str,
+                            const char  *log_str) {
+
+    list_t                  *deepblock = ast_deepblock_create(2, "document", "pipelines");
+    list_t                  *deepblock_pipeline = NULL;
+    ast_node_t              **node = &((*aast_iblock_get(root, deepblock))->left);
+    ast_node_t              **node_pipeline = &((*aast_iblock_get(root, deepblock))->left);
+    cJSON                   *target_pipelines = cJSON_GetObjectItemCaseSensitive(request_json, "pipelines");
+    ast_node_t              *node_ptr = *node;
+    cJSON                   *target_pipeline = NULL;
+    int                     ret = 1;
+    /* Only for bypassing -Wformat-security */
+    int                     (*printf_bypass_fmt_sec)(const char * restrict,  ...) = printf;
+
+    /* Verify formats */
+
+    if (target_pipelines == NULL) {
+
+        /* All pipelines */
+
+        if (node == NULL || *node == NULL) {
+
+            /* No pipelines launched */
+            return (ret);
+
+        }
+
+        printf_bypass_fmt_sec(log_str);
+        while (*node != NULL) {
+            g_print(REQUEST_GUESS_SUCCESS_O, (*node)->str);
+            ret = state_update(node, state_str);
+            *node = (*node)->right;
+        }
+        *node = node_ptr;
+
+    } else {
+
+        /* Multiple or only one pipeline */
+
+        if (!cJSON_IsArray(target_pipelines)) {
+
+            /* Not an array */
+            g_printerr(REQUEST_BAD_FORMAT_O);
+            return (ret);
+
+        }
+
+        if (cJSON_GetArraySize(target_pipelines) == 0) {
+
+            /* Empty pipelines array */
+            g_printerr(REQUEST_BAD_FORMAT_O);
+            return (ret);
+
+        }
+
+        /* Success */
+        printf_bypass_fmt_sec(log_str);
+        cJSON_ArrayForEach(target_pipeline, target_pipelines) {
+            deepblock_pipeline = ast_deepblock_create(1, target_pipeline->valuestring);
+            node_pipeline = aast_iblock_get(node, deepblock_pipeline);
+            if (node_pipeline == NULL || *node_pipeline == NULL) {
+
+                /* Warning, unknown pipeline */
+                g_printerr(REQUEST_GUESS_WARNING_O,
+                        target_pipeline->valuestring,
+                        "unknown pipeline");
+
+            } else {
+
+                /* Pipeline exist */
+                ret = state_update(node_pipeline, state_str);
+                g_print(REQUEST_GUESS_SUCCESS_O, target_pipeline->valuestring);
+
+            }
+            ast_deepblock_free(deepblock_pipeline);
+        }
+
+    }
+    ast_deepblock_free(deepblock);
+    return (ret);
+}
+
 char                        *request_state_json_str(const cJSON *request_json, int ret) {
 
     cJSON                   *result_json = cJSON_CreateObject();
@@ -167,8 +166,7 @@ char                        *request_pause(
             request_json,
             root,
             "pause",
-            REQUEST_PAUSE_SUCCESS_O,
-            &request_state_fn);
+            REQUEST_PAUSE_SUCCESS_O);
     result_json_str = request_state_json_str(request_json, ret);
     return (result_json_str);
 }
@@ -184,8 +182,7 @@ char                        *request_play(
             request_json,
             root,
             "play",
-            REQUEST_PLAY_SUCCESS_O,
-            &request_state_fn);
+            REQUEST_PLAY_SUCCESS_O);
     result_json_str = request_state_json_str(request_json, ret);
     return (result_json_str);
 }
@@ -201,8 +198,7 @@ char                        *request_ready(
             request_json,
             root,
             "ready",
-            REQUEST_READY_SUCCESS_O,
-            &request_state_fn);
+            REQUEST_READY_SUCCESS_O);
     result_json_str = request_state_json_str(request_json, ret);
     return (result_json_str);
 }
@@ -218,8 +214,7 @@ char                        *request_null(
             request_json,
             root,
             "null",
-            REQUEST_NULL_SUCCESS_O,
-            &request_state_fn);
+            REQUEST_NULL_SUCCESS_O);
     result_json_str = request_state_json_str(request_json, ret);
     return (result_json_str);
 }

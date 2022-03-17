@@ -22,6 +22,34 @@
  * Write Gstreamer elements in AST and symtable for a quickly access
  */
 
+/* Functions are used only by semantic part for the moment */
+
+void                    exit_block(ast_node_t **node);
+
+void                    pipeline_block(ast_node_t **node);
+void                    properties_block(ast_node_t *node, GstElement *element);
+void                    pads_block(
+                        list_t **linked_pads,
+                        ast_node_t *node,
+                        GstElement *element);
+void                    linked_element_line(
+                        list_t **linked_elements,
+                        GstElement *element,
+                        char *element_name);
+void                    caps_block(
+                        list_t **linked_elements,
+                        ast_node_t *node);
+linked_result_t         *elements_block(
+                        ast_node_t **node,
+                        GHashTable **symtable,
+                        GstPipeline *pipeline);
+void                    semantic_apply_config(
+                        ast_node_t *node,
+                        config_t **config);
+void                    semantic_apply_config_pipeline(
+                        ast_node_t *node,
+                        config_pipeline_t **config_pipeline);
+
 /* Dynamic types for properties */
 
 typedef union           dtype_u {

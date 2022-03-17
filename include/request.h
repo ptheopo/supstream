@@ -28,6 +28,12 @@ typedef struct  request_s {
 }               request_t;
 
 /*
+ * These functions can be called in an other update context
+ */
+
+int             state_update(ast_node_t **pipeline, char *state_str);
+
+/*
  * Show
  * ====
  *
