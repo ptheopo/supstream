@@ -43,10 +43,10 @@ linked_result_t         *elements_block(
                         ast_node_t **node,
                         GHashTable **symtable,
                         GstPipeline *pipeline);
-void                    semantic_apply_config(
+void                    semantic_config(
                         ast_node_t *node,
                         config_t **config);
-void                    semantic_apply_config_pipeline(
+void                    semantic_config_pipeline(
                         ast_node_t *node,
                         config_pipeline_t **config_pipeline);
 

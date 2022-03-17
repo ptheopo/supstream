@@ -11,7 +11,7 @@ static int                      semantic_isdir(char *path) {
     return (1);
 }
 
-static void                     semantic_apply_config_log(config_t *config) {
+static void                     semantic_config_log(config_t *config) {
 
     int                         fd;
     char                        *stdout_logfile = config->stdout_logfile;
@@ -34,7 +34,7 @@ static void                     semantic_apply_config_log(config_t *config) {
     }
 }
 
-void                            semantic_apply_config(
+void                            semantic_config(
                                 ast_node_t *node,
                                 config_t **config) {
 
@@ -66,7 +66,7 @@ void                            semantic_apply_config(
 
     }
 
-    semantic_apply_config_log(*config);
+    semantic_config_log(*config);
 
     /* User configuration (Worst if-forest, need to be review) */
     if (_working_dir != NULL) {
@@ -108,7 +108,7 @@ void                            semantic_apply_config(
     }
 }
 
-void                            semantic_apply_config_pipeline(
+void                            semantic_config_pipeline(
                                 ast_node_t *node,
                                 config_pipeline_t **config_pipeline) {
 

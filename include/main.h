@@ -12,6 +12,7 @@
 # include "ast.h"
 # include "def.h"
 # include "fifo.h"
+# include "parse.h"
 # include "pipeline.h"
 # include "semantic.h"
 

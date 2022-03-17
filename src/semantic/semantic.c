@@ -57,11 +57,11 @@ supstream_t             *semantic_apply(ast_tree_t **root) {
     *root = (*root)->left;
     priority_root = *root;
 
-    /* Priority blocks */
+    /* Priority blocks (global options) */
 
     while (priority_root) {
         if (AST_IBLOCK_IS (priority_root, "supstream") && priority_root->left) {
-            semantic_apply_config(*root, &config);
+            semantic_config(*root, &config);
         }
         priority_root = priority_root->right;
     }
@@ -82,7 +82,7 @@ supstream_t             *semantic_apply(ast_tree_t **root) {
                     /* Specific pipeline config */
 
                     config_pipeline = config_pipeline_default_new();
-                    semantic_apply_config_pipeline(*root, &config_pipeline);
+                    semantic_config_pipeline(*root, &config_pipeline);
 
                     semantic_apply_pipeline(root, config_pipeline);
 
