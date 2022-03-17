@@ -87,7 +87,7 @@ static void         pipeline_run(
 
 /* Pipeline execution */
 
-static void         pipeline_await(
+static void         pipeline_exec_await(
                     ast_node_t **root,
                     execdata_t *execdata,
                     gboolean (*fn)(gchar *)) {
@@ -133,7 +133,7 @@ static void         pipeline_await(
 
 }
 
-static void         *pipeline_thread(void *privdata) {
+static void         *pipeline_exec_thread(void *privdata) {
 
     privdata_sync_t *_privdata = (privdata_sync_t *)privdata;
     ast_tree_t      **root = (ast_tree_t **)_privdata->root;
@@ -259,7 +259,7 @@ void                pipeline(supstream_t *supstream) {
 
     /* THREAD type_exec */
 
-    pipeline_await(root, execdata, &run_is_thread);
+    pipeline_exec_await(root, execdata, &run_is_thread);
 
     /* SYNC type_exec */
 
@@ -269,7 +269,7 @@ void                pipeline(supstream_t *supstream) {
     privdata_sync->root = root;
     privdata_sync->execdata = execdata;
     privdata_sync->fn = &run_is_await;
-    ret = pthread_create(&thread_sync_id, NULL, pipeline_thread, (void *)privdata_sync);
+    ret = pthread_create(&thread_sync_id, NULL, pipeline_exec_thread, (void *)privdata_sync);
     if (ret != 0) {
         g_printerr(PIPELINE_ERROR_RUN_THREAD_O,
                 GST_ELEMENT_NAME (execdata->pipeline));
