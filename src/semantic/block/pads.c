@@ -42,3 +42,25 @@ void                    semantic_block_pads(
         node = node->right;
     }
 }
+
+static void             semantic_block_pad_prop_one(
+                        ast_node_t *node,
+                        GstElement *element) {
+
+    ast_node_t          *pad = ast_iscalar_get_by_key(node, "pad");
+    list_t              *prop_deepblock = lstnew("properties", sizeof(char) * 11);
+    ast_node_t          *prop = ast_iblock_get(node, prop_deepblock);
+    /* get multiple properties .. */
+}
+
+void                    semantic_block_pad_prop(
+                        ast_node_t *node,
+                        GstElement *element) {
+
+    node = node->left;
+    while (node) {
+        semantic_block_pad_prop_one(node, element);
+        node = node->right;
+    }
+}
+

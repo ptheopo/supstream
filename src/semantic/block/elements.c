@@ -15,11 +15,13 @@ linked_result_t         *semantic_block_elements(
     ast_node_t          *tmp = *node;
     ast_node_t          *properties = NULL;
     ast_node_t          *pads = NULL;
+    ast_node_t          *pad_prop = NULL;
     ast_node_t          *caps = NULL;
     GstElement          *element = NULL;
     /* specify props block inside all elements */
     list_t              *props_dp = lstnew("properties", sizeof(char) * 11);
     list_t              *pads_dp = lstnew("pad_link", sizeof(char) * 9);
+    list_t              *pad_prop_deepblock = lstnew("pad_prop", sizeof(char) * 9);
     list_t              *caps_dp = lstnew("caps", sizeof(char) * 5);
     list_t              *linked_elements = NULL;
     list_t              *linked_pads = NULL;
@@ -78,6 +80,11 @@ linked_result_t         *semantic_block_elements(
                     GST_OBJECT_NAME (pipeline));
             
             /* pad prob */
+            pad_prop = ast_iblock_get(
+                    (*node)->left,
+                    pad_prop_deepblock);
+            if (pads != NULL)
+                semantic_block_pad_prob(pad_prob, element);
 
 
             /* create linked_element list */
