@@ -1,5 +1,5 @@
-#ifndef LINKED_H
-# define LINKED_H
+#ifndef LINK_H
+# define LINK_H
 
 # include "list.h"
 # include "def.h"

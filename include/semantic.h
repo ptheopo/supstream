@@ -14,7 +14,7 @@
 # include "ast.h"
 # include "config.h"
 # include "def.h"
-# include "linked.h"
+# include "link.h"
 # include "supstream.h"
 # include "verify.h"
 
