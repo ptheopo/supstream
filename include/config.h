@@ -27,12 +27,12 @@ typedef struct      config_pipeline_s {
 
 /* Default */
 
-config_t            *config_default_new(void);
-config_pipeline_t   *config_pipeline_default_new(void);
+config_t            *config_new_default(void);
+config_pipeline_t   *config_new_default_pipeline(void);
 
 /* Debug */
 
 void                config_show(config_t *config);
-void                config_pipeline_show(config_pipeline_t *config_pipeline);
+void                config_show_pipeline(config_pipeline_t *config_pipeline);
 
 #endif

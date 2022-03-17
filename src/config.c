@@ -2,7 +2,7 @@
 
 /* Default supstream */
 
-config_t                *config_default_new(void) {
+config_t                *config_new_default(void) {
 
     config_t            *config = (config_t *)malloc(sizeof(config_t));
     char                cwd[PATH_MAX] = {0};
@@ -26,7 +26,7 @@ config_t                *config_default_new(void) {
 
 /* Default pipeline */
 
-config_pipeline_t       *config_pipeline_default_new(void) {
+config_pipeline_t       *config_new_default_pipeline(void) {
 
     config_pipeline_t   *config_pipeline = (config_pipeline_t *)malloc(sizeof(config_pipeline_t));
     char                cwd[PATH_MAX] = {0};
@@ -68,7 +68,7 @@ void                    config_show(config_t *config) {
         g_print("bin_to_dotfile_dir: False\n");
 }
 
-void                    config_pipeline_show(config_pipeline_t *config_pipeline) {
+void                    config_show_pipeline(config_pipeline_t *config_pipeline) {
 
     g_print("init_state: %s\n", config_pipeline->init_state);
     g_print("directory: %s\n", config_pipeline->directory);

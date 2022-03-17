@@ -54,12 +54,12 @@ static int              core(const gchar *yaml_pipeline) {
     yaml_parser_set_input_file(&parser, file);
     while (done != TRUE) {
         yaml_parser_scan(&parser, &token);
-        done = core_token_parse(&token, &root, &lines, &deepblock);
+        done = parse_token(&token, &root, &lines, &deepblock);
         yaml_token_delete(&token);
     }
     if (root != NULL) {
         supstream = semantic(&root);
-        exec_pipeline(supstream);
+        pipeline(supstream);
     }
     free(root);
     //ast_free(&root);

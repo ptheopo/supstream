@@ -10,7 +10,7 @@
 # include "pipeline.h"
 # include "semantic.h"
 
-gboolean    core_token_parse(
+gboolean    parse_token(
             yaml_token_t *token,
             ast_tree_t **root,
             fifo_t **lines,

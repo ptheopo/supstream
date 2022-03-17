@@ -1,6 +1,6 @@
 #include "pipeline.h"
 
-static void         exec_initial_state(
+static void         pipeline_init_state(
                     GstPipeline *pipeline,
                     config_pipeline_t *config_pipeline) {
 
@@ -19,7 +19,7 @@ static void         exec_initial_state(
 
 /* Type of running (await/thread) */
 
-static void         *exec_bus(void *_execdata) {
+static void         *pipeline_bus(void *_execdata) {
 
     execdata_t      *execdata = (execdata_t *)_execdata;
     GstBus          *bus = NULL;
@@ -30,7 +30,7 @@ static void         *exec_bus(void *_execdata) {
     return (NULL);
 }
 
-static void         exec_run_dotfile(execdata_t *execdata) {
+static void         pipeline_dotfile(execdata_t *execdata) {
 
     /* Generate graph vizualization */
     if (execdata->config->bin_to_dotfile_enabled == TRUE) {
@@ -41,24 +41,24 @@ static void         exec_run_dotfile(execdata_t *execdata) {
     }
 }
 
-static pthread_t    exec_run_await(execdata_t *execdata) {
+static pthread_t    pipeline_run_await(execdata_t *execdata) {
 
     g_print(PIPELINE_RUN_AWAIT_O, GST_ELEMENT_NAME (execdata->pipeline));
 
-    exec_run_dotfile(execdata);
-    exec_bus(execdata);
+    pipeline_dotfile(execdata);
+    pipeline_bus(execdata);
     return (0);
 }
 
-static pthread_t    exec_run_thread(execdata_t *execdata) {
+static pthread_t    pipeline_run_thread(execdata_t *execdata) {
 
     pthread_t       thread_id;
     int             ret;
 
     g_print(PIPELINE_RUN_THREAD_O, GST_ELEMENT_NAME (execdata->pipeline));
 
-    exec_run_dotfile(execdata);
-    ret = pthread_create(&thread_id, NULL, exec_bus, (void *)execdata);
+    pipeline_dotfile(execdata);
+    ret = pthread_create(&thread_id, NULL, pipeline_bus, (void *)execdata);
     if (ret != 0) {
         g_printerr(PIPELINE_ERROR_RUN_THREAD_O,
                 GST_ELEMENT_NAME (execdata->pipeline));
@@ -67,7 +67,7 @@ static pthread_t    exec_run_thread(execdata_t *execdata) {
     return (thread_id);
 }
 
-static void         exec_pipeline_run(
+static void         pipeline_run(
                     ast_node_t **node,
                     execdata_t *execdata) {
 
@@ -75,19 +75,19 @@ static void         exec_pipeline_run(
     pthread_t       pt_id;
 
     if (AST_RCHILD(run) && run_is_await(run->right->str) == TRUE) {
-        pt_id = exec_run_await(execdata);
+        pt_id = pipeline_run_await(execdata);
     } else if (AST_RCHILD(run) && run_is_thread(run->right->str) == TRUE) {
-        pt_id = exec_run_thread(execdata);
+        pt_id = pipeline_run_thread(execdata);
         (*node)->pthread_id = pt_id;
     } else {
-        pt_id = exec_run_thread(execdata);
+        pt_id = pipeline_run_thread(execdata);
         (*node)->pthread_id = pt_id;
     }
 }
 
 /* Pipeline execution */
 
-static void         exec_pipeline_exec_type(
+static void         pipeline_await(
                     ast_node_t **root,
                     execdata_t *execdata,
                     gboolean (*fn)(gchar *)) {
@@ -120,8 +120,8 @@ static void         exec_pipeline_exec_type(
             execdata->pipeline = pipeline;
             execdata->config_pipeline = (*root)->config_pipeline;
 
-            exec_initial_state(pipeline, (*root)->config_pipeline);
-            exec_pipeline_run(root, execdata);
+            pipeline_init_state(pipeline, (*root)->config_pipeline);
+            pipeline_run(root, execdata);
 
         }
         *root = (*root)->right;
@@ -133,7 +133,7 @@ static void         exec_pipeline_exec_type(
 
 }
 
-static void         *exec_pipeline_exec_type_pthread(void *privdata) {
+static void         *pipeline_thread(void *privdata) {
 
     privdata_sync_t *_privdata = (privdata_sync_t *)privdata;
     ast_tree_t      **root = (ast_tree_t **)_privdata->root;
@@ -171,8 +171,8 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
             execdata->pipeline = pipeline;
             execdata->config_pipeline = (*root)->config_pipeline;
 
-            exec_initial_state(pipeline, (*root)->config_pipeline);
-            exec_pipeline_run(root, execdata);
+            pipeline_init_state(pipeline, (*root)->config_pipeline);
+            pipeline_run(root, execdata);
 
             i++;
 
@@ -213,8 +213,8 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
             execdata->pipeline = pipeline;
             execdata->config_pipeline = (*root)->config_pipeline;
 
-            exec_initial_state(pipeline, (*root)->config_pipeline);
-            exec_pipeline_run(root, execdata);
+            pipeline_init_state(pipeline, (*root)->config_pipeline);
+            pipeline_run(root, execdata);
 
         }
         *root = (*root)->right;
@@ -228,7 +228,7 @@ static void         *exec_pipeline_exec_type_pthread(void *privdata) {
     return (NULL);
 }
 
-void                exec_pipeline(supstream_t *supstream) {
+void                pipeline(supstream_t *supstream) {
 
     list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
     ast_tree_t      **root = supstream->root;
@@ -259,7 +259,7 @@ void                exec_pipeline(supstream_t *supstream) {
 
     /* THREAD type_exec */
 
-    exec_pipeline_exec_type(root, execdata, &run_is_thread);
+    pipeline_await(root, execdata, &run_is_thread);
 
     /* SYNC type_exec */
 
@@ -269,7 +269,7 @@ void                exec_pipeline(supstream_t *supstream) {
     privdata_sync->root = root;
     privdata_sync->execdata = execdata;
     privdata_sync->fn = &run_is_await;
-    ret = pthread_create(&thread_sync_id, NULL, exec_pipeline_exec_type_pthread, (void *)privdata_sync);
+    ret = pthread_create(&thread_sync_id, NULL, pipeline_thread, (void *)privdata_sync);
     if (ret != 0) {
         g_printerr(PIPELINE_ERROR_RUN_THREAD_O,
                 GST_ELEMENT_NAME (execdata->pipeline));

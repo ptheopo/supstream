@@ -25,6 +25,6 @@ typedef struct  privdata_sync_s {
     gboolean    (*fn)(gchar *);
 }               privdata_sync_t;
 
-void            exec_pipeline(supstream_t *supstream);
+void            pipeline(supstream_t *supstream);
 
 #endif

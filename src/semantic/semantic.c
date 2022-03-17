@@ -51,7 +51,7 @@ supstream_t             *semantic(ast_tree_t **root) {
     ast_node_t          *priority_root = *root;
     ast_node_t          *tmp2 = *root;
     supstream_t         *supstream = (supstream_t *)malloc(sizeof(supstream_t));
-    config_t            *config = config_default_new();
+    config_t            *config = config_new_default();
     config_pipeline_t   *config_pipeline = NULL;
 
     *root = (*root)->left;
@@ -81,7 +81,7 @@ supstream_t             *semantic(ast_tree_t **root) {
 
                     /* Specific pipeline config */
 
-                    config_pipeline = config_pipeline_default_new();
+                    config_pipeline = config_new_default_pipeline();
                     semantic_config_pipeline(*root, &config_pipeline);
 
                     semantic_pipeline(root, config_pipeline);

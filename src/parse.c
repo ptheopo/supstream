@@ -5,7 +5,7 @@
  * or NULL for end block
  */
 
-static char             *push_fifo_to_ast(fifo_t **lines,
+static char             *parse_push_fifo_to_ast(fifo_t **lines,
         ast_tree_t      **root,
         list_t          *deepblock) {
 
@@ -43,7 +43,7 @@ static char             *push_fifo_to_ast(fifo_t **lines,
     return (NULL);
 }
 
-gboolean                core_token_parse(
+gboolean                parse_token(
         yaml_token_t    *token,
         ast_tree_t      **root,
         fifo_t          **lines,
@@ -78,7 +78,7 @@ gboolean                core_token_parse(
                 lstaddlast(deepblock, lst);
             } else {
                 /* insert new lines and new block (last line in fifo) */
-                block_name = push_fifo_to_ast(lines, root, *deepblock);
+                block_name = parse_push_fifo_to_ast(lines, root, *deepblock);
                 /* update current block */
                 lst = lstnew(block_name, sizeof(char) * (strlen(block_name) + 1));
                 lstaddlast(deepblock, lst);
@@ -86,7 +86,7 @@ gboolean                core_token_parse(
             break ;
         case YAML_BLOCK_END_TOKEN:
             /* insert last existing new lines */
-            push_fifo_to_ast(lines, root, *deepblock);
+            parse_push_fifo_to_ast(lines, root, *deepblock);
             /* update current block */
             lstdellast(deepblock);
             break ;
