@@ -76,6 +76,9 @@ linked_result_t         *semantic_block_elements(
             g_print(SEMANTIC_ADD_BIN_O,
                     scalar_node->right->str,
                     GST_OBJECT_NAME (pipeline));
+            
+            /* pad prob */
+
 
             /* create linked_element list */
             scalar_node_link = ast_iscalar_get_by_key(*node, "element_link");

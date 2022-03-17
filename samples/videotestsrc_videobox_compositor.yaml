@@ -1,0 +1,66 @@
+# This configuration show a video from demux MKV
+# gst-launch-1.0 \
+#   videotestsrc pattern=1 ! \
+#   video/x-raw,format=AYUV,framerate=\(fraction\)10/1,width=100,height=100 ! \
+#   videobox border-alpha=0 top=-70 bottom=-70 right=-220 ! \
+#   compositor name=comp sink_0::alpha=0.7 sink_1::alpha=0.9 background=transparent ! \
+#   videoconvert ! xvimagesink \
+#   videotestsrc ! \
+#   video/x-raw,format=AYUV,framerate=\(fraction\)5/1,width=320,height=240 ! comp.
+
+supstream:
+    zmq_path: "tcp://0.0.0.0:5557"
+
+pipelines:
+
+    videotestsrc_videobox_compositor:
+
+        init_state: play
+        type_exec: sync
+
+        elements:
+
+            videotestsrc:
+                element: videotestsrc
+                properties:
+                    pattern: 1
+                element_link: videobox
+
+            videobox:
+                element: videobox
+                properties:
+                    border-alpha: 0
+                    top: -70
+                    bottom: -220
+                    right: -220
+                element_link: compositor
+
+            compositor:
+                element: compositor
+                properties:
+                    name: comp
+                pad_prop:
+                    sink_0:
+                        pad: sink_0
+                        properties:
+                            alpha: 0.7
+                    sink_1:
+                        pad: sink_1
+                        properties:
+                            alpha: 0.9
+                properties:
+                    background: transparent
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: xvimagesink
+
+            xvimagesink:
+                element: xvimagesink
+                element_link: videotestsrc
+
+            videotestsrc:
+                element: videotestsrc
+                element_link: compositor
+
