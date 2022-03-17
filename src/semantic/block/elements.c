@@ -5,7 +5,7 @@ static void             free_props_block(void *content, size_t size) {
     free(content);
 }
 
-linked_result_t         *elements_block(
+linked_result_t         *semantic_block_elements(
         ast_node_t      **node,
         GHashTable      **symtable,
         GstPipeline     *pipeline) {
@@ -69,7 +69,7 @@ linked_result_t         *elements_block(
                     (*node)->left,
                     props_dp);
             if (properties != NULL)
-                properties_block(properties, element);
+                semantic_block_properties(properties, element);
 
             /* create bin */
             gst_bin_add(GST_BIN (pipeline), element);
@@ -80,9 +80,9 @@ linked_result_t         *elements_block(
             /* create linked_element list */
             scalar_node_link = ast_iscalar_get_by_key(*node, "element_link");
             if (scalar_node_link != NULL) {
-                linked_element_line(&linked_elements, element, scalar_node_link->right->str);
+                semantic_line_linked_element(&linked_elements, element, scalar_node_link->right->str);
             } else {
-                linked_element_line(&linked_elements, element, NULL);
+                semantic_line_linked_element(&linked_elements, element, NULL);
             }
 
             /* create caps */
@@ -90,14 +90,14 @@ linked_result_t         *elements_block(
                     (*node)->left,
                     caps_dp);
             if (caps != NULL)
-                caps_block(&linked_elements, caps);
+                semantic_block_caps(&linked_elements, caps);
 
             /* create linked_pad list */
             pads = ast_iblock_get(
                     (*node)->left,
                     pads_dp);
             if (pads != NULL)
-                pads_block(&linked_pads, pads, element);
+                semantic_block_pads(&linked_pads, pads, element);
 
             /* create element sym in symtable */
             g_hash_table_insert (*symtable, (*node)->str, element);

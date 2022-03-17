@@ -12,18 +12,18 @@ static void             linked_free(void *content, size_t size) {
     free(content);
 }
 
-static void             semantic_apply_pipeline(
+static void             semantic_pipeline(
                         ast_node_t **node,
                         config_pipeline_t *config_pipeline) {
 
-    /* used by elements_block for gst_add_bin fn */
+    /* used by semantic_block_elements for gst_add_bin fn */
     linked_result_t     *linked = NULL;
     GstPipeline         *pipeline = NULL;
     ast_node_t          **elements = NULL;
     ast_node_t          *tmp = *node;
     list_t              *elements_dp = lstnew("elements", sizeof(char) * 9);
 
-    pipeline_block(node);
+    semantic_block_pipelines(node);
     pipeline = (*node)->sdata->gstpipeline;
 
     (*node)->config_pipeline = config_pipeline;
@@ -33,7 +33,7 @@ static void             semantic_apply_pipeline(
             elements_dp);
     if (elements != NULL) {
         (*node)->symtable = g_hash_table_new (g_str_hash, g_str_equal);
-        linked = elements_block(elements, &((*node)->symtable), pipeline);
+        linked = semantic_block_elements(elements, &((*node)->symtable), pipeline);
         link_element_all(linked->elements);
         link_pad_all_always(&((*node)->symtable), linked->pads);
         link_pad_all_request(&((*node)->symtable), linked->pads);
@@ -45,7 +45,7 @@ static void             semantic_apply_pipeline(
 
 }
 
-supstream_t             *semantic_apply(ast_tree_t **root) {
+supstream_t             *semantic(ast_tree_t **root) {
 
     ast_node_t          *tmp = *root;
     ast_node_t          *priority_root = *root;
@@ -84,7 +84,7 @@ supstream_t             *semantic_apply(ast_tree_t **root) {
                     config_pipeline = config_pipeline_default_new();
                     semantic_config_pipeline(*root, &config_pipeline);
 
-                    semantic_apply_pipeline(root, config_pipeline);
+                    semantic_pipeline(root, config_pipeline);
 
                 }
                 *root = (*root)->right;

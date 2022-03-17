@@ -58,7 +58,7 @@ static int              core(const gchar *yaml_pipeline) {
         yaml_token_delete(&token);
     }
     if (root != NULL) {
-        supstream = semantic_apply(&root);
+        supstream = semantic(&root);
         exec_pipeline(supstream);
     }
     free(root);

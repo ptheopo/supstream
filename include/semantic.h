@@ -26,20 +26,20 @@
 
 void                    exit_block(ast_node_t **node);
 
-void                    pipeline_block(ast_node_t **node);
-void                    properties_block(ast_node_t *node, GstElement *element);
-void                    pads_block(
+void                    semantic_block_pipelines(ast_node_t **node);
+void                    semantic_block_properties(ast_node_t *node, GstElement *element);
+void                    semantic_block_pads(
                         list_t **linked_pads,
                         ast_node_t *node,
                         GstElement *element);
-void                    linked_element_line(
+void                    semantic_line_linked_element(
                         list_t **linked_elements,
                         GstElement *element,
                         char *element_name);
-void                    caps_block(
+void                    semantic_block_caps(
                         list_t **linked_elements,
                         ast_node_t *node);
-linked_result_t         *elements_block(
+linked_result_t         *semantic_block_elements(
                         ast_node_t **node,
                         GHashTable **symtable,
                         GstPipeline *pipeline);
@@ -60,6 +60,6 @@ typedef union           dtype_u {
     guint               guint;
 }                       dtype_t;
 
-supstream_t             *semantic_apply(ast_tree_t **root);
+supstream_t             *semantic(ast_tree_t **root);
 
 #endif

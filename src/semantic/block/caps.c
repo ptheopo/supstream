@@ -1,6 +1,6 @@
 #include "semantic.h"
 
-static void             caps_block_audio(list_t **linked_elements, ast_node_t *node) {
+static void             semantic_block_caps_audio(list_t **linked_elements, ast_node_t *node) {
 
     linked_element_t    *content = NULL;
 
@@ -45,7 +45,7 @@ static void             caps_block_audio(list_t **linked_elements, ast_node_t *n
     content->caps = caps;
 }
 
-static void             caps_block_video(list_t **linked_elements, ast_node_t *node) {
+static void             semantic_block_caps_video(list_t **linked_elements, ast_node_t *node) {
 
     linked_element_t    *content = NULL;
 
@@ -102,7 +102,7 @@ static void             caps_block_video(list_t **linked_elements, ast_node_t *n
     content->caps = caps;
 }
 
-void                    caps_block(list_t **linked_elements, ast_node_t *node) {
+void                    semantic_block_caps(list_t **linked_elements, ast_node_t *node) {
 
     char                *media_type = AST_GET_VALUE(node, "media_type");
 
@@ -112,8 +112,8 @@ void                    caps_block(list_t **linked_elements, ast_node_t *node) {
     }
 
     if (strncmp(media_type, "video", 5) == 0) {
-        caps_block_video(linked_elements, node);
+        semantic_block_caps_video(linked_elements, node);
     } else if (strncmp(media_type, "audio", 5) == 0) {
-        caps_block_audio(linked_elements, node);
+        semantic_block_caps_audio(linked_elements, node);
     }
 }

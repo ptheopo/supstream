@@ -1,6 +1,6 @@
 #include "semantic.h"
 
-void                    pipeline_block(ast_node_t **node) {
+void                    semantic_block_pipelines(ast_node_t **node) {
 
     char                *pipeline_name = (*node)->str;
     GstPipeline         *pipeline = NULL;

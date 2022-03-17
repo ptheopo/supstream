@@ -159,8 +159,10 @@ RUN git clone https://gitlab.com/ouzb64ty/gstreamer-plugin.git gstreamer-plugin 
     && meson builddir \
     && ninja -C builddir install
 
+RUN echo "OK"
+
 # Supstream
-RUN git clone https://gitlab.com/ouzb64ty/supstream.git supstream
+RUN git clone https://gitlab.com/ouzb64ty/supstream.git
 
 # Supstream-gateway
 RUN git clone https://gitlab.com/ouzb64ty/supstream-gateway.git
@@ -186,8 +188,4 @@ CMD cd supstream \
     && make \
     && cd .. \
     && figlet "Supstream Docker Dev" \
-    && echo "> Convert your pipeline to PNG graph: dot -Tpng <pipeline.dot> > <output.png>" \
-    && echo "(Dot files automatically saved in /app/pipelines directory)" \
-    && echo "> Set of sample pipelines available in /app/supstream/samples directory\n" \
-    && echo "Supstream Docker Dev is just for easy supstream development\n" \
     && fish

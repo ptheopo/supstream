@@ -2,7 +2,7 @@
 
 /* pads block (save pad linking name in the future..) */
 
-static void             pads_block_one(
+static void             semantic_block_pads_one(
                         list_t **linked_pads,
                         ast_node_t *node,
                         GstElement *element) {
@@ -31,14 +31,14 @@ static void             pads_block_one(
     ast_deepblock_free(deepblock);
 }
 
-void                    pads_block(
+void                    semantic_block_pads(
                         list_t **linked_pads,
                         ast_node_t *node,
                         GstElement *element) {
 
     node = node->left;
     while (node) {
-        pads_block_one(linked_pads, node, element);
+        semantic_block_pads_one(linked_pads, node, element);
         node = node->right;
     }
 }

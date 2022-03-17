@@ -1,6 +1,6 @@
 #include "semantic.h"
 
-void                    properties_block(ast_node_t *node, GstElement *element) {
+void                    semantic_block_properties(ast_node_t *node, GstElement *element) {
 
     GObjectClass        *objClass = G_OBJECT_GET_CLASS(element);
     const gchar         *type_name = NULL;

@@ -1,6 +1,6 @@
 #include "semantic.h"
 
-void                    linked_element_line(
+void                    semantic_line_linked_element(
                         list_t **linked_elements,
                         GstElement *element,
                         char *element_name) {
