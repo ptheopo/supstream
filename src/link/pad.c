@@ -212,3 +212,43 @@ void                    link_pad_all_sometimes(
 
     lstdel(&element_connect, link_pad_element_connect_free);
 }
+
+void                link_pad_props(list_t *pad_props) {
+
+    GstPad          *pad = NULL;
+    ast_node_t      *node_props = NULL;
+    ast_node_t      *scalar_prop = NULL;
+    pad_props_t     *content = NULL;
+
+    if (pad_props == NULL)
+        return ;
+
+    content = (pad_props_t *)pad_props->content;
+    while (pad_props != NULL) {
+
+        /* Get pad */
+        pad = gst_element_get_static_pad(content->element, content->pad_name);
+
+        /* Update properties */
+        node_props = content->props;
+        node_props = node_props->left;
+        while (node_props != NULL) {
+
+            if (ast_node_is_iline(node_props)) {
+
+                scalar_prop = node_props->left;
+                
+                /* Just convert to int for the moment.. */
+                g_object_set (pad, scalar_prop->left->str, atoi(scalar_prop->right->str), NULL);
+
+            }
+
+            node_props = node_props->right;
+
+        }
+
+        pad_props = pad_props->next;
+
+    }
+
+}

@@ -1,6 +1,7 @@
 #ifndef LINK_H
 # define LINK_H
 
+# include "ast.h"
 # include "list.h"
 # include "def.h"
 
@@ -29,9 +30,16 @@ typedef struct      linked_pad_s {
     char            *dst_pad_name;
 }                   linked_pad_t;
 
+typedef struct      pad_props_s {
+    GstElement      *element;
+    char            *pad_name;
+    ast_node_t      *props;
+}                   pad_props_t;
+
 typedef struct      linked_result_s {
     list_t          *elements;
     list_t          *pads;
+    list_t          *pad_props;
 }                   linked_result_t;
 
 typedef struct      link_data_s {
@@ -49,5 +57,6 @@ void                link_pad_all_sometimes(
                     GHashTable **symtable,
                     list_t *linked_pads);
 void                link_element_all(list_t *linked_elements);
+void                link_pad_props(list_t *pad_props);
 
 #endif

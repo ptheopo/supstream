@@ -43,24 +43,41 @@ void                    semantic_block_pads(
     }
 }
 
-static void             semantic_block_pad_prop_one(
+static void             semantic_block_pad_props_one(
+                        list_t **pad_props,
                         ast_node_t *node,
                         GstElement *element) {
 
-    ast_node_t          *pad = ast_iscalar_get_by_key(node, "pad");
-    list_t              *prop_deepblock = lstnew("properties", sizeof(char) * 11);
-    ast_node_t          *prop = ast_iblock_get(node, prop_deepblock);
-    /* get multiple properties .. */
+    list_t              *props_deepblock = lstnew("properties", sizeof(char) * 11);
+    pad_props_t         *pad_props_content = NULL;
+    ast_node_t          *scalar_pad = ast_iscalar_get_by_key(node, "pad");
+    list_t              *pad_props_lst = NULL;
+    ast_node_t          *props = ast_iblock_get(node, props_deepblock);
+
+    pad_props_content = (pad_props_t *)malloc(sizeof(pad_props_t));
+
+    if (pad_props_content == NULL || props == NULL) {
+        free(pad_props_content);
+        return ;
+    }
+
+    pad_props_content->element = element;
+    pad_props_content->pad_name = scalar_pad->right->str;
+    pad_props_content->props = props;
+
+    pad_props_lst = lstnew(pad_props_content, sizeof(pad_props_t));
+    lstaddlast(pad_props, pad_props_lst);
+    ast_deepblock_free(props_deepblock);
 }
 
-void                    semantic_block_pad_prop(
+void                    semantic_block_pad_props(
+                        list_t **pad_props,
                         ast_node_t *node,
                         GstElement *element) {
 
     node = node->left;
     while (node) {
-        semantic_block_pad_prop_one(node, element);
+        semantic_block_pad_props_one(pad_props, node, element);
         node = node->right;
     }
 }
-

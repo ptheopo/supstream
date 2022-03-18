@@ -15,16 +15,17 @@ linked_result_t         *semantic_block_elements(
     ast_node_t          *tmp = *node;
     ast_node_t          *properties = NULL;
     ast_node_t          *pads = NULL;
-    ast_node_t          *pad_prop = NULL;
+    ast_node_t          *pad_props = NULL;
     ast_node_t          *caps = NULL;
     GstElement          *element = NULL;
     /* specify props block inside all elements */
     list_t              *props_dp = lstnew("properties", sizeof(char) * 11);
     list_t              *pads_dp = lstnew("pad_link", sizeof(char) * 9);
-    list_t              *pad_prop_deepblock = lstnew("pad_prop", sizeof(char) * 9);
+    list_t              *pad_props_dp = lstnew("pad_props", sizeof(char) * 10);
     list_t              *caps_dp = lstnew("caps", sizeof(char) * 5);
     list_t              *linked_elements = NULL;
     list_t              *linked_pads = NULL;
+    list_t              *pad_props_lst = NULL;
     linked_result_t     *result = (linked_result_t *)malloc(sizeof(linked_result_t));
 
     if (result == NULL)
@@ -79,14 +80,6 @@ linked_result_t         *semantic_block_elements(
                     scalar_node->right->str,
                     GST_OBJECT_NAME (pipeline));
             
-            /* pad prob */
-            pad_prop = ast_iblock_get(
-                    (*node)->left,
-                    pad_prop_deepblock);
-            if (pads != NULL)
-                semantic_block_pad_prob(pad_prob, element);
-
-
             /* create linked_element list */
             scalar_node_link = ast_iscalar_get_by_key(*node, "element_link");
             if (scalar_node_link != NULL) {
@@ -109,6 +102,14 @@ linked_result_t         *semantic_block_elements(
             if (pads != NULL)
                 semantic_block_pads(&linked_pads, pads, element);
 
+            /* create pad_props list */
+            pad_props = ast_iblock_get(
+                    (*node)->left,
+                    pad_props_dp);
+            if (pad_props != NULL)
+                semantic_block_pad_props(&pad_props_lst, pad_props, element);
+
+
             /* create element sym in symtable */
             g_hash_table_insert (*symtable, (*node)->str, element);
         }
@@ -123,6 +124,7 @@ linked_result_t         *semantic_block_elements(
     *node = tmp;
     result->elements = linked_elements;
     result->pads = linked_pads;
+    result->pad_props = pad_props_lst;
 
     return (result);
 }

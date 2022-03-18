@@ -38,6 +38,7 @@ static void             semantic_pipeline(
         link_pad_all_always(&((*node)->symtable), linked->pads);
         link_pad_all_request(&((*node)->symtable), linked->pads);
         link_pad_all_sometimes(&((*node)->symtable), linked->pads);
+        link_pad_props(linked->pad_props);
         lstdel(&(linked->elements), &linked_free);
         //lstdel(&(linked->pads), &linked_free);
     }

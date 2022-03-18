@@ -32,6 +32,10 @@ void                    semantic_block_pads(
                         list_t **linked_pads,
                         ast_node_t *node,
                         GstElement *element);
+void                    semantic_block_pad_props(
+                        list_t **pad_props,
+                        ast_node_t *node,
+                        GstElement *element);
 void                    semantic_line_linked_element(
                         list_t **linked_elements,
                         GstElement *element,

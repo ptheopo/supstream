@@ -31,15 +31,13 @@ pipelines:
                 properties:
                     border-alpha: 0
                     top: -70
-                    bottom: -220
+                    bottom: -70
                     right: -220
                 element_link: compositor
 
             compositor:
                 element: compositor
-                properties:
-                    name: comp
-                pad_prop:
+                pad_props:
                     sink_0:
                         pad: sink_0
                         properties:
@@ -48,8 +46,8 @@ pipelines:
                         pad: sink_1
                         properties:
                             alpha: 0.9
-                properties:
-                    background: transparent
+                #properties:
+                    #background: transparent
                 element_link: videoconvert
 
             videoconvert:
@@ -58,9 +56,12 @@ pipelines:
 
             xvimagesink:
                 element: xvimagesink
-                element_link: videotestsrc
 
-            videotestsrc:
+            videotestsrc_2:
                 element: videotestsrc
-                element_link: compositor
-
+                pad_link:
+                    pad_comp:
+                        from: src
+                        to:
+                            name: compositor
+                            pad: sink_1
