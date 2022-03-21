@@ -239,7 +239,10 @@ void                link_pad_props(list_t *pad_props) {
                 scalar_prop = node_props->left;
                 
                 /* Just convert to int for the moment.. */
-                g_object_set (pad, scalar_prop->left->str, atoi(scalar_prop->right->str), NULL);
+                if (strchr(scalar_prop->right->str, '.'))
+                    g_object_set (pad, scalar_prop->left->str, atof(scalar_prop->right->str), NULL);
+                else
+                    g_object_set (pad, scalar_prop->left->str, atoi(scalar_prop->right->str), NULL);
 
             }
 
