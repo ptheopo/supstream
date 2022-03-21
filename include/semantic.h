@@ -62,6 +62,7 @@ typedef union           dtype_u {
     gboolean            gboolean;
     gint                gint;
     guint               guint;
+    const GValue        *gvalue;
 }                       dtype_t;
 
 supstream_t             *semantic(ast_tree_t **root);

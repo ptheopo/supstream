@@ -53,6 +53,12 @@ void                    semantic_block_properties(ast_node_t *node, GstElement *
                 type.guint = (guint)atoi(value);
                 g_object_set(G_OBJECT (element), property, type.guint, NULL);
 
+            } else {
+
+                /* gint */
+                type.gint = (gint)atoi(value);
+                g_object_set(G_OBJECT (element), property, type.gint, NULL);
+
             }
 
         }
