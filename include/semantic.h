@@ -62,6 +62,7 @@ typedef union           dtype_u {
     gboolean            gboolean;
     gint                gint;
     guint               guint;
+    GstCaps             *gstcaps;
     const GValue        *gvalue;
 }                       dtype_t;
 

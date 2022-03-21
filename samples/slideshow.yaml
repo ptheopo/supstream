@@ -19,8 +19,7 @@ pipelines:
                 properties:
                     location: "/tmp/images/image-%03d.png"
                     index: 0
-                caps:
-                    media_type: "image/png"
+                    caps: "image/png,framerate=(fraction)12/1"
                 element_link: pngdec
 
             pngdec:

@@ -60,6 +60,12 @@ void                    semantic_block_properties(ast_node_t *node, GstElement *
                 type.guint = (guint)atoi(value);
                 g_object_set(G_OBJECT (element), property, type.guint, NULL);
 
+            } else if (strcmp(type_name, "GstCaps") == 0) {
+
+                /* GstCaps */
+                type.gstcaps = (GstCaps *)gst_caps_from_string(value);
+                g_object_set(G_OBJECT (element), property, type.gstcaps, NULL);
+
             } else {
 
                 /* gint */
