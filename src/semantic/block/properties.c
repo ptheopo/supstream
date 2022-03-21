@@ -10,8 +10,15 @@ void                    semantic_block_properties(ast_node_t *node, GstElement *
     dtype_t             type;
     GParamSpec          *spec = NULL;
 
+    if (!node->left)
+        return ;
+
     node = node->left;
     do {
+
+        if (!node || !node->left)
+            return ;
+
         property = node->left->left->str;
         value = node->left->right->str;
         spec = g_object_class_find_property(objClass, property);
