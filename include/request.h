@@ -28,6 +28,12 @@ typedef struct  request_s {
 }               request_t;
 
 /*
+ * These functions are usefull for request parsing or others
+ */
+
+GstElement      *request_get_element(gchar *element, ast_node_t *root);
+
+/*
  * These functions can be called in an other update context
  */
 
