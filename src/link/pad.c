@@ -65,7 +65,6 @@ void                    link_pad_all_always(
     if (linked_pads) {
         while (linked_pads) {
 
-
             content = (linked_pad_t *)linked_pads->content;
 
             /* Get pads */
@@ -223,8 +222,9 @@ void                link_pad_props(list_t *pad_props) {
     if (pad_props == NULL)
         return ;
 
-    content = (pad_props_t *)pad_props->content;
     while (pad_props != NULL) {
+
+        content = (pad_props_t *)pad_props->content;
 
         /* Get pad */
         pad = gst_element_get_static_pad(content->element, content->pad_name);
