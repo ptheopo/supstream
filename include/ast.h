@@ -127,8 +127,10 @@ ast_node_t                      *ast_iscalar_get_by_key(
 ast_node_t                      **aast_iscalar_get_by_key(
                                 ast_node_t **node,
                                 char *key);
+void                            ast_iscalar_set_simple(ast_node_t **node, char *key, char *value);
 char                            *ast_iscalar_value(ast_node_t *scalar_node);
 ast_node_t                      *ast_iscalar_new(ast_node_t *key, ast_node_t *value);
+ast_node_t                      *ast_iscalar_new_simple(char *key, char *value);
 
 /* iLine / iBlock functions */
 

@@ -4,6 +4,7 @@
 # define NB_REQUEST 13
 
 # include <cjson/cJSON.h>
+# include <math.h>
 # include <stdio.h>
 
 # include "ast.h"

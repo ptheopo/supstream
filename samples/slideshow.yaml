@@ -16,7 +16,7 @@ pipelines:
                 element: multifilesrc
                 properties:
                     location: "/tmp/images/image-%03d.png"
-                    index: 0
+                    index: 1
                     caps: "image/png,framerate=(fraction)12/1"
                 element_link: pngdec
 

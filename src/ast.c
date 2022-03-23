@@ -112,6 +112,43 @@ ast_node_t      **aast_iscalar_get_by_key(
     return (NULL);
 }
 
+ast_node_t      *ast_iscalar_new_simple(char *key, char *value) {
+
+    ast_node_t  *new_key_node = ast_node_new(key, iKEY);
+    ast_node_t  *new_value_node = ast_node_new(value, iVALUE);
+    ast_node_t  *new_scalar_node = ast_iscalar_new(new_key_node, new_value_node);
+
+    return (new_scalar_node);
+}
+
+/* Considering node variable is the parent block */
+
+void            ast_iscalar_set_simple(ast_node_t **node, char *key, char *value) {
+
+    list_t      *deepblock = NULL;
+    ast_node_t  **scalar = aast_iscalar_get_by_key(node, key);
+    ast_node_t  *new_scalar = NULL;
+    ast_node_t  *new_iline = NULL;
+
+    if (scalar == NULL) {
+
+        /* Create new scalar */
+        deepblock = ast_deepblock_create(1, (*node)->str);
+        new_scalar = ast_iscalar_new_simple(key, value);
+        new_iline = ast_iline_new(new_scalar);
+        if (new_scalar == NULL || new_iline == NULL || deepblock == NULL)
+            return ;
+        ast_ilb_add(node, new_iline, deepblock);
+
+    } else {
+
+        /* Set scalar */
+        free((*scalar)->right->str);
+        (*scalar)->right->str = g_strdup(value);
+
+    }
+}
+
 static void     ast_deepblock_free_del(void *content, size_t size) {
 
     (void)size;

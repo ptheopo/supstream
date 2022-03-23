@@ -30,6 +30,7 @@ link_libraries(${UUID_LIBRARIES})
 link_libraries(${LIBZMQ_LIBRARIES})
 link_libraries(-lpthread)
 link_libraries(-lcjson)
+link_libraries(-lm)
 
 # Sources
 
