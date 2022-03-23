@@ -48,10 +48,12 @@ static void             semantic_block_caps_audio(list_t **linked_elements, ast_
 static void             semantic_block_caps_video(list_t **linked_elements, ast_node_t *node) {
 
     linked_element_t    *content = NULL;
+    list_t              *linked_elements_ptr = *linked_elements;
 
     char                *media_type = AST_GET_VALUE (node, "media_type");
     char                *format = AST_GET_VALUE (node, "format");
     char                *height = AST_GET_VALUE (node, "height");
+    char                *width = AST_GET_VALUE (node, "width");
     char                *framerate = AST_GET_VALUE (node, "framerate");
     char                *max_framerate = AST_GET_VALUE (node, "max_framerate");
     char                *views = AST_GET_VALUE (node, "views");
@@ -72,23 +74,25 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
 
     if (format != NULL) {
         gst_caps_set_simple(caps, "format", G_TYPE_STRING, (gchar *)format, NULL);
-    } else if (height != NULL) {
+    } if (height != NULL) {
         gst_caps_set_simple(caps, "height", G_TYPE_INT, (gint)atoi(height), NULL);
-    } else if (framerate != NULL) {
+    } if (width != NULL) {
+        gst_caps_set_simple(caps, "width", G_TYPE_INT, (gint)atoi(width), NULL);
+    } if (framerate != NULL) {
         //gst_caps_set_simple(caps, "framerate", G_TYPE_FRACTION, (gint)atoi(framerate), NULL);
-    } else if (max_framerate != NULL) {
+    } if (max_framerate != NULL) {
         //gst_caps_set_simple(caps, "max-framerate", G_TYPE_FRACTION, (gint)atoi(max_framerate), NULL);
-    } else if (views != NULL) {
+    } if (views != NULL) {
         gst_caps_set_simple(caps, "views", G_TYPE_INT, (gint)atoi(views), NULL);
-    } else if (interlace_mode != NULL) {
+    } if (interlace_mode != NULL) {
         gst_caps_set_simple(caps, "interlace-mode", G_TYPE_STRING, (gchar *)interlace_mode, NULL);
-    } else if (chroma_site != NULL) {
+    } if (chroma_site != NULL) {
         gst_caps_set_simple(caps, "chroma-site", G_TYPE_STRING, (gchar *)chroma_site, NULL);
-    } else if (pixel_aspect_ratio != NULL) {
+    } if (pixel_aspect_ratio != NULL) {
         //gst_caps_set_simple(caps, "pixel-aspect-ratio", G_TYPE_FRACTION, (gint)atoi(height), NULL);
-    } else if (h263version != NULL) {
+    } if (h263version != NULL) {
         gst_caps_set_simple(caps, "h263version", G_TYPE_STRING, (gchar *)h263version, NULL);
-    } else if (depth != NULL) {
+    } if (depth != NULL) {
         gst_caps_set_simple(caps, "depth", G_TYPE_INT, (gint)atoi(depth), NULL);
     }
 
@@ -100,6 +104,8 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     
     content = (linked_element_t *)(*linked_elements)->content;
     content->caps = caps;
+
+    *linked_elements = linked_elements_ptr;
 }
 
 void                    semantic_block_caps(list_t **linked_elements, ast_node_t *node) {

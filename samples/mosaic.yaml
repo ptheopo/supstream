@@ -103,6 +103,10 @@ pipelines:
                 element: videotestsrc
                 properties:
                     pattern: 2
+                caps:
+                    media_type: video/x-raw
+                    width: 650
+                    height: 370
                 pad_link:
 
                     link_panel:
