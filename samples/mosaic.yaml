@@ -1,3 +1,7 @@
+##############
+# GST LAUNCH #
+##############
+
 # gst-launch-1.0 -e videomixer name=mix \                                               
 # sink_0::xpos=0 sink_0::ypos=0 \
 # sink_1::xpos=10 sink_1::ypos=10 \
@@ -11,10 +15,23 @@
 # videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_3 \
 # videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_4
 
+##########
+# CONFIG #
+##########
+
 supstream:
     zmq_path: "tcp://0.0.0.0:5557"
 
+
+#############
+# PIPELINES #
+#############
+
 pipelines:
+
+    ##################
+    # VIDEO PIPELINE #
+    ##################
 
     mosaic_video:
 
@@ -23,47 +40,50 @@ pipelines:
 
         elements:
 
+            #########
+            # MIXER #
+            #########
+
             videomixer:
 
                 element: videomixer
+                element_link: videoconvert
                 pad_props:
 
+                    ##############
+                    # 4/4 MOSAIC #
+                    ##############
+
                     panel:
-                        description: "This is the window container or nather sink_0"
                         pad: sink_0
                         properties:
                             xpos: 0
                             ypos: 0
 
                     top_left:
-                        description: "Top left video or nather sink_1"
                         pad: sink_1
                         properties:
                             xpos: 10
                             ypos: 10
 
                     top_right:
-                        description: "Top right video or nather sink_2"
                         pad: sink_2
                         properties:
                             xpos: 320
                             ypos: 10
 
                     bottom_left:
-                        description: "Top left video or nather sink_3"
                         pad: sink_3
                         properties:
                             xpos: 10
                             ypos: 180
 
                     bottom_right:
-                        description: "Top left video or nather sink_4"
                         pad: sink_4
                         properties:
                             xpos: 320
                             ypos: 180
 
-                element_link: videoconvert
 
             videoconvert:
 
@@ -73,6 +93,10 @@ pipelines:
             xvimagesink:
                 
                 element: xvimagesink
+
+            #########
+            # PANEL #
+            #########
 
             videotestsrc_panel:
 
@@ -91,11 +115,29 @@ pipelines:
                             name: videomixer
                             pad: sink_0
 
+            ################
+            # TOP LEFT 1/4 #
+            ################
+            
             videotestsrc_top_left:
 
                 element: videotestsrc
                 properties:
                     pattern: 1
+                element_link: videoconvert_top_left
+
+            videoconvert_top_left:
+
+                element: videoconvert
+                element_link: videoscale_top_left
+
+            videoscale_top_left:
+
+                element: videoscale
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
                 pad_link:
 
                     link_top_left:
@@ -104,11 +146,30 @@ pipelines:
                             name: videomixer
                             pad: sink_1
 
+
+            #################
+            # TOP RIGHT 2/4 #
+            #################
+
             videotestsrc_top_right:
 
                 element: videotestsrc
                 properties:
                     pattern: 0
+                element_link: videoconvert_top_right
+
+            videoconvert_top_right:
+
+                element: videoconvert
+                element_link: videoscale_top_right
+
+            videoscale_top_right:
+
+                element: videoscale
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
                 pad_link:
 
                     link_top_right:
@@ -117,11 +178,29 @@ pipelines:
                             name: videomixer
                             pad: sink_2
 
+
+            ###################
+            # BOTTOM LEFT 3/4 #
+            ###################
+
             videotestsrc_bottom_left:
 
                 element: videotestsrc
                 properties:
-                    pattern: 5
+                    pattern: 0
+
+            videoconvert_bottom_left:
+
+                element: videoconvert
+                element_link: videoscale_bottom_left
+
+            videoscale_bottom_left:
+
+                element: videoscale
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
                 pad_link:
 
                     link_bottom_left:
@@ -130,11 +209,29 @@ pipelines:
                             name: videomixer
                             pad: sink_3
 
+
+            ####################
+            # BOTTOM RIGHT 4/4 #
+            ####################
+
             videotestsrc_bottom_right:
 
                 element: videotestsrc
                 properties:
-                    pattern: 7
+                    pattern: 0
+
+            videoconvert_bottom_right:
+
+                element: videoconvert
+                element_link: videoscale_bottom_right
+
+            videoscale_bottom_right:
+
+                element: videoscale
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
                 pad_link:
 
                     link_bottom_right:
@@ -142,3 +239,7 @@ pipelines:
                         to:
                             name: videomixer
                             pad: sink_4
+    
+    ##################
+    # AUDIO PIPELINE #
+    ##################
