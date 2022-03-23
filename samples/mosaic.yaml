@@ -1,0 +1,144 @@
+# gst-launch-1.0 -e videomixer name=mix \                                               
+# sink_0::xpos=0 sink_0::ypos=0 \
+# sink_1::xpos=10 sink_1::ypos=10 \
+# sink_2::xpos=320 sink_2::ypos=10 \
+# sink_3::xpos=10 sink_3::ypos=180 \
+# sink_4::xpos=320 sink_4::ypos=180 \
+# ! videoconvert ! xvimagesink \
+# videotestsrc pattern=snow ! video/x-raw,width=650,height=370 ! mix.sink_0 \
+# videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_1 \
+# videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_2 \
+# videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_3 \
+# videotestsrc ! videoconvert ! videoscale ! video/x-raw,width=320,height=180 ! mix.sink_4
+
+supstream:
+    zmq_path: "tcp://0.0.0.0:5557"
+
+pipelines:
+
+    mosaic_video:
+
+        init_state: play
+        type_exec: sync
+
+        elements:
+
+            videomixer:
+
+                element: videomixer
+                pad_props:
+
+                    panel:
+                        description: "This is the window container or nather sink_0"
+                        pad: sink_0
+                        properties:
+                            xpos: 0
+                            ypos: 0
+
+                    top_left:
+                        description: "Top left video or nather sink_1"
+                        pad: sink_1
+                        properties:
+                            xpos: 10
+                            ypos: 10
+
+                    top_right:
+                        description: "Top right video or nather sink_2"
+                        pad: sink_2
+                        properties:
+                            xpos: 320
+                            ypos: 10
+
+                    bottom_left:
+                        description: "Top left video or nather sink_3"
+                        pad: sink_3
+                        properties:
+                            xpos: 10
+                            ypos: 180
+
+                    bottom_right:
+                        description: "Top left video or nather sink_4"
+                        pad: sink_4
+                        properties:
+                            xpos: 320
+                            ypos: 180
+
+                element_link: videoconvert
+
+            videoconvert:
+
+                element: videoconvert
+                element_link: xvimagesink
+
+            xvimagesink:
+                
+                element: xvimagesink
+
+            videotestsrc_panel:
+
+                element: videotestsrc
+                properties:
+                    pattern: 2
+                caps:
+                    media_type: video/x-raw
+                    width: 650
+                    height: 370
+                pad_link:
+
+                    link_panel:
+                        from: src
+                        to:
+                            name: videomixer
+                            pad: sink_0
+
+            videotestsrc_top_left:
+
+                element: videotestsrc
+                properties:
+                    pattern: 1
+                pad_link:
+
+                    link_top_left:
+                        from: src
+                        to:
+                            name: videomixer
+                            pad: sink_1
+
+            videotestsrc_top_right:
+
+                element: videotestsrc
+                properties:
+                    pattern: 0
+                pad_link:
+
+                    link_top_right:
+                        from: src
+                        to:
+                            name: videomixer
+                            pad: sink_2
+
+            videotestsrc_bottom_left:
+
+                element: videotestsrc
+                properties:
+                    pattern: 5
+                pad_link:
+
+                    link_bottom_left:
+                        from: src
+                        to:
+                            name: videomixer
+                            pad: sink_3
+
+            videotestsrc_bottom_right:
+
+                element: videotestsrc
+                properties:
+                    pattern: 7
+                pad_link:
+
+                    link_bottom_right:
+                        from: src
+                        to:
+                            name: videomixer
+                            pad: sink_4
