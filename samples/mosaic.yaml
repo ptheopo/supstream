@@ -102,11 +102,16 @@ pipelines:
 
                 element: videotestsrc
                 properties:
-                    pattern: 2
+                    pattern: 1
                 caps:
                     media_type: video/x-raw
                     width: 650
                     height: 370
+                element_link: videoconvert_panel
+
+            videoconvert_panel:
+
+                element: videoconvert
                 pad_link:
 
                     link_panel:
@@ -114,6 +119,8 @@ pipelines:
                         to:
                             name: videomixer
                             pad: sink_0
+
+
 
             ################
             # TOP LEFT 1/4 #
@@ -130,6 +137,11 @@ pipelines:
 
                 element: videoconvert
                 element_link: videoscale_top_left
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
+
 
             videoscale_top_left:
 
@@ -158,6 +170,10 @@ pipelines:
 
                 element: videoconvert
                 element_link: videoscale_top_right
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
 
             videoscale_top_right:
 
@@ -186,6 +202,10 @@ pipelines:
 
                 element: videoconvert
                 element_link: videoscale_bottom_left
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
 
             videoscale_bottom_left:
 
@@ -214,6 +234,10 @@ pipelines:
 
                 element: videoconvert
                 element_link: videoscale_bottom_right
+                caps:
+                    media_type: video/x-raw
+                    width: 320
+                    height: 180
 
             videoscale_bottom_right:
 
