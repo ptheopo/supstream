@@ -9,10 +9,12 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <time.h>
 # include <unistd.h>
 
 # include "ast.h"
 # include "config.h"
+# include "ccronexpr.h"
 # include "def.h"
 # include "link.h"
 # include "supstream.h"

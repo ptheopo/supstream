@@ -16,6 +16,7 @@ linked_result_t         *semantic_block_elements(
     ast_node_t          *properties = NULL;
     ast_node_t          *pads = NULL;
     ast_node_t          *pad_props = NULL;
+    ast_node_t          *start_time = NULL;
     ast_node_t          *caps = NULL;
     GstElement          *element = NULL;
     /* specify props block inside all elements */
@@ -27,6 +28,10 @@ linked_result_t         *semantic_block_elements(
     list_t              *linked_pads = NULL;
     list_t              *pad_props_lst = NULL;
     linked_result_t     *result = (linked_result_t *)malloc(sizeof(linked_result_t));
+    cron_expr           expr;
+    const char          *err = NULL;
+    time_t              cur = time(NULL);
+    time_t              next = cron_next(&expr, cur);
 
     if (result == NULL)
         exit(1);
@@ -109,6 +114,17 @@ linked_result_t         *semantic_block_elements(
             if (pad_props != NULL)
                 semantic_block_pad_props(&pad_props_lst, pad_props, element);
 
+            /* start time */
+            start_time = ast_iscalar_get_by_key(*node, "start_time");
+            if (start_time != NULL) {
+
+                memset(&expr, 0, sizeof(expr));
+                cron_parse_expr(start_time->right->str, &expr, &err);
+                if (!err) {
+                    gst_element_set_start_time(element, difftime(next, cur));
+                }
+
+            }
 
             /* create element sym in symtable */
             g_hash_table_insert (*symtable, (*node)->str, element);

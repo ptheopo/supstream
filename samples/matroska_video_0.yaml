@@ -13,6 +13,7 @@ pipelines:
 
         elements:
             souphttpsrc:
+                start_time: "*/1 * * * *"
                 element: souphttpsrc
                 properties:
                     location: https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm
