@@ -28,10 +28,6 @@ linked_result_t         *semantic_block_elements(
     list_t              *linked_pads = NULL;
     list_t              *pad_props_lst = NULL;
     linked_result_t     *result = (linked_result_t *)malloc(sizeof(linked_result_t));
-    cron_expr           expr;
-    const char          *err = NULL;
-    time_t              cur = time(NULL);
-    time_t              next = cron_next(&expr, cur);
 
     if (result == NULL)
         exit(1);
@@ -118,10 +114,18 @@ linked_result_t         *semantic_block_elements(
             start_time = ast_iscalar_get_by_key(*node, "start_time");
             if (start_time != NULL) {
 
+                cron_expr           expr;
+                const char          *err = NULL;
                 memset(&expr, 0, sizeof(expr));
                 cron_parse_expr(start_time->right->str, &expr, &err);
                 if (!err) {
-                    gst_element_set_start_time(element, difftime(next, cur));
+                    time_t              cur = time(NULL);
+                    time_t              next = cron_next(&expr, cur);
+                    unsigned long next_diff = difftime(next, 0);
+                    unsigned long cur_diff = difftime(cur, 0);
+                    gst_element_set_start_time(element, (GstClockTime)difftime(next_diff, cur_diff) * GST_SECOND);
+                } else {
+                    g_print(SEMANTIC_ERROR_CRONNEXPR_O, err);
                 }
 
             }
