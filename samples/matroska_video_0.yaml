@@ -11,7 +11,7 @@ pipelines:
         init_state: play
         type_exec: sync
         auto_restart: true
-        set_delay: "2022-04-07 21:41:00"
+        set_delay: "2022-04-07 22:00:00"
 
         elements:
             souphttpsrc:

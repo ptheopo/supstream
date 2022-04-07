@@ -122,6 +122,8 @@ void                            semantic_config_set_delay(char *timezone, config
     time_t                      delay;
     time_t                      current;
     char                        *tz_env = NULL;
+    double                      diff;
+    char                        *ret = 0;
 
     /* Need to verify Timezone */
     tz_env = g_strjoin("=", "TZ", timezone, NULL);
@@ -133,12 +135,23 @@ void                            semantic_config_set_delay(char *timezone, config
     tzset();
 
     /* Get set_delay and current timestamp */
-    strptime(config_pipeline->set_delay, "%Y-%m-%d %H:%M:%S", &tm);
+    ret = strptime(config_pipeline->set_delay, "%Y-%m-%d %H:%M:%S", &tm);
+    if (ret == NULL) {
+        g_printerr(SEMANTIC_ERROR_DATETIME_FORMAT_O);
+        return ;
+    }
     delay = mktime(&tm);
     current = time(NULL);
 
-    /* Set delay */
-    gst_pipeline_set_delay(pipeline, difftime(delay, current) * GST_SECOND);
+    diff = difftime(delay, current);
+    if (diff >= 0) {
+
+        /* Set delay */
+        gst_pipeline_set_delay(pipeline, difftime(delay, current) * GST_SECOND);
+        g_print(SEMANTIC_DATETIME_O, GST_ELEMENT_NAME(pipeline), config_pipeline->set_delay);
+
+    } else
+        g_printerr(SEMANTIC_ERROR_DATETIME_O);
 }
 
 void                            semantic_config_pipeline(
