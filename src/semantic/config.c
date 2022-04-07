@@ -125,6 +125,9 @@ void                            semantic_config_set_delay(char *timezone, config
     double                      diff;
     char                        *ret = 0;
 
+    if (config_pipeline->set_delay == NULL)
+        return ;
+
     /* Need to verify Timezone */
     tz_env = g_strjoin("=", "TZ", timezone, NULL);
     if (tz_env == NULL)
