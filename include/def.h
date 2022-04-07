@@ -30,7 +30,7 @@
 # define    SEMANTIC_ERROR_LINKED_PADS_REQUEST_TODO_O   "\033[1;31mERROR\033[0m\t\tRequest pads linking need to be implement !\033[0m\n"
 # define    SEMANTIC_ERROR_LINKED_ELEMENT_O             "\033[1;31mERROR\033[0m\t\tElement %s not linked to %s\033[0m\n"
 # define    SEMANTIC_ERROR_MT_CAPS_O                    "\033[1;31mERROR\033[0m\t\tCaps need to specify media type\033[0m\n"
-# define    SEMANTIC_ERROR_CRONNEXPR_O                  "\033[1;31mERROR\033[0m\t\t%s\033[0m\n"
+//# define    SEMANTIC_ERROR_TIMEZONE_O                   "\033[1;31mERROR\033[0m\t\tPlease define your timezone from TZ in your environment, by default the timezone is Europe/Paris\033[0m\n"
 
 /* Pipeline */
 

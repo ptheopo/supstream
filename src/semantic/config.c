@@ -47,6 +47,7 @@ void                            semantic_config(
                                 node,
                                 "bin_to_dotfile_enabled");
     char                        **_env = NULL;
+    char                        *_timezone = AST_GET_VALUE (node, "timezone");
 
     if (config == NULL || *config == NULL)
         return ;
@@ -105,22 +106,39 @@ void                            semantic_config(
         free((*config)->env);
         (*config)->env = NULL;
 
+    } if (_timezone != NULL) {
+
+        free((*config)->timezone);
+        (*config)->timezone = g_strdup(_timezone);
+        
     }
+
 }
 
-void                            semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline) {
+void                            semantic_config_set_delay(char *timezone, config_pipeline_t *config_pipeline, GstPipeline *pipeline) {
 
-    struct tm                   tm;
+
+    struct                      tm tm;
     time_t                      delay;
-    int                         cur;
+    time_t                      current;
+    char                        *tz_env = NULL;
 
+    /* Need to verify Timezone */
+    tz_env = g_strjoin("=", "TZ", timezone, NULL);
+    if (tz_env == NULL)
+        return ;
+
+    /* Update timezone */
+    putenv(tz_env);
+    tzset();
+
+    /* Get set_delay and current timestamp */
     strptime(config_pipeline->set_delay, "%Y-%m-%d %H:%M:%S", &tm);
+    delay = mktime(&tm);
+    current = time(NULL);
 
-    /* find delay ???? */
-    cur = (int)time(NULL);
-
-    gst_pipeline_set_delay(pipeline, (delay - cur) * GST_SECOND);
-    //g_print(SEMANTIC_ERROR_CRONNEXPR_O, err);
+    /* Set delay */
+    gst_pipeline_set_delay(pipeline, difftime(delay, current) * GST_SECOND);
 }
 
 void                            semantic_config_pipeline(

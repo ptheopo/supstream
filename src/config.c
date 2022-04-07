@@ -21,6 +21,7 @@ config_t                *config_new_default(void) {
     config->zmq_disabled            = FALSE;
     config->zmq_path                = g_strdup(ZMQ_PATH);
     config->env                     = NULL;
+    config->timezone                = g_strdup("Europe/Paris");
     return (config);
 }
 

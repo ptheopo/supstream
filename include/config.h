@@ -15,6 +15,7 @@ typedef struct      config_s {
     char            *zmq_path;
     gboolean        bin_to_dotfile_enabled;
     char            **env;
+    char            *timezone;
 }                   config_t;
 
 typedef struct      config_pipeline_s {
@@ -35,7 +36,7 @@ config_pipeline_t   *config_new_default_pipeline(void);
 
 /* Actions */
 
-void                semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline);
+void                semantic_config_set_delay(char *timezone, config_pipeline_t *config_pipeline, GstPipeline *pipeline);
 
 /* Debug */
 
