@@ -78,6 +78,7 @@ supstream_t             *semantic(ast_tree_t **root) {
             *root = (*root)->left;
 
             while (*root != NULL) {
+
                 if (AST_IS_IBLOCK (*root) == TRUE) {
 
                     /* Specific pipeline config */
@@ -87,7 +88,12 @@ supstream_t             *semantic(ast_tree_t **root) {
 
                     semantic_pipeline(root, config_pipeline);
 
+                    /* delay */
+
+                    semantic_config_set_delay(config_pipeline, (*root)->sdata->gstpipeline);
+
                 }
+
                 *root = (*root)->right;
             }
         }

@@ -72,6 +72,7 @@ int                     main(int argc, char **argv) {
 
     int                 ret;
 
+    setlocale(LC_ALL, "");
     signal(SIGINT, &sigint);
 
     g_print(INIT_GSTREAMER_O);

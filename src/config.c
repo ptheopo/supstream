@@ -45,6 +45,7 @@ config_pipeline_t       *config_new_default_pipeline(void) {
     config_pipeline->start_secs     = 0;
     config_pipeline->auto_restart   = FALSE;
     config_pipeline->start_datetime = NULL;
+    config_pipeline->set_delay      = NULL;
     return (config_pipeline);
 }
 

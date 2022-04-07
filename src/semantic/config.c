@@ -56,13 +56,13 @@ void                            semantic_config(
 
         free((*config)->stdout_logfile);
         /* Good dir ? */
-        (*config)->stdout_logfile = strdup(_stdout_logfile);
+        (*config)->stdout_logfile = g_strdup(_stdout_logfile);
 
     } if (_stderr_logfile != NULL) {
 
         free((*config)->stderr_logfile);
         /* Good dir ? */
-        (*config)->stderr_logfile = strdup(_stderr_logfile);
+        (*config)->stderr_logfile = g_strdup(_stderr_logfile);
 
     }
 
@@ -93,7 +93,7 @@ void                            semantic_config(
 
         free((*config)->zmq_path);
         /* ZMQ Path already used ? */
-        (*config)->zmq_path = strdup(_zmq_path);
+        (*config)->zmq_path = g_strdup(_zmq_path);
 
     } if (_bin_to_dotfile_enabled != NULL) {
 
@@ -108,6 +108,21 @@ void                            semantic_config(
     }
 }
 
+void                            semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline) {
+
+    struct tm                   tm;
+    time_t                      delay;
+    int                         cur;
+
+    strptime(config_pipeline->set_delay, "%Y-%m-%d %H:%M:%S", &tm);
+
+    /* find delay ???? */
+    cur = (int)time(NULL);
+
+    gst_pipeline_set_delay(pipeline, (delay - cur) * GST_SECOND);
+    //g_print(SEMANTIC_ERROR_CRONNEXPR_O, err);
+}
+
 void                            semantic_config_pipeline(
                                 ast_node_t *node,
                                 config_pipeline_t **config_pipeline) {
@@ -119,6 +134,7 @@ void                            semantic_config_pipeline(
     char                        *_start_secs = AST_GET_VALUE (node, "start_secs");
     char                        *_auto_restart = AST_GET_VALUE (node, "auto_restart");
     char                        *_start_datetime = AST_GET_VALUE (node, "start_datetime");
+    char                        *_set_delay = AST_GET_VALUE (node, "set_delay");
 
     if (config_pipeline == NULL || *config_pipeline == NULL)
         return ;
@@ -132,7 +148,7 @@ void                            semantic_config_pipeline(
 
         if (semantic_isdir(_directory) != 0) {
             free((*config_pipeline)->directory);
-            (*config_pipeline)->directory = strdup(_directory);
+            (*config_pipeline)->directory = g_strdup(_directory);
         } else {
             g_print(DIRECTORY_CWD_O, _directory);
         }
@@ -141,14 +157,14 @@ void                            semantic_config_pipeline(
 
         if (state_is_play(_init_state) == TRUE || state_is_pause(_init_state) == TRUE) {
             free((*config_pipeline)->init_state);
-            (*config_pipeline)->init_state = strdup(_init_state);
+            (*config_pipeline)->init_state = g_strdup(_init_state);
         }
 
     } if (_type_exec != NULL) {
 
         if (run_is_await(_type_exec) == TRUE || run_is_thread(_type_exec) == TRUE) {
             free((*config_pipeline)->type_exec);
-            (*config_pipeline)->type_exec = strdup(_type_exec);
+            (*config_pipeline)->type_exec = g_strdup(_type_exec);
         }
 
     } if (_start_secs != NULL) {
@@ -162,8 +178,11 @@ void                            semantic_config_pipeline(
     } if (_start_datetime != NULL) {
 
         free((*config_pipeline)->start_datetime);
-        (*config_pipeline)->start_datetime = strdup(_start_datetime);
+        (*config_pipeline)->start_datetime = g_strdup(_start_datetime);
+
+    } if (_set_delay != NULL) {
+
+        (*config_pipeline)->set_delay = g_strdup(_set_delay);
 
     }
-
 }

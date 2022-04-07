@@ -1,9 +1,11 @@
 #ifndef CONFIG_H
 # define CONFIG_H
 
-# include "def.h"
 # include <glib.h>
+# include <gst/gst.h>
 # include <unistd.h>
+
+# include "def.h"
 
 typedef struct      config_s {
     char            *working_dir;
@@ -23,12 +25,17 @@ typedef struct      config_pipeline_s {
     int             start_secs;
     gboolean        auto_restart;
     char            *start_datetime;
+    char            *set_delay;
 }                   config_pipeline_t;
 
 /* Default */
 
 config_t            *config_new_default(void);
 config_pipeline_t   *config_new_default_pipeline(void);
+
+/* Actions */
+
+void                semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline);
 
 /* Debug */
 

@@ -1,5 +1,6 @@
 #ifndef SEMANTIC_H
 # define SEMANTIC_H
+# define _XOPEN_SOURCE
 
 # include <ctype.h>
 # include <fcntl.h>
@@ -14,7 +15,6 @@
 
 # include "ast.h"
 # include "config.h"
-# include "ccronexpr.h"
 # include "def.h"
 # include "link.h"
 # include "supstream.h"
