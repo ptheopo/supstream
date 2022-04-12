@@ -179,6 +179,17 @@ RUN cd supstream \
     && git fetch origin main \
     && git checkout main
 
+# Uev
+RUN cd /tmp \
+    && git clone https://github.com/troglobit/libuev.git \
+    && cd libuev \
+    && sh autogen.sh \
+    && ./configure \
+    && make -j5 \
+    && make check \
+    && sudo make install-strip \
+    && sudo ldconfig
+
 # Starter
 CMD cd supstream \
     && git pull \
