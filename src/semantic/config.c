@@ -115,18 +115,9 @@ void                            semantic_config(
 
 }
 
-void                            semantic_config_set_delay(char *timezone, config_pipeline_t *config_pipeline, GstPipeline *pipeline) {
+void                            semantic_config_set_timezone(char *timezone) {
 
-
-    struct                      tm tm;
-    time_t                      delay;
-    time_t                      current;
     char                        *tz_env = NULL;
-    double                      diff;
-    char                        *ret = 0;
-
-    if (config_pipeline->set_delay == NULL)
-        return ;
 
     /* Need to verify Timezone */
     tz_env = g_strjoin("=", "TZ", timezone, NULL);
@@ -136,6 +127,19 @@ void                            semantic_config_set_delay(char *timezone, config
     /* Update timezone */
     putenv(tz_env);
     tzset();
+}
+
+void                            semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline) {
+
+
+    struct                      tm tm;
+    time_t                      delay;
+    time_t                      current;
+    double                      diff;
+    char                        *ret = 0;
+
+    if (config_pipeline->set_delay == NULL)
+        return ;
 
     /* Get set_delay and current timestamp */
     ret = strptime(config_pipeline->set_delay, "%Y-%m-%d %H:%M:%S", &tm);

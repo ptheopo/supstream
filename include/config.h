@@ -36,7 +36,8 @@ config_pipeline_t   *config_new_default_pipeline(void);
 
 /* Actions */
 
-void                semantic_config_set_delay(char *timezone, config_pipeline_t *config_pipeline, GstPipeline *pipeline);
+void                semantic_config_set_delay(config_pipeline_t *config_pipeline, GstPipeline *pipeline);
+void                semantic_config_set_timezone(char *timezone);
 
 /* Debug */
 
