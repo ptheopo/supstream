@@ -147,8 +147,8 @@ void                            semantic_config_set_delay(config_pipeline_t *con
         g_printerr(SEMANTIC_ERROR_DATETIME_FORMAT_O);
         return ;
     }
-    delay = mktime(&tm);
-    current = time(NULL);
+    delay = mktime(&tm) + timezone;
+    current = time(NULL) + timezone;
 
     diff = difftime(delay, current);
     if (diff >= 0) {
