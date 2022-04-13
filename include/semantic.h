@@ -17,6 +17,7 @@
 # include "config.h"
 # include "def.h"
 # include "link.h"
+# include "pev.h"
 # include "supstream.h"
 # include "verify.h"
 
@@ -42,6 +43,9 @@ void                    semantic_line_linked_element(
                         list_t **linked_elements,
                         GstElement *element,
                         char *element_name);
+void                    semantic_line_set_delay(
+                        GstElement *element,
+                        char *delay);
 void                    semantic_block_caps(
                         list_t **linked_elements,
                         ast_node_t *node);

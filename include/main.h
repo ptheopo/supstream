@@ -14,6 +14,7 @@
 # include "fifo.h"
 # include "parse.h"
 # include "pipeline.h"
+# include "pev.h"
 # include "semantic.h"
 
 # define    FAILED_OPS 0

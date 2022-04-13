@@ -45,6 +45,8 @@ static int              core(const gchar *yaml_pipeline) {
     ast_tree_t          *root = NULL;
     supstream_t         *supstream = NULL;
 
+    pev_init();
+
     g_print(INIT_OPEN_YAML_O, yaml_pipeline);
     file = fopen(yaml_pipeline, "r");
     if (file == NULL)

@@ -12,6 +12,7 @@ linked_result_t         *semantic_block_elements(
 
     ast_node_t          *scalar_node = NULL;
     ast_node_t          *scalar_node_link = NULL;
+    ast_node_t          *scalar_node_set_delay = NULL;
     ast_node_t          *tmp = *node;
     ast_node_t          *properties = NULL;
     ast_node_t          *pads = NULL;
@@ -108,6 +109,14 @@ linked_result_t         *semantic_block_elements(
                     pad_props_dp);
             if (pad_props != NULL)
                 semantic_block_pad_props(&pad_props_lst, pad_props, element);
+
+            /* set_delay option */
+            scalar_node_set_delay = ast_iscalar_get_by_key(*node, "set_delay");
+            if (scalar_node_set_delay != NULL) {
+                semantic_line_set_delay(element, scalar_node_set_delay->right->str);
+            } else {
+                semantic_line_set_delay(element, NULL);
+            }
 
             /* create element sym in symtable */
             g_hash_table_insert (*symtable, (*node)->str, element);

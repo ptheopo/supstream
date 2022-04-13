@@ -10,6 +10,7 @@
 # include "config.h"
 # include "def.h"
 # include "gateway.h"
+# include "pev.h"
 # include "supstream.h"
 # include "verify.h"
 

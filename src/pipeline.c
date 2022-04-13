@@ -228,6 +228,15 @@ static void         *pipeline_exec_thread(void *privdata) {
     return (NULL);
 }
 
+static void         *pipeline_scheduler(void *arg) {
+
+    (void)arg;
+
+    /* Log for notify scheduler starting */
+    pev_run();
+    return (NULL);
+}
+
 void                pipeline(supstream_t *supstream) {
 
     list_t          *deepblock = ast_deepblock_create(2, "document", "pipelines");
@@ -236,11 +245,16 @@ void                pipeline(supstream_t *supstream) {
     ast_node_t      *tmp_join = ast_iblock_get(*root, deepblock);
     pthread_t       thread_gateway_id;
     pthread_t       thread_sync_id;
+    pthread_t       thread_scheduler_id;
     execdata_t      *execdata = (execdata_t *)malloc(sizeof(execdata_t));
     gatewaydata_t   *gatewaydata =(gatewaydata_t *)malloc(sizeof(gatewaydata_t));
     privdata_sync_t *privdata_sync = (privdata_sync_t *)malloc(sizeof(privdata_sync_t));
-
     int             ret;
+
+    /* Threading the scheduler */
+    ret = pthread_create(&thread_scheduler_id, NULL, pipeline_scheduler, NULL);
+    if (ret != 0)
+        return ;
 
     /* Init (pipeline_config set for each pipeline) */
 

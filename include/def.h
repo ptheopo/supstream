@@ -33,7 +33,7 @@
 //# define    SEMANTIC_ERROR_TIMEZONE_O                   "\033[1;31mERROR\033[0m\t\tPlease define your timezone from TZ in your environment, by default the timezone is Europe/Paris\033[0m\n"
 # define    SEMANTIC_ERROR_DATETIME_O                   "\033[1;31mERROR\033[0m\t\tWrong datetime, negative timestamp or wrong format (ex: 2022-04-07 22:00:00)\033[0m\n"
 # define    SEMANTIC_ERROR_DATETIME_FORMAT_O            "\033[1;31mERROR\033[0m\t\tWrong datetime format (ex: 2022-04-07 22:00:00)\033[0m\n"
-# define    SEMANTIC_DATETIME_O                         "\033[1;32mDATETIME\033[0m\t\tStart %s pipeline at %s\n"
+# define    SEMANTIC_DATETIME_O                         "\033[1;32mDATETIME\033[0m\tStart %s pipeline at %s\n"
 
 /* Pipeline */
 
