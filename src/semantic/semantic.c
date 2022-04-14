@@ -90,7 +90,6 @@ supstream_t             *semantic(ast_tree_t **root) {
 
                     /* delay */
 
-                    semantic_config_set_timezone(config->timezone);
                     semantic_config_set_delay(config_pipeline, (*root)->sdata->gstpipeline);
 
                 }

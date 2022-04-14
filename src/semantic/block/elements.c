@@ -12,7 +12,10 @@ linked_result_t         *semantic_block_elements(
 
     ast_node_t          *scalar_node = NULL;
     ast_node_t          *scalar_node_link = NULL;
-    ast_node_t          *scalar_node_set_delay = NULL;
+    ast_node_t          *scalar_node_start_playing = NULL;
+    ast_node_t          *scalar_node_start_paused = NULL;
+    ast_node_t          *scalar_node_start_ready = NULL;
+    ast_node_t          *scalar_node_start_null = NULL;
     ast_node_t          *tmp = *node;
     ast_node_t          *properties = NULL;
     ast_node_t          *pads = NULL;
@@ -80,6 +83,31 @@ linked_result_t         *semantic_block_elements(
             g_print(SEMANTIC_ADD_BIN_O,
                     scalar_node->right->str,
                     GST_OBJECT_NAME (pipeline));
+
+            /* create caps */
+            caps = ast_iblock_get(
+                    (*node)->left,
+                    caps_dp);
+            if (caps != NULL)
+                semantic_block_caps(&linked_elements, caps);
+
+            /* start options (update states from scheduler) */
+            scalar_node_start_playing = ast_iscalar_get_by_key(*node, "start_playing");
+            if (scalar_node_start_playing != NULL) {
+                semantic_line_start_playing(element, scalar_node_start_playing->right->str);
+            }
+            scalar_node_start_paused = ast_iscalar_get_by_key(*node, "start_paused");
+            if (scalar_node_start_paused != NULL) {
+                semantic_line_start_paused(element, scalar_node_start_paused->right->str);
+            }
+            scalar_node_start_ready = ast_iscalar_get_by_key(*node, "start_ready");
+            if (scalar_node_start_ready != NULL) {
+                semantic_line_start_ready(element, scalar_node_start_ready->right->str);
+            }
+            scalar_node_start_null = ast_iscalar_get_by_key(*node, "start_null");
+            if (scalar_node_start_null != NULL) {
+                semantic_line_start_null(element, scalar_node_start_null->right->str);
+            }
             
             /* create linked_element list */
             scalar_node_link = ast_iscalar_get_by_key(*node, "element_link");
@@ -89,20 +117,6 @@ linked_result_t         *semantic_block_elements(
                 semantic_line_linked_element(&linked_elements, element, NULL);
             }
 
-            /* create caps */
-            caps = ast_iblock_get(
-                    (*node)->left,
-                    caps_dp);
-            if (caps != NULL)
-                semantic_block_caps(&linked_elements, caps);
-
-            /* create linked_pad list */
-            pads = ast_iblock_get(
-                    (*node)->left,
-                    pads_dp);
-            if (pads != NULL)
-                semantic_block_pads(&linked_pads, pads, element);
-
             /* create pad_props list */
             pad_props = ast_iblock_get(
                     (*node)->left,
@@ -110,13 +124,12 @@ linked_result_t         *semantic_block_elements(
             if (pad_props != NULL)
                 semantic_block_pad_props(&pad_props_lst, pad_props, element);
 
-            /* set_delay option */
-            scalar_node_set_delay = ast_iscalar_get_by_key(*node, "set_delay");
-            if (scalar_node_set_delay != NULL) {
-                semantic_line_set_delay(element, scalar_node_set_delay->right->str);
-            } else {
-                semantic_line_set_delay(element, NULL);
-            }
+            /* create linked_pad list */
+            pads = ast_iblock_get(
+                    (*node)->left,
+                    pads_dp);
+            if (pads != NULL)
+                semantic_block_pads(&linked_pads, pads, element);
 
             /* create element sym in symtable */
             g_hash_table_insert (*symtable, (*node)->str, element);

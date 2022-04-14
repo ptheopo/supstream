@@ -78,4 +78,8 @@
 
 # define    SIGNAL_SIGINT_O                             "\033[1;31mSIGINT\033[0m\t\tAre you sure you want to leave Supstream ? [y/N]\033[0m\n"
 
+/* PEV Scheduler */
+
+# define    SCHEDULER_PLAYING_O                         "\033[1;32mSCHEDULER\033[0m\t\tElement %s on PLAYING state\n[0m\n"
+
 #endif

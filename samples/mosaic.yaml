@@ -21,7 +21,7 @@
 
 supstream:
     zmq_path: "tcp://0.0.0.0:5557"
-
+    timezone: "Europe/Paris"
 
 #############
 # PIPELINES #
@@ -35,7 +35,7 @@ pipelines:
 
     mosaic_video:
 
-        init_state: play
+        init_state: pause
         type_exec: sync
 
         elements:
@@ -101,6 +101,7 @@ pipelines:
             videotestsrc_panel:
 
                 element: videotestsrc
+                set_delay: "2022-04-14 16:28:40"
                 properties:
                     pattern: 1
                 caps:

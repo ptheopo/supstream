@@ -110,6 +110,7 @@ void                            semantic_config(
 
         free((*config)->timezone);
         (*config)->timezone = g_strdup(_timezone);
+        semantic_config_set_timezone(_timezone);
         
     }
 
