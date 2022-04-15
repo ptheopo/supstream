@@ -46,16 +46,16 @@ void                    semantic_line_linked_element(
 
 void                    semantic_line_start_playing(
                         GstElement *element,
-                        char *delay) {
+                        char *delay);
 void                    semantic_line_start_paused(
                         GstElement *element,
-                        char *delay) {
+                        char *delay);
 void                    semantic_line_start_null(
                         GstElement *element,
-                        char *delay) {
+                        char *delay);
 void                    semantic_line_start_ready(
                         GstElement *element,
-                        char *delay) {
+                        char *delay);
 
 void                    semantic_block_caps(
                         list_t **linked_elements,

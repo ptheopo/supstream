@@ -92,19 +92,19 @@ linked_result_t         *semantic_block_elements(
                 semantic_block_caps(&linked_elements, caps);
 
             /* start options (update states from scheduler) */
-            scalar_node_start_playing = ast_iscalar_get_by_key(*node, "start_playing");
+            scalar_node_start_playing = ast_iscalar_get_by_key(*node, "playing_state");
             if (scalar_node_start_playing != NULL) {
                 semantic_line_start_playing(element, scalar_node_start_playing->right->str);
             }
-            scalar_node_start_paused = ast_iscalar_get_by_key(*node, "start_paused");
+            scalar_node_start_paused = ast_iscalar_get_by_key(*node, "paused_state");
             if (scalar_node_start_paused != NULL) {
                 semantic_line_start_paused(element, scalar_node_start_paused->right->str);
             }
-            scalar_node_start_ready = ast_iscalar_get_by_key(*node, "start_ready");
+            scalar_node_start_ready = ast_iscalar_get_by_key(*node, "ready_state");
             if (scalar_node_start_ready != NULL) {
                 semantic_line_start_ready(element, scalar_node_start_ready->right->str);
             }
-            scalar_node_start_null = ast_iscalar_get_by_key(*node, "start_null");
+            scalar_node_start_null = ast_iscalar_get_by_key(*node, "null_state");
             if (scalar_node_start_null != NULL) {
                 semantic_line_start_null(element, scalar_node_start_null->right->str);
             }

@@ -8,7 +8,7 @@ pipelines:
 
     matroska_video_0:
 
-        init_state: pause
+        init_state: null
         type_exec: thread
         auto_restart: true
 
@@ -34,7 +34,6 @@ pipelines:
                 element_link: autovideosink
             autovideosink:
                 element: autovideosink
-                start_null: "2022-04-14 16:39:30"
-                start_ready: "2022-04-14 16:39:30"
-                start_playing: "2022-04-14 16:39:30"
-                start_paused: "2022-04-14 16:39:30"
+                ready_state: "2022-04-15 09:45:00"
+                paused_state: "2022-04-15 09:49:40"
+                playing_state: "2022-04-15 09:50:00"
