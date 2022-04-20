@@ -159,8 +159,6 @@ RUN git clone https://gitlab.com/ouzb64ty/gstreamer-plugin.git gstreamer-plugin 
     && meson builddir \
     && ninja -C builddir install
 
-RUN echo "OK"
-
 # Supstream
 RUN git clone https://gitlab.com/ouzb64ty/supstream.git
 
