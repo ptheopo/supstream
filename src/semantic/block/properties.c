@@ -30,7 +30,7 @@ void                    semantic_block_properties(ast_node_t *node, GstElement *
                 /* gchar * */
                 g_object_set(G_OBJECT (element), property, (gchar *)value, NULL);
 
-            } else if (strcmp(type_name, "gfloat") == 0) {
+            } else if (strcmp(type_name, "gfloat") == 0 || strcmp(type_name, "gdouble") == 0) {
 
                 /* gfloat */
                 type.gfloat = (gfloat)strtof(value, &endPtr);

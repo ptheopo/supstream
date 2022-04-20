@@ -10,6 +10,7 @@ request_t                           g_requests[NB_REQUEST] = {
     { "create_element",             request_create_element },
     { "remove_element",             request_remove_element },
     { "set_properties",             request_set_properties },
+    { "set_pad_properties",         request_set_pad_properties },
     { "set_caps",                   request_set_caps },
     { "version",                    request_version },
     { "play",                       request_play },

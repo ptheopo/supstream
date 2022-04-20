@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 # define REQUEST_H
 
-# define NB_REQUEST 13
+# define NB_REQUEST 14
 
 # include <cjson/cJSON.h>
 # include <math.h>
@@ -148,6 +148,29 @@ char            *request_remove_element(
 char            *request_set_properties(
                 const cJSON *request_json,
                 ast_tree_t **root);
+
+/*
+ * Set pad properties
+ * ==================
+ *
+ * Modify pad properties of a given element in a specific pipeline
+ *
+ * {
+ *   command: "set_properties",
+ *   pipeline: "matroska-video_0",
+ *   element: "videoconvert",
+ *   pad: "video_0",
+ *   properties: {
+ *     ...
+ *   }
+ * }
+ *
+ */
+
+char            *request_set_pad_properties(
+                const cJSON *request_json,
+                ast_tree_t **root);
+
 
 /*
  * Set caps
