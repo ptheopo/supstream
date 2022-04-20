@@ -153,19 +153,20 @@ char                *request_set_pad_properties(
                     ast_tree_t **root) {
 
     /* Modify AST tree browsing/settings */
-    cJSON           *pad_json = cJSON_GetObjectItemCaseSensitive(request_json, "pad");
+    cJSON           *pad_json = cJSON_GetObjectItemCaseSensitive(request_json, "pad_props");
     cJSON           *properties_json = cJSON_GetObjectItemCaseSensitive(request_json, "properties");
     cJSON           *property_json = NULL;
     cJSON           *pipeline_json = cJSON_GetObjectItemCaseSensitive(request_json, "pipeline");
     cJSON           *element_json = cJSON_GetObjectItemCaseSensitive(request_json, "element");
     GParamSpec      *spec = NULL;
     list_t          *deepblock = ast_deepblock_create(5, "document", "pipelines", pipeline_json->valuestring, "elements", element_json->valuestring);
-    //list_t          *deepblock_properties = ast_deepblock_create(1, "properties");
+    list_t          *deepblock_pad_props = ast_deepblock_create(2, "pad_props", pad_json->valuestring);
     ast_node_t      **root_ptr = root;
     ast_node_t      **element = aast_iblock_get(root_ptr, deepblock);
-    //ast_node_t      **properties = aast_iblock_get(element, deepblock_properties);
     GstCaps         *caps = NULL;
-    GstPad          *pad = gst_element_get_static_pad((*element)->sdata->gstelement, pad_json->valuestring);
+    ast_node_t      *pad_props_node = ast_iblock_get(*element, deepblock_pad_props);
+    ast_node_t      *pad_node = ast_iscalar_get_by_key(pad_props_node, "pad");
+    GstPad          *pad = gst_element_get_static_pad((*element)->sdata->gstelement, pad_node->right->str);
     GObjectClass    *objClass = G_OBJECT_GET_CLASS(pad);
     char            *result_json_str = NULL;
     const char      *type_name = NULL;
@@ -247,6 +248,8 @@ char                *request_set_pad_properties(
         result_json_str = request_properties_json_str(request_json, 0);
 
     }
+
+    /* don't forget to free deepblocks.. */
 
     return (result_json_str);
 }
