@@ -40,7 +40,7 @@ docker build . -t docker-gstreamer-compiler
 
 ```bash
 xhost +
-docker run --ipc=host -v=/tmp:/tmp --rm -it --device /dev/video0 --net host -e DISPLAY=$DISPLAY supstream
+docker run --ipc=host -v=/tmp:/tmp --rm -it --device /dev/video0 --net host -e DISPLAY=$DISPLAY --device /dev/snd supstream
 ```
 
 /tmp/tmp to getting visual pipeline graph
