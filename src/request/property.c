@@ -1,5 +1,9 @@
 #include "request.h"
 
+/*
+ * Need to be factorized !
+ */
+
 static char         *request_properties_json_str(const cJSON *request_json, int ret) {
 
     cJSON           *result_json = cJSON_CreateObject();
@@ -16,16 +20,13 @@ static char         *request_properties_json_str(const cJSON *request_json, int 
 
 }
 
-static int          request_set_properties_count_digits(double n) {
-
-    return ((n == 0) ? 1 : log10(n) + 1);
-
-}
+/*
+ * This is the low level pipeline storage, just string, against advanced types like gdouble...
+ */
 
 static char         *request_set_properties_convert(cJSON *property) {
 
     char            *result = NULL;
-    int             count = 0;
 
     if (cJSON_IsBool(property) && cJSON_IsTrue(property))
         result = g_strdup("True");
@@ -35,11 +36,10 @@ static char         *request_set_properties_convert(cJSON *property) {
         result = g_strdup(property->valuestring);
     else if (cJSON_IsNumber(property)) {
 
-        count = request_set_properties_count_digits(property->valuedouble) + 1;
-        result = (char *)malloc(sizeof(char) * count);
+        result = (char *)malloc(sizeof(char) * 64);
         if (result == NULL)
             return (NULL);
-        snprintf(result, count, "%f", property->valuedouble);
+        snprintf(result, 64, "%f", property->valuedouble);
 
     }
     return (result);
@@ -161,16 +161,18 @@ char                *request_set_pad_properties(
     GParamSpec      *spec = NULL;
     list_t          *deepblock = ast_deepblock_create(5, "document", "pipelines", pipeline_json->valuestring, "elements", element_json->valuestring);
     list_t          *deepblock_pad_props = ast_deepblock_create(2, "pad_props", pad_json->valuestring);
+    list_t          *deepblock_pad_props_properties = ast_deepblock_create(1, "properties");
     ast_node_t      **root_ptr = root;
     ast_node_t      **element = aast_iblock_get(root_ptr, deepblock);
     GstCaps         *caps = NULL;
-    ast_node_t      *pad_props_node = ast_iblock_get(*element, deepblock_pad_props);
-    ast_node_t      *pad_node = ast_iscalar_get_by_key(pad_props_node, "pad");
+    ast_node_t      **pad_props_node = aast_iblock_get(element, deepblock_pad_props);
+    ast_node_t      **pad_props_properties_node = aast_iblock_get(pad_props_node, deepblock_pad_props_properties);
+    ast_node_t      *pad_node = ast_iscalar_get_by_key(*pad_props_node, "pad");
     GstPad          *pad = gst_element_get_static_pad((*element)->sdata->gstelement, pad_node->right->str);
     GObjectClass    *objClass = G_OBJECT_GET_CLASS(pad);
     char            *result_json_str = NULL;
     const char      *type_name = NULL;
-    //char            *convert_value = NULL;
+    char            *convert_value = NULL;
 
     if (*element == NULL || (*element)->sdata->gstelement == NULL || pad == NULL) {
 
@@ -238,8 +240,9 @@ char                *request_set_pad_properties(
                 }
 
                 /* Update AST (after) */
-                /*convert_value = request_set_properties_convert(property_json);
-                ast_iscalar_set_simple(properties, property_json->string, convert_value);*/
+                convert_value = request_set_properties_convert(property_json);
+                ast_iscalar_set_simple(pad_props_properties_node, property_json->string, convert_value);
+                g_print("%s\n", convert_value);
 
             }
 
