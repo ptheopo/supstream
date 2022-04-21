@@ -94,7 +94,7 @@ char            *request_link_elements(
  * Create element
  * ==============
  *
- * Create a new pre-defined element, instantly available.
+ * Create a new element, instantly available.
  *
  * {
  *   command: "create_element",
