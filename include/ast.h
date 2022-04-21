@@ -28,6 +28,10 @@
     (ast_iblock_is(node, block) == TRUE)
 # define AST_IS_IBLOCK(node) \
     (ast_node_is_iblock(node) == TRUE)
+# define AST_IS_ILINE(node) \
+    (ast_node_is_iline(node) == TRUE)
+# define AST_IS_ISCALAR(node) \
+    (ast_node_is_iscalar(node) == TRUE)
 # define AST_RCHILD(node) \
     (node \
      && node->right)
@@ -110,6 +114,11 @@ ast_node_t                      *ast_iblock_get(
                                 ast_tree_t *root,
                                 list_t *blockdeep);
 ast_node_t                      *ast_iblock_new(char *str);
+void                            ast_iblock_remove_by_key(
+                                ast_tree_t **root,
+                                list_t *blockdeep,
+                                char *key);
+void                            ast_iblock_free(ast_node_t **node);
 
 ast_node_t                      **aast_iblock_get(
                                 ast_tree_t **root,
@@ -118,6 +127,7 @@ ast_node_t                      **aast_iblock_get(
 /* iLine functions */
 
 ast_node_t                      *ast_iline_new(ast_node_t *scalar);
+void                            ast_iline_free(ast_node_t **node);
 
 /* iScalar functions */
 
@@ -131,6 +141,7 @@ void                            ast_iscalar_set_simple(ast_node_t **node, char *
 char                            *ast_iscalar_value(ast_node_t *scalar_node);
 ast_node_t                      *ast_iscalar_new(ast_node_t *key, ast_node_t *value);
 ast_node_t                      *ast_iscalar_new_simple(char *key, char *value);
+void                            ast_iscalar_free(ast_node_t **node);
 
 /* iLine / iBlock functions */
 
@@ -162,5 +173,19 @@ void                            aast_browse_infix(
 void                            aast_browse_postfix(
                                 ast_node_t **node,
                                 void (*fn)(ast_node_t **));
+
+/* Actions */
+
+typedef enum                    e_ast_action_res {
+    ACTION_PIPELINE_NOT_FOUND,
+    ACTION_ELEMENT_IN_PIPELINE_NOT_FOUND,
+    ACTION_PARAMETERS_FAIL,
+    ACTION_SUCCESS
+}                               t_ast_action_res;
+
+t_ast_action_res                ast_action_element_remove(
+                                ast_tree_t **root,
+                                char *pipeline_name,
+                                char *element_name);
 
 #endif
