@@ -32,8 +32,6 @@ char            *request_remove_element(
         g_print("Pipeline not found\n");
     else if (res == ACTION_ELEMENT_IN_PIPELINE_NOT_FOUND)
         g_print("Element in pipeline not found\n");
-    else
-        g_print("OK");
 
-    return (NULL);
+    return ("{\"ok\": \"ok\"}");
 }

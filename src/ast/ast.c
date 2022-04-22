@@ -292,6 +292,7 @@ void            ast_node_print(ast_node_t *node) {
 void            ast_node_free(ast_node_t *node) {
 
     /* /!\ Warning with free memory from parsing */
+    /* /!\ free from gst_bin  (https://gstreamer.freedesktop.org/documentation/gstreamer/gstbin.html?gi-language=c) using gst_bin_remove*/
     if (node->str != NULL)
         free(node->str);
     if (node->sdata != NULL)
@@ -436,41 +437,41 @@ ast_node_t      *ast_iblock_new(char *str) {
     return (ast_node_new(str, iBLOCK));
 }
 
-void            ast_iscalar_free(ast_node_t **node) {
+void            ast_iscalar_free(ast_node_t *node) {
 
-    if (!AST_IS_ISCALAR (*node))
+    if (!AST_IS_ISCALAR (node))
         return ;
 
-    ast_node_free((*node)->left);
-    ast_node_free((*node)->right);
-    ast_node_free(*node);
+    ast_node_free(node->left);
+    ast_node_free(node->right);
+    ast_node_free(node);
 
 }
 
-void            ast_iline_free(ast_node_t **node) {
+void            ast_iline_free(ast_node_t *node) {
 
-    if (AST_IS_ISCALAR ((*node)->left))
-        ast_iscalar_free(&((*node)->left));
+    if (AST_IS_ISCALAR (node->left))
+        ast_iscalar_free(node->left);
 
-    ast_node_free(*node);
+    ast_node_free(node);
 
 }
 
-static void     ast_iblock_free_cb(ast_node_t **node) {
+static void     ast_iblock_free_cb(ast_node_t *node) {
 
-    if (AST_IS_ISCALAR (*node))
+    if (AST_IS_ISCALAR (node))
         ast_iscalar_free(node);
-    else if (AST_IS_ILINE (*node))
+    else if (AST_IS_ILINE (node))
         ast_iline_free(node);
-    else if (AST_IS_IBLOCK (*node))
+    else if (AST_IS_IBLOCK (node))
         ast_iblock_free(node);
 
 }
 
-void            ast_iblock_free(ast_node_t **node) {
+void            ast_iblock_free(ast_node_t *node) {
 
-    aast_browse_postfix(&((*node)->left), ast_iblock_free_cb);
-    ast_node_free(*node);
+    ast_browse_postfix(node->left, ast_iblock_free_cb);
+    ast_node_free(node);
 
 }
 
@@ -480,25 +481,25 @@ void            ast_iblock_remove_by_key(
                 char *key) {
 
     ast_node_t  **pipeline = aast_iblock_get(root, blockdeep);
-    ast_node_t  **ptr = pipeline;
+    ast_node_t  *ptr = *pipeline;
     ast_node_t  *prev = NULL;
     ast_node_t  *next = NULL;
 
     /* Switch in iLINE/iBLOCK childs */
-    *ptr = (*ptr)->left;
+    ptr = ptr->left;
 
-    while (*ptr) {
+    while (ptr) {
 
         /* iBLOCK to remove */
 
-        if (AST_IBLOCK_IS (*ptr, key)) {
+        if (AST_IBLOCK_IS (ptr, key)) {
 
             if (prev == NULL) {
-                next = (*ptr)->right;
+                next = ptr->right;
                 ast_iblock_free(ptr);
-                (*pipeline)->left = next;
+                ptr->left = next;
             } else {
-                next = (*ptr)->right;
+                next = ptr->right;
                 ast_iblock_free(ptr);
                 prev->right = next;
             }
@@ -507,8 +508,8 @@ void            ast_iblock_remove_by_key(
             
         }
 
-        prev = *ptr;
-        *ptr = (*ptr)->right;
+        prev = ptr;
+        ptr = ptr->right;
 
     }
 }

@@ -10,7 +10,7 @@ t_ast_action_res    ast_action_element_remove(ast_tree_t **root, char *pipeline_
         return (ACTION_PARAMETERS_FAIL);
     }
 
-    deepblock = ast_deepblock_create(3, "document", "pipelines", pipeline_name);
+    deepblock = ast_deepblock_create(4, "document", "pipelines", pipeline_name, "elements");
 
     /* Remove element from pipeline */
     ast_iblock_remove_by_key(root, deepblock, element_name);

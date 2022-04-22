@@ -118,7 +118,7 @@ void                            ast_iblock_remove_by_key(
                                 ast_tree_t **root,
                                 list_t *blockdeep,
                                 char *key);
-void                            ast_iblock_free(ast_node_t **node);
+void                            ast_iblock_free(ast_node_t *node);
 
 ast_node_t                      **aast_iblock_get(
                                 ast_tree_t **root,
@@ -127,7 +127,7 @@ ast_node_t                      **aast_iblock_get(
 /* iLine functions */
 
 ast_node_t                      *ast_iline_new(ast_node_t *scalar);
-void                            ast_iline_free(ast_node_t **node);
+void                            ast_iline_free(ast_node_t *node);
 
 /* iScalar functions */
 
@@ -141,7 +141,7 @@ void                            ast_iscalar_set_simple(ast_node_t **node, char *
 char                            *ast_iscalar_value(ast_node_t *scalar_node);
 ast_node_t                      *ast_iscalar_new(ast_node_t *key, ast_node_t *value);
 ast_node_t                      *ast_iscalar_new_simple(char *key, char *value);
-void                            ast_iscalar_free(ast_node_t **node);
+void                            ast_iscalar_free(ast_node_t *node);
 
 /* iLine / iBlock functions */
 
