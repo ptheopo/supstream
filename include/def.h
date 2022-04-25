@@ -13,6 +13,7 @@
 
 # define    INIT_GSTREAMER_O                            "\033[1;36mINITIALIZE\033[0m\tInitialize Gstreamer\n"
 # define    INIT_OPEN_YAML_O                            "\033[1;36mINITIALIZE\033[0m\tReading %s YAML pipeline\n"
+# define    INIT_FROM_URI_O                             "\033[1;36mINITIALIZE\033[0m\tDownloading pipeline from %s uri\n"
 
 /* Semantic */
 

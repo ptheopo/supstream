@@ -64,3 +64,6 @@ vgcore*
 
 # CMake
 build/
+
+# URI Pipeline
+.pipeline.download

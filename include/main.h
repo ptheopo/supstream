@@ -2,6 +2,7 @@
 # define MAIN_H
 
 # include <assert.h>
+# include <curl/curl.h>
 # include <glib.h>
 # include <locale.h>
 # include <string.h>
