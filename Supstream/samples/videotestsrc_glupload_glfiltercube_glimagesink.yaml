@@ -4,24 +4,32 @@ pipelines:
 
     videotestsrc_glupload_glfiltercube_glimagesink:
 
-        init_state: play
+        init_state: null
         type_exec: thread
 
         elements:
 
             videotestsrc:
+                paused_state: "2022-04-19 12:32:00"
+                playing_state: "2022-04-19 12:32:02"
                 element: videotestsrc
                 properties:
                     pattern: ball
                 element_link: glupload
 
             glupload:
+                paused_state: "2022-04-19 12:30:00"
+                playing_state: "2022-04-19 12:31:00"
                 element: glupload
                 element_link: glfiltercube
 
             glfiltercube:
+                paused_state: "2022-04-19 12:30:00"
+                playing_state: "2022-04-19 12:31:00"
                 element: glfiltercube
                 element_link: glimagesink
 
             glimagesink:
+                paused_state: "2022-04-19 12:30:00"
+                playing_state: "2022-04-19 12:31:00"
                 element: glimagesink

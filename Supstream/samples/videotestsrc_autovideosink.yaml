@@ -4,11 +4,12 @@ pipelines:
 
     videotestsrc_autovideosink:
 
-        init_state: play
+        init_state: null
         type_exec: thread
 
         elements:
             src:
+                playing_state: "2022-04-19 12:17:20"
                 element: videotestsrc
                 element_link: sink
                 caps:

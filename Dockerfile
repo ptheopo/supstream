@@ -162,9 +162,6 @@ RUN git clone https://gitlab.com/ouzb64ty/gstreamer-plugin.git gstreamer-plugin 
 # Supstream
 RUN git clone https://gitlab.com/ouzb64ty/supstream.git
 
-# Supstream-gateway
-RUN git clone https://gitlab.com/ouzb64ty/supstream-gateway.git
-
 # Dev part
 RUN git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
 RUN sh ~/.vim_runtime/install_awesome_vimrc.sh
@@ -179,6 +176,7 @@ RUN cd supstream \
 
 # Starter
 CMD cd supstream \
+    && cd Supstream \
     && git pull \
     && mkdir build \
     && cd build \

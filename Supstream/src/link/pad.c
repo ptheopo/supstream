@@ -21,14 +21,14 @@ void                    link_pad_all_request(
             content = (linked_pad_t *)linked_pads->content;
 
             /* Get pads */
-            src_pad_request = gst_element_request_pad_simple(content->src_element, content->src_pad_name);
+            //src_pad_request = gst_element_request_pad_simple(content->src_element, content->src_pad_name);
             sink_element = g_hash_table_lookup(*symtable, content->dst_element_name);
             sink_pad_request = gst_element_get_static_pad (sink_element, content->dst_pad_name);
 
             if (src_pad_request != NULL) {
 
                 /* This is request pad */
-                padtemplate = gst_pad_get_pad_template(src_pad_request);
+                //padtemplate = gst_pad_get_pad_template(src_pad_request);
 
                 if (padtemplate->presence == GST_PAD_REQUEST) {
 
@@ -74,14 +74,14 @@ void                    link_pad_all_always(
 
             if (src_pad_always != NULL) {
 
-                padtemplate = gst_pad_get_pad_template(src_pad_always);
+                //padtemplate = gst_pad_get_pad_template(src_pad_always);
 
                 if (padtemplate->presence == GST_PAD_ALWAYS) {
 
                     /* src pad is an Always pad */
                     if (sink_pad_always == NULL) {
 
-                        sink_pad_always = gst_element_request_pad_simple(sink_element, content->dst_pad_name);
+                        //sink_pad_always = gst_element_request_pad_simple(sink_element, content->dst_pad_name);
 
                         /* Always -> Request/Sometimes? pad linking */
                         gst_pad_link(src_pad_always, sink_pad_always);
