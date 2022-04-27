@@ -57,6 +57,6 @@ set(SOURCES ${SOURCES} ${SOURCES_SEMANTIC_LINE})
 
 set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/bin/)
 
-add_compile_options(-Wall -Wextra)
+add_compile_options(-Wall -Wextra -g)
 
 add_executable(${PROJECT_NAME} ${SOURCES})

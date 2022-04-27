@@ -101,7 +101,6 @@ pipelines:
             videotestsrc_panel:
 
                 element: videotestsrc
-                set_delay: "2022-04-14 16:28:40"
                 properties:
                     pattern: 1
                 caps:
