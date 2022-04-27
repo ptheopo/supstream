@@ -175,14 +175,12 @@ RUN cd supstream \
     && git checkout main
 
 # Install Poetry
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 - \
-    echo PATH=$PATH:$HOME/.poetry/bin \
-    source $HOME/.poetry/env 
+RUN apt-get --assume-yes install python3-pip
 
 # Starter
 CMD cd supstream \
-    && cd Supstream \
     && git pull \
+    && cd Supstream \
     && mkdir build \
     && cd build \
     && cmake .. \
