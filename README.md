@@ -1,5 +1,5 @@
 
-![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/Supstream/images/supstream-logo.png)
+![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/supstream-logo.png)
 
 Gstreamer-based stream supervisor using YAML
 
@@ -9,7 +9,7 @@ To better understand, look at the _samples_ directory
 
 Trello : https://trello.com/b/gAa0tKvO/supstream
 
-![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/Supstream/images/screenshot.png)
+![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/screenshot.png)
 
 # Install
 
