@@ -1,10 +1,10 @@
 #include "ast.h"
 
-static void         ast_node_tojson_recurse(ast_node_t *node, cJSON **block) {
+static void     ast_node_tojson_recurse(ast_node_t *node, cJSON **block) {
 
-    cJSON           *new_block = NULL;
-    cJSON           *new_line_value = NULL;
-    char            *new_line_key = NULL;
+    cJSON       *new_block = NULL;
+    cJSON       *new_line_value = NULL;
+    char        *new_line_key = NULL;
 
     while (node != NULL) {
 
@@ -36,14 +36,59 @@ static void         ast_node_tojson_recurse(ast_node_t *node, cJSON **block) {
     }
 }
 
-cJSON               *ast_node_tojson(
-                    ast_node_t *node,
-                    list_t *blockdeep) {
+cJSON           *ast_node_tojson(
+                ast_node_t *node,
+                list_t *blockdeep) {
 
-    ast_node_t      *iblock = ast_iblock_get(node, blockdeep);
-    cJSON           *result = NULL;
+    ast_node_t  *iblock = ast_iblock_get(node, blockdeep);
+    cJSON       *result = NULL;
 
     ast_node_tojson_recurse(iblock, &result);
+    return (result);
+}
+
+static void     ast_node_jsonstr_toast_recurse(cJSON *ast_json, ast_node_t **result) {
+
+    cJSON       *node_json = NULL;
+    ast_node_t  *scalar = NULL;
+    ast_node_t  *block = NULL;
+    ast_node_t  *line = NULL;
+
+    if (ast_json == NULL)
+        return ;
+
+    cJSON_ArrayForEach(node_json, ast_json)
+    {
+
+        if (cJSON_IsObject(node_json) == TRUE) {
+
+            /* iBLOCK */
+            block = ast_iblock_new(node_json->string);
+            ast_ilb_add_simple(result, block);
+            ast_node_jsonstr_toast_recurse(node_json, &(block->left));
+
+        } else {
+
+            /* iSCALAR (iKEY + iVALUE) */
+            scalar = ast_iscalar_new_simple(node_json->string, node_json->valuestring);
+            line = ast_iline_new(scalar);
+            ast_ilb_add_simple(result, line);
+
+        }
+
+    }
+
+}
+
+/* This is not a toast, this function convert JSON string to an Abstract Syntax Tree */
+
+ast_node_t      *ast_node_jsonstr_toast(
+                const char *jsonstr) {
+
+    cJSON       *ast_json = cJSON_Parse(jsonstr);
+    ast_node_t  *result = NULL;
+
+    ast_node_jsonstr_toast_recurse(ast_json, &result);
     return (result);
 }
 
@@ -308,6 +353,24 @@ void            ast_free(ast_tree_t **root) {
     }
 }
 
+void            ast_ilb_add_simple(
+                ast_tree_t **root,
+                ast_node_t *node) {
+
+    ast_node_t  *tmp = *root;
+
+    if (*root == NULL) {
+        *root = node;
+        return ;
+    }
+
+    while ((*root)->right != NULL)
+        *root = (*root)->right;
+    (*root)->right = node;
+
+    *root = tmp;
+}
+
 void            ast_ilb_add(
                 ast_tree_t **root,
                 ast_node_t *node,
@@ -566,9 +629,9 @@ char            *ast_iscalar_value(ast_node_t *scalar_node) {
 
 /* Considering node variable is the parent block */
 
-void                            ast_node_remove_by_key(
-                                ast_node_t **node,
-                                char *str) {
+void            ast_node_remove_by_key(
+                ast_node_t **node,
+                char *str) {
 
     ast_node_t *prev = NULL;
     ast_node_t *tmp = *node;

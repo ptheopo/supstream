@@ -99,6 +99,8 @@ void                            ast_node_remove_by_key(
 cJSON                           *ast_node_tojson(
                                 ast_node_t *node,
                                 list_t *blockdeep);
+ast_node_t                      *ast_node_jsonstr_toast(
+                                const char *jsonstr);
 
 /* Deepblocks functions */
 
@@ -149,6 +151,9 @@ void                            ast_ilb_add(
                                 ast_tree_t **root,
                                 ast_node_t *node,
                                 list_t *blockdeep);
+void                            ast_ilb_add_simple(
+                                ast_tree_t **root,
+                                ast_node_t *node);
 
 /* Browse getters - Browsing in AST (prefix, infix, suffix) using callback */
 
