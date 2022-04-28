@@ -60,7 +60,7 @@ static int              core(const gchar *yaml_pipeline) {
         yaml_token_delete(&token);
     }
     if (root != NULL) {
-        supstream = semantic(&root);
+        supstream = semantic_doc(&root);
         pipeline(supstream);
     }
     free(root);
@@ -118,58 +118,6 @@ int                     main(int argc, char **argv) {
         /* From a file */
         ret = core((const gchar *)argv[2]);
     } else {
-
-        /* DEBUG */
-        const char *json_pipeline = "{\
-            \"supstream\": {\
-                \"zmq_path\": \"tcp://0.0.0.0:5557\"\
-            },\
-                \"pipelines\": {\
-                    \"matroska_video_0\": {\
-                        \"init_state\": \"play\",\
-                        \"type_exec\": \"thread\",\
-                        \"auto_restart\": true,\
-                        \"elements\": {\
-                            \"souphttpsrc\": {\
-                                \"element\": \"souphttpsrc\",\
-                                \"properties\": {\
-                                    \"location\": \"https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm\"\
-                                },\
-                                \"element_link\": \"matroskademux\"\
-                            },\
-                            \"matroskademux\": {\
-                                \"element\": \"matroskademux\",\
-                                \"pad_link\": {\
-                                    \"pad_video\": {\
-                                        \"from\": \"video_0\",\
-                                        \"to\": {\
-                                            \"name\": \"vp8dec\",\
-                                            \"pad\": \"sink\"\
-                                        }\
-                                    }\
-                                }\
-                            },\
-                            \"vp8dec\": {\
-                                \"element\": \"vp8dec\",\
-                                \"element_link\": \"videoconvert\"\
-                            },\
-                            \"videoconvert\": {\
-                                \"element\": \"videoconvert\",\
-                                \"element_link\": \"autovideosink\"\
-                            },\
-                            \"autovideosink\": {\
-                                \"element\": \"autovideosink\"\
-                            }\
-                        }\
-                    }\
-                }\
-        }";
-
-        ast_node_t *tmp = ast_node_jsonstr_toast(json_pipeline);
-        ast_browse_prefix(tmp, ast_node_print);
-
-        /* DEBUG */
-
         /* Usage */
         g_print("usage: supstream -f <yaml-file>\n");
         g_print("or     supstream -u <yaml-uri>\n");

@@ -83,12 +83,11 @@ static void     ast_node_jsonstr_toast_recurse(cJSON *ast_json, ast_node_t **res
 /* This is not a toast, this function convert JSON string to an Abstract Syntax Tree */
 
 ast_node_t      *ast_node_jsonstr_toast(
-                const char *jsonstr) {
+                cJSON *json) {
 
-    cJSON       *ast_json = cJSON_Parse(jsonstr);
     ast_node_t  *result = NULL;
 
-    ast_node_jsonstr_toast_recurse(ast_json, &result);
+    ast_node_jsonstr_toast_recurse(json, &result);
     return (result);
 }
 

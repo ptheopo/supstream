@@ -46,7 +46,7 @@ static void             semantic_pipeline(
 
 }
 
-supstream_t             *semantic(ast_tree_t **root) {
+supstream_t             *semantic_doc(ast_tree_t **root) {
 
     ast_node_t          *tmp = *root;
     ast_node_t          *priority_root = *root;

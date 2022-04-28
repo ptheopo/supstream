@@ -6,8 +6,12 @@ char    *request_create_element(
 
     (void)request_json;
     (void)root;
+
+    ast_node_t *tmp = ast_node_jsonstr_toast((cJSON *)request_json);
+    ast_browse_prefix(tmp, ast_node_print);
+    //supstream_t *sup2 = semantic_doc(&tmp);
     g_print("Create element");
-    return (NULL);
+    return ("{\"ok\": \"ok\"}");
 }
 
 char            *request_remove_element(

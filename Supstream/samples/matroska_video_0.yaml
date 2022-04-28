@@ -4,9 +4,7 @@ supstream:
     zmq_path: "tcp://0.0.0.0:5557"
 
 pipelines:
-
     matroska_video_0:
-
         init_state: play
         type_exec: thread
         auto_restart: true

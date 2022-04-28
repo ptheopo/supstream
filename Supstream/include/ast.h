@@ -100,7 +100,7 @@ cJSON                           *ast_node_tojson(
                                 ast_node_t *node,
                                 list_t *blockdeep);
 ast_node_t                      *ast_node_jsonstr_toast(
-                                const char *jsonstr);
+                                cJSON *json);
 
 /* Deepblocks functions */
 

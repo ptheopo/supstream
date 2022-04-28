@@ -83,6 +83,6 @@ typedef union           dtype_u {
     const GValue        *gvalue;
 }                       dtype_t;
 
-supstream_t             *semantic(ast_tree_t **root);
+supstream_t             *semantic_doc(ast_tree_t **root);
 
 #endif
