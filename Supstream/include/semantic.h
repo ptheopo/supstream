@@ -64,6 +64,13 @@ linked_result_t         *semantic_block_elements(
                         ast_node_t **node,
                         GHashTable **symtable,
                         GstPipeline *pipeline);
+void                    semantic_block_element(
+                        GHashTable **symtable,
+                        GstPipeline *pipeline,
+                        ast_node_t **node,
+                        list_t **linked_elements,
+                        list_t **linked_pads,
+                        list_t **pad_props_lst);
 void                    semantic_config(
                         ast_node_t *node,
                         config_t **config);
