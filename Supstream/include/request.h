@@ -9,6 +9,7 @@
 
 # include "ast.h"
 # include "def.h"
+# include "semantic.h"
 
 # define STATE_IS_NULL(s) \
     (strcmp(s, "null") == 0)

@@ -12,6 +12,24 @@ static void             linked_free(void *content, size_t size) {
     free(content);
 }
 
+void                    semantic_link(
+                        GHashTable **symtable,
+                        list_t **linked_elements,
+                        list_t **linked_pads,
+                        list_t **linked_pad_props) {
+
+    link_element_all(*linked_elements);
+    link_pad_all_always(symtable,*linked_pads);
+    link_pad_all_request(symtable, *linked_pads);
+    link_pad_all_sometimes(symtable, *linked_pads);
+    link_pad_props(*linked_pad_props);
+
+    /* Don't forget to free others lists */
+    lstdel(linked_elements, &linked_free);
+    //lstdel(&(linked->pads), &linked_free);
+
+}
+
 static void             semantic_pipeline(
                         ast_node_t **node,
                         config_pipeline_t *config_pipeline) {
@@ -34,13 +52,11 @@ static void             semantic_pipeline(
     if (elements != NULL) {
         (*node)->symtable = g_hash_table_new (g_str_hash, g_str_equal);
         linked = semantic_block_elements(elements, &((*node)->symtable), pipeline);
-        link_element_all(linked->elements);
-        link_pad_all_always(&((*node)->symtable), linked->pads);
-        link_pad_all_request(&((*node)->symtable), linked->pads);
-        link_pad_all_sometimes(&((*node)->symtable), linked->pads);
-        link_pad_props(linked->pad_props);
-        lstdel(&(linked->elements), &linked_free);
-        //lstdel(&(linked->pads), &linked_free);
+        semantic_link(
+                &((*node)->symtable),
+                &(linked->elements),
+                &(linked->pads),
+                &(linked->pad_props));
     }
     *node = tmp;
 

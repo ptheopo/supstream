@@ -63,14 +63,14 @@ static void     ast_node_jsonstr_toast_recurse(cJSON *ast_json, ast_node_t **res
         if (cJSON_IsObject(node_json) == TRUE) {
 
             /* iBLOCK */
-            block = ast_iblock_new(node_json->string);
+            block = ast_iblock_new(g_strdup(node_json->string));
             ast_ilb_add_simple(result, block);
             ast_node_jsonstr_toast_recurse(node_json, &(block->left));
 
         } else {
 
             /* iSCALAR (iKEY + iVALUE) */
-            scalar = ast_iscalar_new_simple(node_json->string, node_json->valuestring);
+            scalar = ast_iscalar_new_simple(g_strdup(node_json->string), g_strdup(node_json->valuestring));
             line = ast_iline_new(scalar);
             ast_ilb_add_simple(result, line);
 

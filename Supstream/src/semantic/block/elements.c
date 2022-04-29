@@ -5,6 +5,12 @@ static void             free_props_block(void *content, size_t size) {
     free(content);
 }
 
+/*
+ * Info :
+ * Symtable insert element inside the pipeline (pipeline symtable)
+ * This is possible to replace symtable and pipeline by the pipeline AST node (sdata, symtable inside struct)
+ */
+
 void                    semantic_block_element(
                         GHashTable **symtable,
                         GstPipeline *pipeline,

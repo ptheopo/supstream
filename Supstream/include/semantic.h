@@ -78,6 +78,12 @@ void                    semantic_config_pipeline(
                         ast_node_t *node,
                         config_pipeline_t **config_pipeline);
 
+void                    semantic_link(
+                        GHashTable **symtable,
+                        list_t **linked_elements,
+                        list_t **linked_pads,
+                        list_t **linked_pad_props);
+
 /* Dynamic types for properties */
 
 typedef union           dtype_u {
