@@ -78,17 +78,18 @@ pipelines:
             # AUDIO SPEAKER #
             #################
 
-            pulsesrc:
-                element: pulsesrc
-                element_link: audioconvert
+            audiotestsrc:
+                element: audiotestsrc
+                element_link: avenc_aac
+                properties:
+                    is-live: true
 
-            audioconvert:
-                element: audioconvert
+            avenc_aac:
+                element: avenc_aac
                 pad_link:
 
                     pad_audio_speaker:
                         from: src
                         to:
                             name: dashsink
-sh: 1: q: not found
-
+                            pad: audio_0
