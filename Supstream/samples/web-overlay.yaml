@@ -1,11 +1,10 @@
-# This configuration show a video from demux MKV
-# GST_PLUGIN_PATH=Release:$GST_PLUGIN_PATH gst-launch-1.0 \
+# This configuration show a video from web overlay using gstcefsrc from centricular
+#
+#    GST_PLUGIN_PATH=Release:$GST_PLUGIN_PATH gst-launch-1.0 \
 #    cefsrc url="https://soundcloud.com/platform/sama" ! \
 #    video/x-raw, width=1920, height=1080, framerate=60/1 ! cefdemux name=d d.video ! \
 #    queue max-size-bytes=0 max-size-buffers=0 max-size-time=3000000000 ! videoconvert ! \
-#    xvimagesink audiotestsrc do-timestamp=true is-live=true  volume=0.00 ! audiomixer name=mix ! \
-#    queue max-size-bytes=0 max-size-buffers=0 max-size-time=3000000000 ! audioconvert ! pulsesink \
-#    d.audio ! mix.
+#    xvimagesink
 
 supstream:
     zmq_path: "tcp://0.0.0.0:5557"
@@ -28,14 +27,25 @@ pipelines:
                 properties:
                     url: https://soundcloud.com/platform/sama
                 element_link: cefdemux
+                caps:
+                    media_type: video/x-raw
+                    width: 1920
+                    height: 1080
 
             cefdemux:
                 element: cefdemux
                 pad_link:
+
                     pad_video:
-                        from: video_0
+                        from: video
                         to:
                             name: queue_video
+                            pad: sink
+
+                    pad_audio:
+                        from: audio
+                        to:
+                            name: autoaudiosink
                             pad: sink
 
             queue_video:
@@ -56,3 +66,30 @@ pipelines:
             #####################
             # WEB AUDIO OVERLAY #
             #####################
+
+            audiotestsrc:
+                element: audiotestsrc
+                properties:
+                    do-timestamp: true
+                    is-live: true
+                    volume: 0.00
+                element_link: audiomixer
+
+            audiomixer:
+                element: audiomixer
+                element_link: queue_audio
+
+            queue_audio:
+                element: queue
+                properties:
+                    max-size-bytes: 0
+                    max-size-buffers: 0
+                    max-size-time: 3000000000
+                element_link: audioconvert
+
+            audioconvert:
+                element: audioconvert
+                element_link: autoaudiosink
+
+            autoaudiosink:
+                element: autoaudiosink
