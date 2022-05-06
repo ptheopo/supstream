@@ -1,0 +1,37 @@
+# This pipeline is a screen recorder
+# gst-launch-1.0 ximagesrc ! video/x-raw,framerate=5/1 ! videoconvert ! theoraenc ! oggmux ! filesink location=desktop.ogg
+
+supstream:
+    zmq_path: "tcp://0.0.0.0:5557"
+
+pipelines:
+    
+    screenrecorder:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+
+            ximagesrc:
+                element: ximagesrc
+                    media_type: video/x-raw
+                    framerate: 5/1
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: theoraenc
+
+            theoraenc:
+                element: theoraenc
+                element_link: oggmux
+
+            oggmux:
+                element: oggmux
+                element_link: filesink
+
+            filesink:
+                element: filesink
+                properties:
+                    location: desktop.ogg

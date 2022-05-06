@@ -64,6 +64,10 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     char                *depth = AST_GET_VALUE (node, "depth");
     char                *profile = AST_GET_VALUE (node, "profile");
 
+    /* Fraction variables */
+    int                 nominator = 0;
+    int                 denominator = 0;
+
     GstCaps *caps = NULL;
 
     if (media_type == NULL) {
@@ -80,9 +84,11 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     } if (width != NULL) {
         gst_caps_set_simple(caps, "width", G_TYPE_INT, (gint)atoi(width), NULL);
     } if (framerate != NULL) {
-        //gst_caps_set_simple(caps, "framerate", G_TYPE_FRACTION, (gint)atoi(framerate), NULL);
+        sscanf(framerate, "%d/%d", &nominator, &denominator);
+        gst_caps_set_simple(caps, "framerate", GST_TYPE_FRACTION, (gint)nominator, (gint)denominator, NULL);
     } if (max_framerate != NULL) {
-        //gst_caps_set_simple(caps, "max-framerate", G_TYPE_FRACTION, (gint)atoi(max_framerate), NULL);
+        sscanf(framerate, "%d/%d", &nominator, &denominator);
+        gst_caps_set_simple(caps, "max-framerate", GST_TYPE_FRACTION, (gint)nominator, (gint)denominator, NULL);
     } if (views != NULL) {
         gst_caps_set_simple(caps, "views", G_TYPE_INT, (gint)atoi(views), NULL);
     } if (interlace_mode != NULL) {
@@ -90,7 +96,8 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     } if (chroma_site != NULL) {
         gst_caps_set_simple(caps, "chroma-site", G_TYPE_STRING, (gchar *)chroma_site, NULL);
     } if (pixel_aspect_ratio != NULL) {
-        //gst_caps_set_simple(caps, "pixel-aspect-ratio", G_TYPE_FRACTION, (gint)atoi(height), NULL);
+        sscanf(framerate, "%d/%d", &nominator, &denominator);
+        gst_caps_set_simple(caps, "pixel-aspect-ratio", GST_TYPE_FRACTION, (gint)nominator, (gint)denominator, NULL);
     } if (h263version != NULL) {
         gst_caps_set_simple(caps, "h263version", G_TYPE_STRING, (gchar *)h263version, NULL);
     } if (depth != NULL) {
