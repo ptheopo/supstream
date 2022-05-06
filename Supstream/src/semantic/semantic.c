@@ -71,6 +71,12 @@ supstream_t             *semantic_doc(ast_tree_t **root) {
     config_t            *config = config_new_default();
     config_pipeline_t   *config_pipeline = NULL;
 
+    ast_node_t          *scalar_start_playing = NULL;
+    ast_node_t          *scalar_start_paused = NULL;
+    ast_node_t          *scalar_start_ready = NULL;
+    ast_node_t          *scalar_start_null = NULL;
+    semantic_data_t     *sdata = NULL;
+
     *root = (*root)->left;
     priority_root = *root;
 
@@ -96,17 +102,41 @@ supstream_t             *semantic_doc(ast_tree_t **root) {
             while (*root != NULL) {
 
                 if (AST_IS_IBLOCK (*root) == TRUE) {
+                    
+                    
 
                     /* Specific pipeline config */
 
                     config_pipeline = config_new_default_pipeline();
                     semantic_config_pipeline(*root, &config_pipeline);
-
                     semantic_pipeline(root, config_pipeline);
 
-                    /* delay */
+                    /* Set delay */
 
                     semantic_config_set_delay(config_pipeline, (*root)->sdata->gstpipeline);
+
+                    /* State scheduler */
+
+                    scalar_start_playing = ast_iscalar_get_by_key(*root, "playing_state");
+                    if (scalar_start_playing != NULL) {
+                        sdata = (semantic_data_t *)(*root)->sdata;
+                        semantic_line_start_playing(GST_ELEMENT (sdata->gstpipeline), scalar_start_playing->right->str);
+                    }
+                    scalar_start_paused = ast_iscalar_get_by_key(*root, "paused_state");
+                    if (scalar_start_paused != NULL) {
+                        sdata = (semantic_data_t *)(*root)->sdata;
+                        semantic_line_start_paused(GST_ELEMENT (sdata->gstpipeline), scalar_start_playing->right->str);
+                    }
+                    scalar_start_ready = ast_iscalar_get_by_key(*root, "ready_state");
+                    if (scalar_start_ready != NULL) {
+                        sdata = (semantic_data_t *)(*root)->sdata;
+                        semantic_line_start_ready(GST_ELEMENT (sdata->gstpipeline), scalar_start_playing->right->str);
+                    }
+                    scalar_start_null = ast_iscalar_get_by_key(*root, "null_state");
+                    if (scalar_start_null != NULL) {
+                        sdata = (semantic_data_t *)(*root)->sdata;
+                        semantic_line_start_null(GST_ELEMENT (sdata->gstpipeline), scalar_start_playing->right->str);
+                    }
 
                 }
 

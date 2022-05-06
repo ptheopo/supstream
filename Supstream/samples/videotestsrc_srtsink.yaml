@@ -6,17 +6,20 @@
 
 supstream:
     zmq_path: "tcp://0.0.0.0:5557"
+    timezone: "Europe/Paris"
 
 pipelines:
 
     videotestsrc_circular_srtsink:
 
-        init_state: play
+        init_state: ready
         type_exec: thread
+        playing_state: "2022-05-06 14:24:00"
 
         elements:
 
             videotestsrc:
+
                 element: videotestsrc
                 properties:
                     pattern: 22
