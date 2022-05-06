@@ -62,6 +62,7 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     char                *pixel_aspect_ratio = AST_GET_VALUE (node, "pixel_aspect_ratio");
     char                *h263version = AST_GET_VALUE (node, "h263version");
     char                *depth = AST_GET_VALUE (node, "depth");
+    char                *profile = AST_GET_VALUE (node, "profile");
 
     GstCaps *caps = NULL;
 
@@ -94,6 +95,8 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
         gst_caps_set_simple(caps, "h263version", G_TYPE_STRING, (gchar *)h263version, NULL);
     } if (depth != NULL) {
         gst_caps_set_simple(caps, "depth", G_TYPE_INT, (gint)atoi(depth), NULL);
+    } if (profile != NULL) {
+        gst_caps_set_simple(caps, "profile", G_TYPE_STRING, (gchar *)profile, NULL);
     }
 
     if (*linked_elements == NULL)

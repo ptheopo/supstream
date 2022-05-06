@@ -1,0 +1,49 @@
+# This pipeline sending an SRT stream, used from OBS with GST OBS at https://github.com/fzwoch/obs-gstreamer
+# In Supstream:
+# gst-launch-1.0 -v videotestsrc ! video/x-raw, height=1080, width=1920 ! videoconvert ! x264enc tune=zerolatency ! video/x-h264, profile=high ! mpegtsmux ! srtsink uri=srt://:8888/
+# In OBS gstreamer source:
+# srtsrc uri=srt://127.0.0.1:8888 ! decodebin ! queue ! video.
+
+supstream:
+    zmq_path: "tcp://0.0.0.0:5557"
+
+pipelines:
+
+    videotestsrc_circular_srtsink:
+
+        init_state: play
+        type_exec: thread
+
+        elements:
+
+            videotestsrc:
+                element: videotestsrc
+                properties:
+                    pattern: 22
+                caps:
+                    media_type: video/x-raw
+                    width: 1920
+                    height: 1080
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: x264enc
+
+            x264enc:
+                element: x264enc
+                properties:
+                    tune: zerolatency
+                caps:
+                    media_type: video/x-h264
+                    profile: high
+                element_link: mpegtsmux
+
+            mpegtsmux:
+                element: mpegtsmux
+                element_link: srtsink
+
+            srtsink:
+                element: srtsink
+                properties:
+                    uri: srt://:8888/

@@ -4,17 +4,21 @@ pipelines:
 
     videotestsrc_autovideosink:
 
-        init_state: null
+        init_state: play
         type_exec: thread
 
         elements:
             src:
-                playing_state: "2022-04-19 12:17:20"
+                #playing_state: "2022-04-19 12:17:20"
                 element: videotestsrc
-                element_link: sink
+                element_link: videoconvert
                 caps:
                     media_type: video/x-raw
-                    format: I420
+                    width: 1920
+                    height: 1080
+            videoconvert:
+                element: videoconvert
+                element_link: sink
             sink:
                 element: autovideosink
 

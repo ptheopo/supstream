@@ -77,14 +77,7 @@ void                    semantic_block_element(
         g_print(SEMANTIC_ADD_BIN_O,
                 scalar_node->right->str,
                 GST_OBJECT_NAME (pipeline));
-
-        /* create caps */
-        caps = ast_iblock_get(
-                (*node)->left,
-                caps_dp);
-        if (caps != NULL)
-            semantic_block_caps(linked_elements, caps);
-
+        
         /* start options (update states from scheduler) */
         scalar_node_start_playing = ast_iscalar_get_by_key(*node, "playing_state");
         if (scalar_node_start_playing != NULL) {
@@ -124,6 +117,14 @@ void                    semantic_block_element(
                 pads_dp);
         if (pads != NULL)
             semantic_block_pads(linked_pads, pads, element);
+
+        /* create caps */
+        caps = ast_iblock_get(
+                (*node)->left,
+                caps_dp);
+        if (caps != NULL)
+            semantic_block_caps(linked_elements, caps);
+
 
         /* create element sym in symtable */
         g_hash_table_insert (*symtable, (*node)->str, element);
