@@ -14,7 +14,7 @@ pipelines:
 
         init_state: ready
         type_exec: thread
-        playing_state: "2022-05-06 14:24:00"
+        playing_state: "2022-05-06 14:56:00"
 
         elements:
 
@@ -22,11 +22,11 @@ pipelines:
 
                 element: videotestsrc
                 properties:
-                    pattern: 22
+                    pattern: 0
                 caps:
                     media_type: video/x-raw
-                    width: 1920
-                    height: 1080
+                    width: 1280
+                    height: 720
                 element_link: videoconvert
 
             videoconvert:
@@ -49,4 +49,168 @@ pipelines:
             srtsink:
                 element: srtsink
                 properties:
-                    uri: srt://:8888/
+                    uri: srt://:8881/
+
+    videotestsrc_snow_srtsink:
+
+        init_state: ready
+        type_exec: thread
+        playing_state: "2022-05-06 14:56:00"
+
+        elements:
+
+            videotestsrc:
+
+                element: videotestsrc
+                properties:
+                    pattern: 18
+                caps:
+                    media_type: video/x-raw
+                    width: 1280
+                    height: 720
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: x264enc
+
+            x264enc:
+                element: x264enc
+                properties:
+                    tune: zerolatency
+                caps:
+                    media_type: video/x-h264
+                    profile: high
+                element_link: mpegtsmux
+
+            mpegtsmux:
+                element: mpegtsmux
+                element_link: srtsink
+
+            srtsink:
+                element: srtsink
+                properties:
+                    uri: srt://:8882/
+
+    videotestsrc_25_1_srtsink:
+
+        init_state: ready
+        type_exec: thread
+        playing_state: "2022-05-06 14:56:00"
+
+        elements:
+
+            videotestsrc:
+
+                element: videotestsrc
+                properties:
+                    pattern: 25
+                caps:
+                    media_type: video/x-raw
+                    width: 1280
+                    height: 720
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: x264enc
+
+            x264enc:
+                element: x264enc
+                properties:
+                    tune: zerolatency
+                caps:
+                    media_type: video/x-h264
+                    profile: high
+                element_link: mpegtsmux
+
+            mpegtsmux:
+                element: mpegtsmux
+                element_link: srtsink
+
+            srtsink:
+                element: srtsink
+                properties:
+                    uri: srt://:8883/
+
+    videotestsrc_25_2_srtsink:
+
+        init_state: ready
+        type_exec: thread
+        playing_state: "2022-05-06 14:56:00"
+
+        elements:
+
+            videotestsrc:
+
+                element: videotestsrc
+                properties:
+                    pattern: 14
+                caps:
+                    media_type: video/x-raw
+                    width: 1280
+                    height: 720
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: x264enc
+
+            x264enc:
+                element: x264enc
+                properties:
+                    tune: zerolatency
+                caps:
+                    media_type: video/x-h264
+                    profile: high
+                element_link: mpegtsmux
+
+            mpegtsmux:
+                element: mpegtsmux
+                element_link: srtsink
+
+            srtsink:
+                element: srtsink
+                properties:
+                    uri: srt://:8884/
+
+    videotestsrc_25_3_srtsink:
+
+        init_state: ready
+        type_exec: thread
+        playing_state: "2022-05-06 14:56:00"
+
+        elements:
+
+            videotestsrc:
+
+                element: videotestsrc
+                properties:
+                    pattern: 22
+                caps:
+                    media_type: video/x-raw
+                    width: 1280
+                    height: 720
+                element_link: videoconvert
+
+            videoconvert:
+                element: videoconvert
+                element_link: x264enc
+
+            x264enc:
+                element: x264enc
+                properties:
+                    tune: zerolatency
+                caps:
+                    media_type: video/x-h264
+                    profile: high
+                element_link: mpegtsmux
+
+            mpegtsmux:
+                element: mpegtsmux
+                element_link: srtsink
+
+            srtsink:
+                element: srtsink
+                properties:
+                    uri: srt://:8885/

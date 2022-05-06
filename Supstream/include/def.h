@@ -81,6 +81,6 @@
 
 /* PEV Scheduler */
 
-# define    SCHEDULER_PLAYING_O                         "\033[1;32mSCHEDULER\033[0m\t\tElement %s on PLAYING state\n[0m\n"
+# define    SCHEDULER_PLAYING_O                         "\033[1;32mSCHEDULER\033[0m\t\tElement %s on PLAYING state\033[0m\n"
 
 #endif
