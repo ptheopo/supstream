@@ -1,0 +1,64 @@
+# This sample doing yolov4 using gst-darknet (pjreddie/darknet) detection from coco dataset 
+# (Multi inference detection)
+# gst-launch-1.0 filesrc location=/tmp/test.mp4 ! qtdemux ! video/x-h264 ! h264parse ! avdec_h264 ! videoconvert ! darknetinfer config=/tmp/yolov4.cfg weights=/tmp/yolov4.weights ! darknetrender labels=/tmp/coco.names ! videoconvert ! autovideosink
+
+supstream:
+  zmq_path: "tcp://0.0.0.0:5557"
+
+pipelines:
+    
+  road_detection:
+
+    init_state: play
+    type_exec: thread
+
+    elements:
+      
+      filesrc:
+        element: filesrc
+        properties:
+          location: /tmp/test.mp4
+        element_link: qtdemux
+
+      qtdemux:
+        element: qtdemux
+        caps:
+          media_type: video/x-h264
+        pad_link:
+          pad_video_3:
+            from: video_0
+            to:
+              name: h264parse
+              pad: sink
+
+      h264parse:
+        element: h264parse
+        element_link: avdec_h264
+
+      avdec_h264:
+        element: avdec_h264
+        element_link: videoconvert
+
+      videoconvert:
+        element: videoconvert
+        element_link: darknetinfer
+    
+      darknetinfer:
+        element: darknetinfer
+        properties:
+          config: /tmp/yolov4.cfg
+          weights: /tmp/yolov4.weights
+        element_link: darknetrender
+
+      darknetrender:
+        element: darknetrender
+        properties:
+          labels: /tmp/coco.names
+        element_link: videoconvert3
+
+      videoconvert3:
+        element: videoconvert
+        element_link: autovideosink
+
+      autovideosink:
+        element: autovideosink
