@@ -55,11 +55,11 @@ static void             semantic_block_caps_video(list_t **linked_elements, ast_
     char                *height = AST_GET_VALUE (node, "height");
     char                *width = AST_GET_VALUE (node, "width");
     char                *framerate = AST_GET_VALUE (node, "framerate");
-    char                *max_framerate = AST_GET_VALUE (node, "max_framerate");
+    char                *max_framerate = AST_GET_VALUE (node, "max-framerate");
     char                *views = AST_GET_VALUE (node, "views");
-    char                *interlace_mode = AST_GET_VALUE (node, "interlace_mode");
-    char                *chroma_site = AST_GET_VALUE (node, "chroma_site");
-    char                *pixel_aspect_ratio = AST_GET_VALUE (node, "pixel_aspect_ratio");
+    char                *interlace_mode = AST_GET_VALUE (node, "interlace-mode");
+    char                *chroma_site = AST_GET_VALUE (node, "chroma-site");
+    char                *pixel_aspect_ratio = AST_GET_VALUE (node, "pixel-aspect-ratio");
     char                *h263version = AST_GET_VALUE (node, "h263version");
     char                *depth = AST_GET_VALUE (node, "depth");
     char                *profile = AST_GET_VALUE (node, "profile");

@@ -35,7 +35,7 @@ pipelines:
 
     mosaic_video:
 
-        init_state: pause
+        init_state: play
         type_exec: sync
 
         elements:
@@ -141,7 +141,7 @@ pipelines:
                     media_type: video/x-raw
                     width: 320
                     height: 180
-
+                    framerate: "30000/1001"
 
             videoscale_top_left:
 
