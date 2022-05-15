@@ -15,8 +15,9 @@ pipelines:
 
             ximagesrc:
                 element: ximagesrc
+                caps:
                     media_type: video/x-raw
-                    framerate: 5/1
+                    framerate: "5/1"
                 element_link: videoconvert
 
             videoconvert:
