@@ -4,11 +4,11 @@
 
 # Introduction
 
-Supstream est un projet open-source de déploiement et de developpement de pipelines de streaming dynamique. Ce projet utilise le format YAML pour configurer les differentes pipelines pour un usage aise entres plusieurs parties d'une architecture. Il est un outil «dev-ops» pour la mise en place de pipeline de streaming, épargnant un temps de développement conséquent, Supstream permet de s'affranchire du changement des versions de Gstreamer dans un contexte sécurisé et conteneurisé sous Linux. La particularitée de Supstream est de pouvoir centraliser un ensembles de flux, ce qui n’est pas négligeable dans le cas d'une architecture microservice pouvant nécéssiter d‘une supervision, d’un monitoring mais encore d’une gestion approfondie des streams. Supstream intégre une API REST (APIGateway) en Python/uvicorn utilisant APIFast, pour le moment c'est un POC. En général, ce projet est une «Virtual Machine» éxécutant un ensemble d’opérations censées uniformiser la mise en place d’architecture de streaming audio & vidéo. A l’heure actuelle, aucuns projets open-source comme celui ci n’existe. En revanche il existe un autre projet open-source légèrement similaire à Supstream nommé «gst-d» pour Gstreamer daemon, développé par la société RidgeRun qui fait du support Gstreamer. Il faut savoir que ce projet intégre des pipelines entrantes sous le format CLI de Gstreamer, «gst-launch», à contrario, Supstream utilise directement les fonctions bas niveau de la librairie Gstreamer permettant d’élargir et d’améliorer nativement le control sur chaqu’unes d’elles.
+Supstream est un projet open-source de déploiement et de développement de pipelines de streaming dynamique. Ce projet utilise le format YAML pour configurer les différentes pipelines pour un usage aisé entres plusieurs parties d'une architecture. Il est un outil «dev-ops» pour la mise en place de pipelines de streaming, épargnant un temps de développement conséquent, Supstream permet de s'affranchir du changement de version de Gstreamer dans un contexte sécurisé et conteneurisé sous Linux. La particularité de Supstream est de pouvoir centraliser un ensemble de flux, ce qui n’est pas négligeable dans le cas d'une architecture microservice pouvant nécéssiter d‘une supervision, d’un monitoring et d’une gestion approfondie des streams. Supstream intégre une API REST (APIGateway) en Python/uvicorn utilisant APIFast, pour le moment c'est un POC. En général, ce projet est une «Virtual Machine» éxécutant un ensemble d’opérations censées uniformiser la mise en place d’architecture de streaming audio & vidéo. A l’heure actuelle, aucuns projets open-source comme celui ci n’existe. En revanche, il existe un autre projet open-source légèrement similaire à Supstream nommé «RidgeRun/gstd-1.x» pour Gstreamer Daemon, développé par la société RidgeRun qui fait du support Gstreamer. Il faut savoir que ce projet intégre des pipelines entrantes sous le format CLI de Gstreamer, «gst-launch», à contrario, Supstream utilise directement les fonctions bas niveau de la librairie Gstreamer permettant d’élargir et d’améliorer nativement le contrôle sur chaqu’unes d’elles.
 
-L’éxécutable Supstream est aussi rapide que la commande «gst-launch», en l’occurrence elle utilise du YAML et lance un serveur d’écoute pour la supervision et le monitoring. Techniquement, le parsing de ce projet est relativement bien développé à partir d'une analyse lexicale, syntaxicale et sémantique en utilisant des arbres binaires abstraits pour toutes les parties en rapport avec l’interprétation, par exemple des configurations. Des tables de hash sont notamment intégrées dans ce projet pour permettre un partage de certaines données Gstreamer.
+L’éxécutable Supstream est aussi rapide que la commande «gst-launch», en l’occurrence Supstream utilise du YAML et lance un serveur d’écoute ZeroMQ (IPC ou TCPI/IP) pour la supervision et le monitoring. Techniquement, le parsing de ce projet est relativement bien développé à partir d'une analyse lexicale, syntaxique et sémantique en utilisant des arbres binaires abstraits pour toutes les parties en rapport avec l’interprétation, par exemple des configurations. Des tables de hash sont notamment intégrées dans ce projet pour permettre un partage de certaines données Gstreamer.
 
-**Supstream pour SUPervisor STREAM**, intégre :
+De maniére générale, **Supstream pour SUPervisor STREAM**, intégre :
 - La gestion des caps
 - L'attribution des propriétés
 - Le linkage des pads et des éléments
@@ -25,7 +25,7 @@ L’éxécutable Supstream est aussi rapide que la commande «gst-launch», en l
 - Un "DOM" chargé en mémoire et mis à jour lors de chaques modifications
 - l'activation d'une API IPC pour modifier en temps-réel les pipelines
 
-l'API permet en temps réel *(🚧 En cours de développement)* :
+l'API temps-réel, permet *(🚧 En cours de développement)* :
 - Le control des états en temps-réel des pipelines (play, pause, null et ready)
 - L'obtention de la version
 - L'obtention de l'actuel "DOM" contenant les éléments, les pipelines, la configuration..
@@ -35,7 +35,7 @@ l'API permet en temps réel *(🚧 En cours de développement)* :
 - La modification des caps
 - La fermeture du programme Supstream
 
-Il faut utiliser le conteneur docker pour le moment, cela peut durer quelques heures car il compile toutes les sources Gstreamer depuis leurs sources.
+Préférez utiliser le conteneur docker pour le moment, cela peut durer quelques heures car il compile toutes les sources Gstreamer depuis leurs sources.
 Actuellement, le projet est en cours de développement. Pour mieux comprendre l'intérêt de ce projet, vous pouvez jeter un oeil sur le dossier _samples_ du répertoire.
 Un trello est accessible à l'adresse : https://trello.com/b/gAa0tKvO/supstream, il contient l'ensembles des tâches courantes, c.à.d, en cours de développement.
 
