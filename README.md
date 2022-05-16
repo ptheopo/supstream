@@ -6,7 +6,7 @@
 
 Supstream est un projet open-source de déploiement et de développement de pipelines de streaming dynamique. Ce projet utilise le format YAML pour configurer les différentes pipelines pour un usage aisé entres plusieurs parties d'une architecture. Il est un outil «dev-ops» pour la mise en place de pipelines de streaming, épargnant un temps de développement conséquent, Supstream permet de s'affranchir du changement de version de Gstreamer dans un contexte sécurisé et conteneurisé sous Linux. La particularité de Supstream est de pouvoir centraliser un ensemble de flux, ce qui n’est pas négligeable dans le cas d'une architecture microservice pouvant nécéssiter d‘une supervision, d’un monitoring et d’une gestion approfondie des streams. Supstream intégre une API REST (APIGateway) en Python/uvicorn utilisant APIFast, pour le moment c'est un POC. En général, ce projet est une «Virtual Machine» éxécutant un ensemble d’opérations censées uniformiser la mise en place d’architecture de streaming audio & vidéo. A l’heure actuelle, aucuns projets open-source comme celui ci n’existe. En revanche, il existe un autre projet open-source légèrement similaire à Supstream nommé «RidgeRun/gstd-1.x» pour Gstreamer Daemon, développé par la société RidgeRun qui fait du support Gstreamer. Il faut savoir que ce projet intégre des pipelines entrantes sous le format CLI de Gstreamer, «gst-launch», à contrario, Supstream utilise directement les fonctions bas niveau de la librairie Gstreamer permettant d’élargir et d’améliorer nativement le contrôle sur chaqu’unes d’elles.
 
-L’éxécutable Supstream est aussi rapide que la commande «gst-launch», en l’occurrence Supstream utilise du YAML et lance un serveur d’écoute ZeroMQ (IPC ou TCPI/IP) pour la supervision et le monitoring. Techniquement, le parsing de ce projet est relativement bien développé à partir d'une analyse lexicale, syntaxique et sémantique en utilisant des arbres binaires abstraits pour toutes les parties en rapport avec l’interprétation, par exemple des configurations. Des tables de hash sont notamment intégrées dans ce projet pour permettre un partage de certaines données Gstreamer.
+L’éxécutable Supstream est aussi rapide que la commande «gst-launch», en l’occurrence Supstream utilise du YAML et lance un serveur d’écoute ZeroMQ (IPC ou TCP/IP) pour la supervision et le monitoring. Techniquement, le parsing de ce projet est relativement bien développé à partir d'une analyse lexicale, syntaxique et sémantique en utilisant des arbres binaires abstraits pour toutes les parties en rapport avec l’interprétation, par exemple des configurations. Des tables de hash sont notamment intégrées dans ce projet pour permettre un partage de certaines données Gstreamer.
 
 De maniére générale, **Supstream pour SUPervisor STREAM**, intégre :
 - La gestion des caps
@@ -39,9 +39,27 @@ Préférez utiliser le conteneur docker pour le moment, cela peut durer quelques
 Actuellement, le projet est en cours de développement. Pour mieux comprendre l'intérêt de ce projet, vous pouvez jeter un œil sur le dossier _samples_ du répertoire.
 Un trello est accessible à l'adresse : https://trello.com/b/gAa0tKvO/supstream, il contient l'ensembles des tâches courantes, c.à.d, en cours de développement.
 
-![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/screenshot.png)
+# 🇺🇸 Introduction (in english)
 
-# Installation
+Supstream is an open-source project for deployment and development of dynamic streaming pipelines. This project uses the YAML format to configure different pipelines for easy use between different parts of an architecture. It is a "dev-ops" tool for setting up streaming pipelines, saving a significant amount of development time. Supstream allows you to avoid changing versions of Gstreamer in a secure and containerized context under Linux. The particularity of Supstream is to centralize a set of streams, which is not negligible in the case of a microservice architecture that may require supervision, monitoring and in-depth management of streams. Supstream integrates a REST API (APIGateway) in Python/uvicorn using APIFast, for the moment it is a POC. In general, this project is a "Virtual Machine" performing a set of operations supposed to standardize the implementation of audio & video streaming architecture. At the moment, no open-source project like this one exists. On the other hand, there is another open-source project slightly similar to Supstream called "RidgeRun/gstd-1.x" for Gstreamer Daemon, developed by the company RidgeRun which supports Gstreamer. It should be noted that this project integrates incoming pipelines in the CLI format of Gstreamer, "gst-launch", on the contrary, Supstream uses directly the low level functions of the Gstreamer library allowing to extend and improve natively the control on each of them.
+
+The Supstream executable is as fast as the "gst-launch" command, in this case Supstream uses YAML and launches a ZeroMQ listening server (IPC or TCP/IP) for supervision and monitoring. Technically, the parsing of this project is relatively well developed from a lexical, syntactic and semantic analysis using abstract binary trees for all parts related to interpretation, for example configurations. In particular, hash tables are integrated in this project to allow sharing of some Gstreamer data.
+
+the real-time API, allows *(🚧 Under development)* :
+- Real-time control states of pipelines (play, pause, null and ready)
+- Obtaining the version
+- Obtaining the current "DOM" containing the elements, pipelines, configuration...
+- Unlink/link elements
+- Creating and deleting elements
+- Set pads and elements properties
+- Set caps
+- Exit Supstream
+
+Prefer to use the docker container for the moment, it can take a few hours because it compiles all the Gstreamer sources from their sources.
+Currently, the project is under development. To better understand the interest of this project, you can take a look at the _samples_ directory from this repository.
+A trello is available at the address: https://trello.com/b/gAa0tKvO/supstream, it contains all the current tasks, i.e. those under development.
+
+# 🇫🇷 Installation (in french)
 
 ⚠️ Il est préférable de builder le projet depuis son Docker ou d'installer la dernière version de Gstreamer, Supstream est censé s'affranchir du problème de version en installant automatiquement l'une des dernières version de Gstreamer.
 
