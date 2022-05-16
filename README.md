@@ -2,7 +2,7 @@
 
 *Superviseur de stream basé sur Gstreamer et configurable en YAML.* - tpoac <t.poac@cyim.com>
 
-# Introduction
+# 🇫🇷 Introduction (in french)
 
 Supstream est un projet open-source de déploiement et de développement de pipelines de streaming dynamique. Ce projet utilise le format YAML pour configurer les différentes pipelines pour un usage aisé entres plusieurs parties d'une architecture. Il est un outil «dev-ops» pour la mise en place de pipelines de streaming, épargnant un temps de développement conséquent, Supstream permet de s'affranchir du changement de version de Gstreamer dans un contexte sécurisé et conteneurisé sous Linux. La particularité de Supstream est de pouvoir centraliser un ensemble de flux, ce qui n’est pas négligeable dans le cas d'une architecture microservice pouvant nécéssiter d‘une supervision, d’un monitoring et d’une gestion approfondie des streams. Supstream intégre une API REST (APIGateway) en Python/uvicorn utilisant APIFast, pour le moment c'est un POC. En général, ce projet est une «Virtual Machine» éxécutant un ensemble d’opérations censées uniformiser la mise en place d’architecture de streaming audio & vidéo. A l’heure actuelle, aucuns projets open-source comme celui ci n’existe. En revanche, il existe un autre projet open-source légèrement similaire à Supstream nommé «RidgeRun/gstd-1.x» pour Gstreamer Daemon, développé par la société RidgeRun qui fait du support Gstreamer. Il faut savoir que ce projet intégre des pipelines entrantes sous le format CLI de Gstreamer, «gst-launch», à contrario, Supstream utilise directement les fonctions bas niveau de la librairie Gstreamer permettant d’élargir et d’améliorer nativement le contrôle sur chaqu’unes d’elles.
 
@@ -18,7 +18,7 @@ De maniére générale, **Supstream pour SUPervisor STREAM**, intégre :
 - la sauvegarde des logs dans un fichier
 - l'initialisation de l'état des pipelines
 - la génération des graphs pour visualiser les pipelines lancées par Gstreamer
-- la gestion des à travers des schedulers et des delays
+- la gestion des pipelines à travers des schedulers et des delays
 - l'édition de la timezone
 - un docker qui lance une compilation Gstreamer via Cerbero et Ninja, uniquement dans un environnement de développement pour le moment
 - l'auto restart des pipelines
@@ -36,7 +36,7 @@ l'API temps-réel, permet *(🚧 En cours de développement)* :
 - La fermeture du programme Supstream
 
 Préférez utiliser le conteneur docker pour le moment, cela peut durer quelques heures car il compile toutes les sources Gstreamer depuis leurs sources.
-Actuellement, le projet est en cours de développement. Pour mieux comprendre l'intérêt de ce projet, vous pouvez jeter un oeil sur le dossier _samples_ du répertoire.
+Actuellement, le projet est en cours de développement. Pour mieux comprendre l'intérêt de ce projet, vous pouvez jeter un œil sur le dossier _samples_ du répertoire.
 Un trello est accessible à l'adresse : https://trello.com/b/gAa0tKvO/supstream, il contient l'ensembles des tâches courantes, c.à.d, en cours de développement.
 
 ![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/screenshot.png)
@@ -82,10 +82,14 @@ docker run --ipc=host -v=/tmp:/tmp --rm -it --device /dev/video0 --net host -e D
 
 Pour information, _--device /dev/video0_ permet l'utilisation de l'élément v4l2src pour la webcam, tandis que _--device /dev/snd_ permet l'utilisation de l'audio.
 
-# Running
+### Exemples
 
-- Just type `./bin/supstream -f samples/matroska_video_0.yaml`
+La commande :
+```bash
+./bin/supstream -f samples/matroska_video_0.yaml
+```
 
+Basé sur la configuration YAML:
 ```yaml
 pipelines:
 
@@ -117,10 +121,15 @@ pipelines:
             autovideosink:
                 element: autovideosink
 ```
-This configuration allows you to easily display a WEBM video from an MKV demuxer
 
-- Just type `./bin/supstream -f samples/mosaic.yaml`
+Cette configuration vous permet d'afficher uniquement la vidéo du conteneur MKV à partir de l'élément demuxer matroskademux.
 
+La commande:
+```bash
+./bin/supstream -f samples/mosaic.yaml
+```
+
+Basé sur la configuration YAML:
 ```yaml
 ##############
 # GST LAUNCH #
@@ -376,10 +385,15 @@ pipelines:
 
 ```
 
-This configuration allows you to easily display a mosaic
+Cette configuration vous permet d'afficher facilement une mosaïque.
 
-- Just type `./bin/supstream -f samples/gstdarknet_yolov4.yaml`
+La commande:
 
+```bash
+./bin/supstream -f samples/gstdarknet_yolov4.yaml
+```
+
+Basé sur cette configutation YAML:
 ```yaml
 supstream:
   zmq_path: "tcp://0.0.0.0:5557"
@@ -445,9 +459,9 @@ pipelines:
         element: autovideosink
 ```
 
-This configuration allows to apply an object detection algorithm from a video stream using darknet YOLOv4 and a set-delay for broadcasting
+Cette configuration permet d'appliquer un algorithme de détection d'objets à partir d'un flux vidéo en utilisant **darknet YOLOv4** à partir d'un délai déterminé soit **2022-04-19 12:17:20**.
 
-# ZeroMQ API Documentation
+# 🇺🇸 ZeroMQ API Documentation (in english)
 
 This textual documentation describes how _supstream_ externally talk with IPC ZeroMQ
 
