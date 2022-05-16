@@ -68,7 +68,7 @@ A trello is available at the address: https://trello.com/b/gAa0tKvO/supstream, i
 
 1. Vous devez installer Gstreamer via Cerbero (https://gstreamer.freedesktop.org/documentation/installing/index.html?gi-language=c)
 2. `apt install libyaml-dev && apt-install libczmq-dev && libcjson-dev`
-3. `git clone https://gitlab.com/ouzb64ty/supstream.git supstream && cd supstream && make`
+3. `git clone https://gitlab.com/ouzb64ty/supstream.git supstream && cd supstream/Supstream && mkdir build && cd build && cmake .. && make`
 
 ## Docker
 
@@ -102,12 +102,12 @@ Pour information, _--device /dev/video0_ permet l'utilisation de l'élément v4l
 
 ### Exemples
 
-La commande :
+- La commande :
 ```bash
 ./bin/supstream -f samples/matroska_video_0.yaml
 ```
 
-Basé sur la configuration YAML:
+- Basé sur la configuration YAML:
 ```yaml
 pipelines:
 
@@ -142,12 +142,12 @@ pipelines:
 
 Cette configuration vous permet d'afficher uniquement la vidéo du conteneur MKV à partir de l'élément demuxer matroskademux.
 
-La commande:
+- La commande:
 ```bash
 ./bin/supstream -f samples/mosaic.yaml
 ```
 
-Basé sur la configuration YAML:
+- Basé sur la configuration YAML:
 ```yaml
 ##############
 # GST LAUNCH #
@@ -405,13 +405,13 @@ pipelines:
 
 Cette configuration vous permet d'afficher facilement une mosaïque.
 
-La commande:
+- La commande:
 
 ```bash
 ./bin/supstream -f samples/gstdarknet_yolov4.yaml
 ```
 
-Basé sur cette configutation YAML:
+- Basé sur cette configutation YAML:
 ```yaml
 supstream:
   zmq_path: "tcp://0.0.0.0:5557"
@@ -631,6 +631,17 @@ Used to get general pipelines configuration, saved in cache
 }
 ```
 
+# Resources
+
+- Gitlab project repository : https://gitlab.com/ouzb64ty/supstream
+- Github project repository (mirror) : https://github.com/theophpo/supstream
+- Old gitlab repository : https://gitlab.com/ouzb64ty/supstream-old-repository
+- Gstreamer website : https://gstreamer.freedesktop.org/
+- Trello task's : https://trello.com/b/gAa0tKvO/supstream
+- RidgeRun/gstd-1.x on github : https://github.com/RidgeRun/gstd-1.x
+- CYIM website : https://www.cyim.com/fr
+
 # Autor
 
 tpoac <t.poac@cyim.com>
+
