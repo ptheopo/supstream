@@ -174,9 +174,6 @@ RUN cd supstream \
     && git fetch origin main \
     && git checkout main
 
-# Install Poetry
-RUN apt-get --assume-yes install python3-pip
-
 # Starter
 CMD cd supstream \
     && git pull \
