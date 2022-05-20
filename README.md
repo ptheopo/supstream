@@ -104,7 +104,7 @@ Ce projet contient un Dockerfile pour un mode de développement simple temporair
 - Configuration VIM et ZSH
 - Installation des dépendances de l'API Gateway
 
-Supstream est divisé en 3 répertoires :
+Pour information, Supstream est divisé en 3 répertoires :
 - supstream : Programme central de supervision
 - mxsupstream : API & Front de Supstream
 - supstream-deploy : Répertoire de déploiement
