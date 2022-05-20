@@ -10,6 +10,23 @@ Supstream is an open-source project for deployment and development of dynamic st
 
 The Supstream executable is as fast as the "gst-launch" command, in this case Supstream uses YAML and launches a ZeroMQ listening server (IPC or TCP/IP) for supervision and monitoring. Technically, the parsing of this project is relatively well developed from a lexical, syntactic and semantic analysis using abstract binary trees for all parts related to interpretation, for example configurations. In particular, hash tables are integrated in this project to allow sharing of some Gstreamer data.
 
+In general, Supstream for SUPervisor STREAM, integrates :
+- Caps management
+- Setting properties
+- Pads/Elements (un)link
+- 30 pre-configured samples
+- Pipeline supervision by priority order
+- Supervision of pipelines by execution type (synchronized/threaded)
+- Logs
+- Pipeline state initialization
+- Generation of graphs to visualize the pipelines launched by Gstreamer
+- Management of pipelines through schedulers and delays
+- Timezone setting
+- A docker that launches a Gstreamer compilation via Cerbero and Ninja, only in a development environment for the moment
+- Auto restart of pipelines
+- A DOM loaded in memory and updated at each modifications
+- Enable or disable IPC API
+
 The real-time API ([ouzb64ty/mxsupstream](https://gitlab.com/ouzb64ty/mxsupstream)), allows to *(🚧 Under development)* :
 - Real-time control states of pipelines (play, pause, null and ready)
 - Obtaining the version
