@@ -2,7 +2,7 @@
 
 *Superviseur de stream basé sur Gstreamer et configurable en YAML.* - tpoac <t.poac@cyim.com>
 
-📞 24h/24 - 7j/7 (Discord support) : https://discord.gg/Jj75kWkb
+📞 24h/24 - 7j/7 (Discord support) : https://discord.gg/ARQPKGdvrc
 
 # 🇫🇷 Introduction (in french)
 
