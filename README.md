@@ -103,25 +103,12 @@ Ce projet contient un Dockerfile pour un mode de développement simple temporair
 - Configuration VIM et ZSH
 - Installation des dépendances de l'API Gateway
 
-1. Builder le Docker Supstream
+Pour commencer, clonez le répertoire [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) et suivez les instructions du README.
 
-```bash
-docker build . -t docker-gstreamer-compiler
-```
-
-2. Faire un export display
-
-```bash
-xhost +
-```
-
-3. Lancer un docker Supstream
-
-```bash
-docker run --ipc=host -v=/tmp:/tmp --rm -it --device /dev/video0 --net host -e DISPLAY=$DISPLAY --device /dev/snd supstream
-```
-
-Pour information, _--device /dev/video0_ permet l'utilisation de l'élément v4l2src pour la webcam, tandis que _--device /dev/snd_ permet l'utilisation de l'audio.
+Supstream est divisé en 3 répertoires :
+- supstream : Programme central de supervision
+- mxsupstream : API & Front de Supstream
+- supstream-deploy : Répertoire de déploiement
 
 ### Exemples
 
