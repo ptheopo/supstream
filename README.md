@@ -93,8 +93,9 @@ Préférez utiliser le répertoire [ouzb64ty/supstream-deploy](https://gitlab.co
 2. `apt install libyaml-dev && apt-install libczmq-dev && libcjson-dev`
 3. `git clone https://gitlab.com/ouzb64ty/supstream.git supstream && cd supstream/Supstream && mkdir build && cd build && cmake .. && make`
 
-## Docker
+## Installation
 
+Pour commencer, clonez le répertoire [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) et suivez les instructions du README.
 Ce projet contient un Dockerfile pour un mode de développement simple temporairement basé sur un conteneur ubuntu:latest.
 
 - Installation des dépendances Gstreamer
@@ -102,8 +103,6 @@ Ce projet contient un Dockerfile pour un mode de développement simple temporair
 - Compilation des plugins Gstreamer
 - Configuration VIM et ZSH
 - Installation des dépendances de l'API Gateway
-
-Pour commencer, clonez le répertoire [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) et suivez les instructions du README.
 
 Supstream est divisé en 3 répertoires :
 - supstream : Programme central de supervision
