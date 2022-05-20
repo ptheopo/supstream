@@ -93,7 +93,7 @@ Préférez utiliser le répertoire [ouzb64ty/supstream-deploy](https://gitlab.co
 2. `apt install libyaml-dev && apt-install libczmq-dev && libcjson-dev`
 3. `git clone https://gitlab.com/ouzb64ty/supstream.git supstream && cd supstream/Supstream && mkdir build && cd build && cmake .. && make`
 
-## Installation
+## Docker
 
 Pour commencer, clonez le répertoire [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) et suivez les instructions du README.
 Ce projet contient un Dockerfile pour un mode de développement simple temporairement basé sur un conteneur ubuntu:latest.
