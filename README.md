@@ -2,7 +2,7 @@
 
 *Superviseur de stream basé sur Gstreamer et configurable en YAML.* - tpoac <t.poac@cyim.com>
 
-📞 24h/24 - 7j/7 (Discord support) : https://discord.gg/ARQPKGdvrc
+📞 24h/24 - 7j/7 [Discord support](https://discord.gg/ARQPKGdvrc)
 
 # 🇫🇷 Introduction (in french)
 
@@ -27,7 +27,7 @@ De maniére générale, **Supstream pour SUPervisor STREAM**, intégre :
 - Un "DOM" chargé en mémoire et mis à jour lors de chaques modifications
 - l'activation d'une API IPC pour modifier en temps-réel les pipelines
 
-l'API temps-réel, permet *(🚧 En cours de développement)* :
+L'API temps-réel ([ouzb64ty/mxsupstream](https://gitlab.com/ouzb64ty/mxsupstream)), permet *(🚧 En cours de développement)* :
 - Le control des états en temps-réel des pipelines (play, pause, null et ready)
 - L'obtention de la version
 - L'obtention de l'actuel "DOM" contenant les éléments, les pipelines, la configuration..
@@ -39,7 +39,9 @@ l'API temps-réel, permet *(🚧 En cours de développement)* :
 
 Préférez utiliser le conteneur docker pour le moment, cela peut durer quelques heures car il compile toutes les sources Gstreamer depuis leurs sources.
 Actuellement, le projet est en cours de développement. Pour mieux comprendre l'intérêt de ce projet, vous pouvez jeter un œil sur le dossier _samples_ du répertoire.
-Un trello est accessible à l'adresse : https://trello.com/b/gAa0tKvO/supstream, il contient l'ensembles des tâches courantes, c.à.d, en cours de développement.
+Un [Trello](https://trello.com/b/gAa0tKvO/supstream) est accessible, il contient l'ensembles des tâches courantes, c.à.d, en cours de développement.
+
+Préférez utiliser le répertoire [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) pour une installation simple via un conteneur docker.
 
 # 🇺🇸 Introduction (in english)
 
@@ -47,7 +49,7 @@ Supstream is an open-source project for deployment and development of dynamic st
 
 The Supstream executable is as fast as the "gst-launch" command, in this case Supstream uses YAML and launches a ZeroMQ listening server (IPC or TCP/IP) for supervision and monitoring. Technically, the parsing of this project is relatively well developed from a lexical, syntactic and semantic analysis using abstract binary trees for all parts related to interpretation, for example configurations. In particular, hash tables are integrated in this project to allow sharing of some Gstreamer data.
 
-the real-time API, allows *(🚧 Under development)* :
+The real-time API ([ouzb64ty/mxsupstream](https://gitlab.com/ouzb64ty/mxsupstream)), allows to *(🚧 Under development)* :
 - Real-time control states of pipelines (play, pause, null and ready)
 - Obtaining the version
 - Obtaining the current "DOM" containing the elements, pipelines, configuration...
@@ -59,7 +61,9 @@ the real-time API, allows *(🚧 Under development)* :
 
 Prefer to use the docker container for the moment, it can take a few hours because it compiles all the Gstreamer sources from their sources.
 Currently, the project is under development. To better understand the interest of this project, you can take a look at the _samples_ directory from this repository.
-A trello is available at the address: https://trello.com/b/gAa0tKvO/supstream, it contains all the current tasks, i.e. those under development.
+A [Trello](https://trello.com/b/gAa0tKvO/supstream) is available, it contains all the current tasks, i.e. those under development.
+
+Prefer to use the [ouzb64ty/supstream-deploy](https://gitlab.com/ouzb64ty/supstream-deploy) repository for a simple docker installation.
 
 # 🇫🇷 Installation (in french)
 
