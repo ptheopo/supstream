@@ -644,6 +644,8 @@ Used to get general pipelines configuration, saved in cache
 
 - Gitlab project repository : https://gitlab.com/ouzb64ty/supstream
 - Github project repository (mirror) : https://github.com/theophpo/supstream
+- ouzb64ty/mxsupstream : https://gitlab.com/ouzb64ty/mxsupstream
+- ouzb64ty/supstream-deploy : https://gitlab.com/ouzb64ty/supstream-deploy
 - Old gitlab repository : https://gitlab.com/ouzb64ty/supstream-old-repository
 - Gstreamer website : https://gstreamer.freedesktop.org/
 - Trello task's : https://trello.com/b/gAa0tKvO/supstream
