@@ -91,7 +91,7 @@ Préférez utiliser le répertoire [ouzb64ty/supstream-deploy](https://gitlab.co
 
 ```bash
 git clone https://gitlab.com/ouzb64ty/supstream.git
-cd supstream/Supstream
+cd supstream
 sh setup.sh
 mkdir build
 cd build
