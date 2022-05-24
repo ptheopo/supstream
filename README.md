@@ -87,11 +87,17 @@ Préférez utiliser le répertoire [ouzb64ty/supstream-deploy](https://gitlab.co
 ⚠️ Il est préférable de builder le projet depuis son Docker ou d'installer la dernière version de Gstreamer, Supstream est censé s'affranchir du problème de version en installant automatiquement l'une des dernières version de Gstreamer.
 
 ## Compilation
-### Ubuntu 21.10
+### Ubuntu 22.04 LTS
 
-1. Vous devez installer Gstreamer via Cerbero (https://gstreamer.freedesktop.org/documentation/installing/index.html?gi-language=c)
-2. `apt install libyaml-dev && apt-install libczmq-dev && libcjson-dev`
-3. `git clone https://gitlab.com/ouzb64ty/supstream.git supstream && cd supstream/Supstream && mkdir build && cd build && cmake .. && make`
+```bash
+git clone https://gitlab.com/ouzb64ty/supstream.git
+cd supstream/Supstream
+sh setup.sh
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## Docker
 
