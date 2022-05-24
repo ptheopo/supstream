@@ -12,3 +12,4 @@ sudo apt install libcjson-dev
 mkdir build
 cd build
 cmake ..
+make
