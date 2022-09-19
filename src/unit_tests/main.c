@@ -16,7 +16,37 @@ int             main(void) {
     }
 
     /* add the tests to the suite */
-    if ((NULL == CU_add_test(suite_ast, "test of ast_node_new()", test_ast_node_new)))
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_node_is_iblock()", test_ast_node_new)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_node_is_iblock()", test_ast_node_is_iblock)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_node_is_iline()", test_ast_node_is_iline)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_node_is_iscalar()", test_ast_node_is_iscalar)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_iscalar_value()", test_ast_iscalar_value)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_ilb_add_simple()", test_ast_ilb_add_simple)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if ((NULL == CU_add_test(suite_ast, "test of test_ast_ilb_add()", test_ast_ilb_add)))
     {
         CU_cleanup_registry();
         return CU_get_error();

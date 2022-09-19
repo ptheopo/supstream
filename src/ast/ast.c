@@ -204,6 +204,8 @@ void            ast_deepblock_free(list_t *deepblock) {
     lstdel(&deepblock, ast_deepblock_free_del);
 }
 
+/* Don't forget to use ast_deepblock_free for each ast_deepblock_create called (can be used with ast_ilb_add) */
+
 list_t          *ast_deepblock_create(int nb, ...) {
 
     va_list     params;
@@ -352,6 +354,8 @@ void            ast_free(ast_tree_t **root) {
     }
 }
 
+/* This function add line or block directly from the last right of the node */
+
 void            ast_ilb_add_simple(
                 ast_tree_t **root,
                 ast_node_t *node) {
@@ -369,6 +373,8 @@ void            ast_ilb_add_simple(
 
     *root = tmp;
 }
+
+/* This function add line or block from a deepblock (can be used with ast_deepblock_create) */
 
 void            ast_ilb_add(
                 ast_tree_t **root,
