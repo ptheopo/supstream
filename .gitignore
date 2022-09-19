@@ -67,6 +67,3 @@ build/
 
 # URI Pipeline
 .pipeline.download
-
-# Unit tests
-tests/tests

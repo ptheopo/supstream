@@ -60,3 +60,15 @@ set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/bin/)
 add_compile_options(-Wall -Wextra)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Unit tests
+
+link_libraries(-lcunit)
+
+file(GLOB SOURCES_UT ${PROJECT_SOURCE_DIR}/src/unit_tests/*.c)
+file(GLOB SOURCES_LIST_UT ${PROJECT_SOURCE_DIR}/src/list.c)
+file(GLOB SOURCES_AST_UT ${PROJECT_SOURCE_DIR}/src/ast/*.c)
+set(SOURCES_UT ${SOURCES_UT} ${SOURCES_LIST_UT})
+set(SOURCES_UT ${SOURCES_UT} ${SOURCES_AST_UT})
+
+add_executable(unit_tests ${SOURCES_UT})
