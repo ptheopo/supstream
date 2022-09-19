@@ -2,12 +2,12 @@
 
 /* Variables must be global for tests */
 
-int init_suite1(void)
+int suite_init_ast(void)
 {
     return 0;
 }
 
-int clean_suite1(void)
+int suite_clean_ast(void)
 {
     return 0;
 }

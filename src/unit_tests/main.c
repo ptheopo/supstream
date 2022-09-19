@@ -1,22 +1,22 @@
 #include "unit_tests.h"
 
-int             main() {
+int             main(void) {
 
-    CU_pSuite   pSuite = NULL;
+    CU_pSuite   suite_ast = NULL;
 
     /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
         return CU_get_error();
 
     /* add a suite to the registry */
-    pSuite = CU_add_suite("Suite_1", init_suite1, clean_suite1);
-    if (NULL == pSuite) {
+    suite_ast = CU_add_suite("AST", suite_init_ast, suite_clean_ast);
+    if (NULL == suite_ast) {
         CU_cleanup_registry();
         return CU_get_error();
     }
 
     /* add the tests to the suite */
-    if ((NULL == CU_add_test(pSuite, "test of fread()", test_ast_node_new)))
+    if ((NULL == CU_add_test(suite_ast, "test of ast_node_new()", test_ast_node_new)))
     {
         CU_cleanup_registry();
         return CU_get_error();

@@ -5,8 +5,8 @@
 
 # include "ast.h"
 
-int     init_suite1(void);
-int     clean_suite1(void);
+int     suite_init_ast(void);
+int     suite_clean_ast(void);
 void    test_ast_node_new(void);
 
 #endif
