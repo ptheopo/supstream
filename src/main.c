@@ -121,6 +121,7 @@ int                     main(int argc, char **argv) {
         /* Usage */
         g_print("usage: supstream -f <yaml-file>\n");
         g_print("or     supstream -u <yaml-uri>\n");
+        return (1);
     }
 
     switch (ret) {
