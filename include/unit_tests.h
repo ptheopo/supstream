@@ -3,10 +3,13 @@
 
 # include "CUnit/Basic.h"
 
-# include <stdbool.h> 
+# include <stdbool.h>
+# include <yaml.h>
 
 # include "ast.h"
-# include "semantic.h"
+# include "fifo.h"
+# include "parse.h"
+# include "supstream.h"
 
 /* AST From Scratch */
 
@@ -24,5 +27,6 @@ void    test_ast_fscratch_ilb_add(void);
 
 int     suite_init_ast_fsample(void);
 int     suite_clean_ast_fsample(void);
+void    test_ast_fsample_document(void);
 
 #endif
