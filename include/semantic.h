@@ -84,6 +84,8 @@ void                    semantic_link(
                         list_t **linked_pads,
                         list_t **linked_pad_props);
 
+supstream_t             *semantic_doc(ast_tree_t **root);
+
 /* Dynamic types for properties */
 
 typedef union           dtype_u {
@@ -95,7 +97,5 @@ typedef union           dtype_u {
     GstCaps             *gstcaps;
     const GValue        *gvalue;
 }                       dtype_t;
-
-supstream_t             *semantic_doc(ast_tree_t **root);
 
 #endif

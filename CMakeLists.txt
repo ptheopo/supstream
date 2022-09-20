@@ -66,9 +66,9 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 link_libraries(-lcunit)
 
 file(GLOB SOURCES_UT ${PROJECT_SOURCE_DIR}/src/unit_tests/*.c)
-file(GLOB SOURCES_LIST_UT ${PROJECT_SOURCE_DIR}/src/list.c)
-file(GLOB SOURCES_AST_UT ${PROJECT_SOURCE_DIR}/src/ast/*.c)
-set(SOURCES_UT ${SOURCES_UT} ${SOURCES_LIST_UT})
-set(SOURCES_UT ${SOURCES_UT} ${SOURCES_AST_UT})
 
-add_executable(unit_tests ${SOURCES_UT})
+list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/main.c)
+
+set(SOURCES ${SOURCES} ${SOURCES_UT})
+
+add_executable(unit_tests ${SOURCES})

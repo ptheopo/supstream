@@ -6,6 +6,7 @@
 # include <stdbool.h> 
 
 # include "ast.h"
+# include "semantic.h"
 
 /* AST From Scratch */
 
