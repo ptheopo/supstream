@@ -28,5 +28,9 @@ void    test_ast_fscratch_ilb_add(void);
 int     suite_init_ast_fsample(void);
 int     suite_clean_ast_fsample(void);
 void    test_ast_fsample_document(void);
+void    test_ast_fsample_supstream(void);
+void    test_ast_fsample_pipelines(void);
+void    test_ast_fsample_pipelines_pipeline(void);
+void    test_ast_fsample_pipelines_pipeline_elements(void);
 
 #endif

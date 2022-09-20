@@ -70,6 +70,30 @@ int             main(void) {
         return CU_get_error();
     }
 
+    if ((NULL == CU_add_test(suite_ast_fsample, "test of test_ast_fsample_supstream()", test_ast_fsample_supstream)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if ((NULL == CU_add_test(suite_ast_fsample, "test of test_ast_fsample_pipelines()", test_ast_fsample_pipelines)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if ((NULL == CU_add_test(suite_ast_fsample, "test of test_ast_fsample_pipelines_pipeline()", test_ast_fsample_pipelines_pipeline)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
+    if ((NULL == CU_add_test(suite_ast_fsample, "test of test_ast_fsample_pipelines_pipeline_elements()", test_ast_fsample_pipelines_pipeline_elements)))
+    {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
     CU_cleanup_registry();
