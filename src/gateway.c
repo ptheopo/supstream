@@ -5,6 +5,7 @@
 request_t                           g_requests[NB_REQUEST] = {
 
     { "show",                       request_show },
+    { "show_pipeline",              request_show_pipeline },
     { "unlink_elements",            request_unlink_elements },
     { "link_elements",              request_link_elements },
     { "create_element",             request_create_element },
@@ -18,7 +19,7 @@ request_t                           g_requests[NB_REQUEST] = {
     { "ready",                      request_ready },
     { "null",                       request_null },
     { "exit",                       request_exit },
-
+    
 };
 
 /* Global parser */

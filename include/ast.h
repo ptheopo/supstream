@@ -179,7 +179,7 @@ void                            aast_browse_postfix(
                                 ast_node_t **node,
                                 void (*fn)(ast_node_t **));
 
-/* Actions */
+/* Actions : AST usefull high level functions */
 
 typedef enum                    e_ast_action_res {
     ACTION_PIPELINE_NOT_FOUND,
@@ -192,5 +192,9 @@ t_ast_action_res                ast_action_element_remove(
                                 ast_tree_t **root,
                                 char *pipeline_name,
                                 char *element_name);
+
+ast_node_t                      *ast_action_pipeline_get(
+                                ast_tree_t **root,
+                                char *pipeline_name);
 
 #endif

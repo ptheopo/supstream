@@ -1,7 +1,7 @@
 #ifndef REQUEST_H
 # define REQUEST_H
 
-# define NB_REQUEST 14
+# define NB_REQUEST 15
 
 # include <cjson/cJSON.h>
 # include <math.h>
@@ -54,6 +54,23 @@ int             state_update(ast_node_t **pipeline, char *state_str);
  */
 
 char            *request_show(
+                const cJSON *request_json,
+                ast_tree_t **root);
+
+/*
+ * Show pipeline
+ * =============
+ *
+ * Used to get a specific pipeline, saved in cache 
+ *
+ * {
+ *   command: "show",
+ *   pipeline: "matroska_video_0"
+ * }
+ *
+ */
+
+char            *request_show_pipeline(
                 const cJSON *request_json,
                 ast_tree_t **root);
 

@@ -1,7 +1,7 @@
 # This configuration show a video from demux MKV
 
 supstream:
-    zmq_path: "tcp://0.0.0.0:5557"
+    zmq_path: "tcp://0.0.0.0:5177"
 
 pipelines:
     matroska_video_0:
