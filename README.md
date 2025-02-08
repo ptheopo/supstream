@@ -1,8 +1,4 @@
-![alt text](https://gitlab.com/ouzb64ty/supstream/-/raw/main/images/supstream-logo.png)
-
 *Gstreamer-based stream supervisor using YAML*
-
-📞 [Discord support](https://discord.gg/ARQPKGdvrc) 24h/24 - 7j/7
 
 # 🇺🇸 Introduction (in US)
 
